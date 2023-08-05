@@ -6,6 +6,13 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group):
         super().__init__(group)
         self.image = pygame.image.load('/Users/joon/Desktop/Python Game Contest/ㅎㅇㅂ.png')
+        
+        #resizing
+        original_size = self.image.get_size()
+        new_width = 100
+        new_height = int(original_size[1] * (new_width / original_size[0]))
+        self.image = pygame.transform.scale(self.image, (new_width, new_height))
+        
         self.rect = self.image.get_rect(center=pos)
         self.direction = pygame.math.Vector2()
         self.speed = 5
@@ -29,23 +36,35 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.input()
-        self.rect.center += self.direction * self.speed
+        new_position = self.rect.center + self.direction * self.speed
+
+        # Check if the new position is within the background boundaries
+        within_x_boundary = 0 <= new_position.x <= camera_group.ground_rect.width
+        within_y_boundary = 0 <= new_position.y <= camera_group.ground_rect.height
+
+        if within_x_boundary and within_y_boundary:
+            self.rect.center = new_position
 
 class Camera(pygame.sprite.Group):
+    #여기 아래 배경 화면 삽입 코드
     def __init__(self):
         super().__init__()  # Fixed: added parentheses to call superclass constructor
         self.display_surface = pygame.display.get_surface()
         self.offset = pygame.math.Vector2()
         self.half_w = self.display_surface.get_size()[0] // 2  # Fixed: get_size() instead of get_sixe()
         self.half_h = self.display_surface.get_size()[1] // 2  # Fixed: get_size() instead of get_sixe()
-
+        #/Users/joon/Desktop/Python Game Contest/Python_CMM/Image/ground.png
         # Ground
         self.ground_surf = pygame.image.load('/Users/joon/Desktop/Python Game Contest/Python_CMM/Image/ground.png').convert_alpha()
         self.ground_rect = self.ground_surf.get_rect(topleft=(0, 0))
 
     def center_target_camera(self, target):
         self.offset.x = target.rect.centerx - self.half_w
-        self.offset.y = target.rect.centery - self.half_h 
+        self.offset.y = target.rect.centery - self.half_h
+        
+        # Adjust camera offset to keep the character within the background boundaries
+        self.offset.x = max(0, min(self.offset.x, self.ground_rect.width - self.display_surface.get_width()))
+        self.offset.y = max(0, min(self.offset.y, self.ground_rect.height - self.display_surface.get_height()))
 
     def custom_draw(self, player):  # Fixed: typo, should be 'custom_draw' instead of 'center_terget_camera'
         self.center_target_camera(player)  # Fixed: typo, should be 'center_target_camera'
@@ -63,7 +82,7 @@ class Camera(pygame.sprite.Group):
 pygame.init()
 
 # Screen
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((1280, 800))
 clock = pygame.time.Clock()
 
 # Setup
