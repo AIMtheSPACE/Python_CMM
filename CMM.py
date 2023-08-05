@@ -2,12 +2,11 @@ import pygame
 import sys
 from random import randint
 
-
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,group):
+    def __init__(self, pos, group):
         super().__init__(group)
-        self.image = pygame.image.load('/Users/joon/Desktop/Python Game Contest/Python_CMM/Image/펭귄.png')
-        self.rect = self.image.get_rect(center = pos)
+        self.image = pygame.image.load('/Users/joon/Desktop/Python Game Contest/ㅎㅇㅂ.png')
+        self.rect = self.image.get_rect(center=pos)
         self.direction = pygame.math.Vector2()
         self.speed = 5
         
@@ -34,37 +33,42 @@ class Player(pygame.sprite.Sprite):
 
 class Camera(pygame.sprite.Group):
     def __init__(self):
-        super().__init()
+        super().__init__()  # Fixed: added parentheses to call superclass constructor
         self.display_surface = pygame.display.get_surface()
+        self.offset = pygame.math.Vector2()
+        self.half_w = self.display_surface.get_size()[0] // 2  # Fixed: get_size() instead of get_sixe()
+        self.half_h = self.display_surface.get_size()[1] // 2  # Fixed: get_size() instead of get_sixe()
 
-        #camera offset
-        self.offset = pygame.math.Vector2(-800, 100)
-
-        #gound
+        # Ground
         self.ground_surf = pygame.image.load('/Users/joon/Desktop/Python Game Contest/Python_CMM/Image/ground.png').convert_alpha()
-        self.ground_rect = self.ground_surf.get_rect(topleft = (0,0))
+        self.ground_rect = self.ground_surf.get_rect(topleft=(0, 0))
 
-    def custom_draw(self):
+    def center_target_camera(self, target):
+        self.offset.x = target.rect.centerx - self.half_w
+        self.offset.y = target.rect.centery - self.half_h 
 
-        #ground
-        ground_offset = self.ground_rect.topleft + self.offset
+    def custom_draw(self, player):  # Fixed: typo, should be 'custom_draw' instead of 'center_terget_camera'
+        self.center_target_camera(player)  # Fixed: typo, should be 'center_target_camera'
+
+        # Ground
+        ground_offset = self.ground_rect.topleft - self.offset
         self.display_surface.blit(self.ground_surf, ground_offset)
 
-        #active elements
-        for sprite in sorted(self.sprites(), key = lambda sprtie: sprite.rect.centery):
-            offset_pos = sprite.rect.topleft + self.offset
-            self.display_surface.blit(sprite.image, sprite.rect)
+        # Active elements
+        for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
+            offset_pos = sprite.rect.topleft - self.offset
+            self.display_surface.blit(sprite.image, offset_pos)  # Fixed: use 'offset_pos' instead of 'sprite.rect'
 
-#reset pygame
+# Reset pygame
 pygame.init()
 
-#screen
+# Screen
 screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 
-#setup
-camera_group = pygame.sprite.Group()
-Player((640,360), camera_group)
+# Setup
+camera_group = Camera()  # Fixed: create Camera object instead of pygame.sprite.Group()
+player = Player((640, 360), camera_group)
 
 while True:
     for event in pygame.event.get():
@@ -75,10 +79,6 @@ while True:
     screen.fill('#71ddee')
 
     camera_group.update()
-    camera_group.draw(screen)
-
+    camera_group.custom_draw(player)  # Fixed: use custom_draw instead of draw
     pygame.display.update()
     clock.tick(60)
-
-pygame.quit()
-sys.exit()
