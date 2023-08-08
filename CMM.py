@@ -2,6 +2,10 @@ import pygame
 import sys
 from random import randint
 
+#pygame name
+pygame.display.set_caption("러브캐처 인 청운")
+
+#player setting
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group):
         super().__init__(group)
@@ -45,6 +49,7 @@ class Player(pygame.sprite.Sprite):
         if within_x_boundary and within_y_boundary:
             self.rect.center = new_position
 
+#camera setting
 class Camera(pygame.sprite.Group):
     #여기 아래 배경 화면 삽입 코드
     def __init__(self):
@@ -78,7 +83,7 @@ class Camera(pygame.sprite.Group):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_pos)  # Fixed: use 'offset_pos' instead of 'sprite.rect'
 
-# Reset pygame
+#Reset pygame
 pygame.init()
 
 # Screen
@@ -89,15 +94,29 @@ clock = pygame.time.Clock()
 camera_group = Camera()  # Fixed: create Camera object instead of pygame.sprite.Group()
 player = Player((640, 360), camera_group)
 
+show_main_image = True  # New: Add a flag to control main image display
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            show_main_image = False  # New: Hide main image when spacebar is pressed
     
     screen.fill('#71ddee')
 
-    camera_group.update()
-    camera_group.custom_draw(player)  # Fixed: use custom_draw instead of draw
+    #첫 메인 화면
+    if show_main_image:
+        main_image = pygame.image.load('/Users/joon/Desktop/프레젠테이션1.jpg')
+        main_image_rect = main_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+        screen.blit(main_image, main_image_rect.topleft)
+    else:
+        camera_group.update()
+        camera_group.custom_draw(player)
+    
     pygame.display.update()
     clock.tick(60)
+
+
+
