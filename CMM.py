@@ -122,12 +122,11 @@ clock = pygame.time.Clock()
 # Setup
 camera_group = Camera()  # Fixed: create Camera object instead of pygame.sprite.Group()
 player = Player((640, 360), camera_group)
+show_settings_overlay = False
 
 #이미지 불러오기
 setting_image = pygame.image.load("/Users/joon/Desktop/Python Game Contest/설정.png").convert_alpha()
 setting_button = Button(20, 20, setting_image, 0.01)  # 위치와 크기를 필요에 맞게 조절하세요
-
-show_settings_overlay = False
 
 #첫 메인 화면 세팅
 show_main_image = True  # New: Add a flag to control main image display
@@ -136,7 +135,7 @@ show_main_image = True  # New: Add a flag to control main image display
 font = pygame.font.SysFont("arialblack", 40)
 
 # define colors
-TEXT_COL = (255, 255, 255)
+TEXT_COL = (0, 0, 0)
 
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -182,15 +181,15 @@ while True:
         box_height = 100
 
         pygame.draw.rect(screen, box_color, (20, 100, box_width, box_height))
-        draw_text("음량", font, TEXT_COL, 20 + box_width // 2, 100 + box_height // 2)
+        draw_text("VOLUME", font, TEXT_COL, 20 + box_width // 2, 100 + box_height // 2)
 
         # 두 번째 상자 그리기
         pygame.draw.rect(screen, box_color, (240, 100, box_width, box_height))
-        draw_text("조작법", font, TEXT_COL, 240 + box_width // 2, 100 + box_height // 2)
+        draw_text("CONTROL", font, TEXT_COL, 240 + box_width // 2, 100 + box_height // 2)
 
         # 세 번째 상자 그리기
         pygame.draw.rect(screen, box_color, (460, 100, box_width, box_height))
-        draw_text("와우", font, TEXT_COL, 460 + box_width // 2, 100 + box_height // 2)
+        draw_text("EXIT", font, TEXT_COL, 460 + box_width // 2, 100 + box_height // 2)
 
     pygame.display.update()
     clock.tick(60)
