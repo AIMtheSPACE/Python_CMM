@@ -2,10 +2,15 @@ import pygame
 import sys
 from random import randint
 
+#Reset pygame
+pygame.init()
+
 #pygame name
 pygame.display.set_caption("러브캐처 인 청운")
 
-#player setting
+
+# CLASS -----------------------------
+# player setting
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group):
         super().__init__(group)
@@ -49,7 +54,7 @@ class Player(pygame.sprite.Sprite):
         if within_x_boundary and within_y_boundary:
             self.rect.center = new_position
 
-#camera setting
+# camera setting
 class Camera(pygame.sprite.Group):
     #여기 아래 배경 화면 삽입 코드
     def __init__(self):
@@ -83,7 +88,7 @@ class Camera(pygame.sprite.Group):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_pos)  # Fixed: use 'offset_pos' instead of 'sprite.rect'
 
-#지워도 됨 아직 시험 단계
+# Button setting
 class Button():
 	def __init__(self, x, y, image, scale):
 		width = image.get_width()
@@ -112,14 +117,12 @@ class Button():
 
 		return action
 
-#Reset pygame
-pygame.init()
 
 # Screen
 screen = pygame.display.set_mode((1280, 800))
 clock = pygame.time.Clock()
 
-# Setup
+# settings -------------------------
 camera_group = Camera()  # Fixed: create Camera object instead of pygame.sprite.Group()
 player = Player((640, 360), camera_group)
 show_settings_overlay = False
@@ -131,17 +134,17 @@ setting_button = Button(20, 20, setting_image, 0.01)  # 위치와 크기를 필�
 #첫 메인 화면 세팅
 show_main_image = True  # New: Add a flag to control main image display
 
-# define fonts
+# 폰트 정의
 font = pygame.font.SysFont("arialblack", 40)
 
-# define colors
+# 색 정의
 TEXT_COL = (0, 0, 0)
 
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x - img.get_width() // 2, y - img.get_height() // 2))
 
-
+# 메인 코드 --------------------------------
 while True:
     #게임 시작 끝내기와 스페이스로 시작
     for event in pygame.event.get():
@@ -190,6 +193,7 @@ while True:
         # 세 번째 상자 그리기
         pygame.draw.rect(screen, box_color, (460, 100, box_width, box_height))
         draw_text("EXIT", font, TEXT_COL, 460 + box_width // 2, 100 + box_height // 2)
+        
 
     pygame.display.update()
     clock.tick(60)
