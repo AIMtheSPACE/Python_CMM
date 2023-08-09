@@ -94,6 +94,7 @@ clock = pygame.time.Clock()
 camera_group = Camera()  # Fixed: create Camera object instead of pygame.sprite.Group()
 player = Player((640, 360), camera_group)
 
+#첫 메인 화면 세팅
 show_main_image = True  # New: Add a flag to control main image display
 
 while True:
@@ -130,4 +131,8 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x,y))
 
-#gkgk
+#키 감지 그리고 멈추기 요소
+for event in pygame.event.get():
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_p:
+            game_paused = True   
