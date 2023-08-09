@@ -83,6 +83,35 @@ class Camera(pygame.sprite.Group):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_pos)  # Fixed: use 'offset_pos' instead of 'sprite.rect'
 
+#지워도 됨 아직 시험 단계
+class Button():
+	def __init__(self, x, y, image, scale):
+		width = image.get_width()
+		height = image.get_height()
+		self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+		self.rect = self.image.get_rect()
+		self.rect.topleft = (x, y)
+		self.clicked = False
+
+	def draw(self, surface):
+		action = False
+		#get mouse position
+		pos = pygame.mouse.get_pos()
+
+		#check mouseover and clicked conditions
+		if self.rect.collidepoint(pos):
+			if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+				self.clicked = True
+				action = True
+
+		if pygame.mouse.get_pressed()[0] == 0:
+			self.clicked = False
+
+		#draw button on screen
+		surface.blit(self.image, (self.rect.x, self.rect.y))
+
+		return action
+
 #Reset pygame
 pygame.init()
 
@@ -94,16 +123,37 @@ clock = pygame.time.Clock()
 camera_group = Camera()  # Fixed: create Camera object instead of pygame.sprite.Group()
 player = Player((640, 360), camera_group)
 
+#이미지 불러오기
+setting_image = pygame.image.load("/Users/joon/Desktop/Python Game Contest/설정.png").convert_alpha()
+setting_button = Button(20, 20, setting_image, 0.01)  # 위치와 크기를 필요에 맞게 조절하세요
+
+show_settings_overlay = False
+
 #첫 메인 화면 세팅
 show_main_image = True  # New: Add a flag to control main image display
 
+# define fonts
+font = pygame.font.SysFont("arialblack", 40)
+
+# define colors
+TEXT_COL = (255, 255, 255)
+
+def draw_text(text, font, text_col, x, y):
+    img = font.render(text, True, text_col)
+    screen.blit(img, (x - img.get_width() // 2, y - img.get_height() // 2))
+
+
 while True:
+    #게임 시작 끝내기와 스페이스로 시작
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            show_main_image = False  # New: Hide main image when spacebar is pressed
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                show_main_image = False  # Hide main image when spacebar is pressed
+            elif event.key == pygame.K_p:
+                show_settings_overlay = not show_settings_overlay 
     
     screen.fill('#71ddee')
 
@@ -116,23 +166,31 @@ while True:
         camera_group.update()
         camera_group.custom_draw(player)
     
+    #setting
+    if setting_button.draw(screen) or (show_settings_overlay and event.type == pygame.KEYDOWN and event.key == pygame.K_p):
+        show_settings_overlay = not show_settings_overlay
+
+    if show_settings_overlay:
+        overlay_color = (0, 0, 0, 128)
+        overlay_surface = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
+        overlay_surface.fill(overlay_color)
+        screen.blit(overlay_surface, (0, 0))
+
+        # 첫 번째 상자 그리기
+        box_color = (255, 255, 255)
+        box_width = 200
+        box_height = 100
+
+        pygame.draw.rect(screen, box_color, (20, 100, box_width, box_height))
+        draw_text("음량", font, TEXT_COL, 20 + box_width // 2, 100 + box_height // 2)
+
+        # 두 번째 상자 그리기
+        pygame.draw.rect(screen, box_color, (240, 100, box_width, box_height))
+        draw_text("조작법", font, TEXT_COL, 240 + box_width // 2, 100 + box_height // 2)
+
+        # 세 번째 상자 그리기
+        pygame.draw.rect(screen, box_color, (460, 100, box_width, box_height))
+        draw_text("와우", font, TEXT_COL, 460 + box_width // 2, 100 + box_height // 2)
+
     pygame.display.update()
     clock.tick(60)
-
-
-
-#define fonts
-font = pygame.font.SysFont("arialblack", 40)
-
-#define colors
-TEXT_COL (255, 255, 255)
-
-def draw_text(text, font, text_col, x, y):
-    img = font.render(text, True, text_col)
-    screen.blit(img, (x,y))
-
-#키 감지 그리고 멈추기 요소
-for event in pygame.event.get():
-    if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_p:
-            game_paused = True   
