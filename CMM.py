@@ -206,7 +206,12 @@ while True:
             overlay_surface.fill(overlay_color)
             screen.blit(overlay_surface, (0, 0))
 
-            bigchecklist_image = pygame.image.load('/Users/joon/Desktop/Python Game Contest/첵리.png').convert_alpha()
+            bigchecklist_image = pygame.image.load('/Users/joon/Desktop/Python Game Contest/첵리.png').convert_alpha()
+            checklist_scale = 0.2  # Adjust the scale factor as needed
+            bigchecklist_image = pygame.transform.scale(bigchecklist_image, (
+            int(bigchecklist_image.get_width() * checklist_scale),
+            int(bigchecklist_image.get_height() * checklist_scale)
+            ))
             bigchecklist_image_rect = bigchecklist_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
             screen.blit(bigchecklist_image, bigchecklist_image_rect.topleft)
 
