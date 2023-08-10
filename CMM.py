@@ -14,7 +14,7 @@ pygame.display.set_caption("러브캐처 인 청운")
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group):
         super().__init__(group)
-        self.image = pygame.image.load('/Users/joon/Desktop/Python Game Contest/ㅎㅇㅂ.png')
+        self.image = pygame.image.load('Image/ㅎㅇㅂ.png')
         
         #resizing
         original_size = self.image.get_size()
@@ -66,7 +66,7 @@ class Camera(pygame.sprite.Group):
         
         #/Users/joon/Desktop/Python Game Contest/Python_CMM/Image/ground.png
         # Ground
-        self.ground_surf = pygame.image.load('/Users/joon/Desktop/Python Game Contest/Python_CMM/Image/ground.png').convert_alpha()
+        self.ground_surf = pygame.image.load('Image/ground.png').convert_alpha()
         self.ground_rect = self.ground_surf.get_rect(topleft=(0, 0))
 
     def center_target_camera(self, target):
@@ -128,10 +128,10 @@ camera_group = Camera()
 player = Player((640, 360), camera_group)
 
 #버튼 이미지 불러오기
-setting_image = pygame.image.load("/Users/joon/Desktop/Python Game Contest/설정.png").convert_alpha()
+setting_image = pygame.image.load("Image/설정.png").convert_alpha()
 setting_button = Button(30, 60, setting_image, 0.01)
 
-checklist_image = pygame.image.load("/Users/joon/Desktop/Python Game Contest/파일.png").convert_alpha()
+checklist_image = pygame.image.load("Image/파일.png").convert_alpha()
 checklist_button = Button(60, 30, checklist_image, 1)
 
 #첫 메인 화면 세팅
@@ -176,12 +176,12 @@ while True:
     screen.fill('#71ddee')
 
     if current_image == "main":
-        main_image = pygame.image.load('/Users/joon/Desktop/대지 1.png').convert_alpha()
+        main_image = pygame.image.load('Image/대지 1.png').convert_alpha()
         main_image_rect = main_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
         screen.blit(main_image, main_image_rect.topleft)
 
     elif current_image == "intro":
-        intro_image = pygame.image.load('/Users/joon/Desktop/Python Game Contest/프레젠테이션2.png').convert_alpha()
+        intro_image = pygame.image.load('Image/intro.png').convert_alpha()
         intro_image_rect = intro_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
         screen.blit(intro_image, intro_image_rect.topleft)
         
@@ -206,7 +206,7 @@ while True:
             overlay_surface.fill(overlay_color)
             screen.blit(overlay_surface, (0, 0))
 
-            bigchecklist_image = pygame.image.load('/Users/joon/Desktop/Python Game Contest/첵리.png').convert_alpha()
+            bigchecklist_image = pygame.image.load('Image/첵리.png').convert_alpha()
             checklist_scale = 0.2  # Adjust the scale factor as needed
             bigchecklist_image = pygame.transform.scale(bigchecklist_image, (
             int(bigchecklist_image.get_width() * checklist_scale),
@@ -230,7 +230,7 @@ while True:
                 current_image = "end" 
     # 게임 엔딩 화면
     elif current_image == "end":
-        end_image = pygame.image.load('/Users/joon/Desktop/Python Game Contest/Image (10).png').convert_alpha()
+        end_image = pygame.image.load('Image/ending.png').convert_alpha()
         end_image_rect = end_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
         screen.blit(end_image, end_image_rect.topleft)
 
