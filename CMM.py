@@ -157,7 +157,7 @@ def draw_text(text, font, text_col, x, y):
 # 메인 코드 --------------------------------
 current_image = "main"  # 현재 표시할 이미지를 나타내는 변수
 countdown_start_time = None
-countdown_duration = 5
+countdown_duration = 60
 
 while True:
     current_time = pygame.time.get_ticks() // 1000  # 현재 시간(초) 가져오기
