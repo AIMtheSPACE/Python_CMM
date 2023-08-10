@@ -58,11 +58,12 @@ class Player(pygame.sprite.Sprite):
 class Camera(pygame.sprite.Group):
     #여기 아래 배경 화면 삽입 코드
     def __init__(self):
-        super().__init__()  # Fixed: added parentheses to call superclass constructor
+        super().__init__()
         self.display_surface = pygame.display.get_surface()
         self.offset = pygame.math.Vector2()
         self.half_w = self.display_surface.get_size()[0] // 2  # Fixed: get_size() instead of get_sixe()
         self.half_h = self.display_surface.get_size()[1] // 2  # Fixed: get_size() instead of get_sixe()
+        
         #/Users/joon/Desktop/Python Game Contest/Python_CMM/Image/ground.png
         # Ground
         self.ground_surf = pygame.image.load('/Users/joon/Desktop/Python Game Contest/Python_CMM/Image/ground.png').convert_alpha()
@@ -119,20 +120,26 @@ class Button():
 
 
 # Screen
-screen = pygame.display.set_mode((1280, 800))
+screen = pygame.display.set_mode((1280, 900))
 clock = pygame.time.Clock()
 
-# settings -------------------------
-camera_group = Camera()  # Fixed: create Camera object instead of pygame.sprite.Group()
+# settings --------------------------
+camera_group = Camera()
 player = Player((640, 360), camera_group)
-show_settings_overlay = False
 
-#이미지 불러오기
+#버튼 이미지 불러오기
 setting_image = pygame.image.load("/Users/joon/Desktop/Python Game Contest/설정.png").convert_alpha()
-setting_button = Button(20, 20, setting_image, 0.01)  # 위치와 크기를 필요에 맞게 조절하세요
+setting_button = Button(30, 60, setting_image, 0.01)
+
+checklist_image = pygame.image.load("/Users/joon/Desktop/Python Game Contest/파일.png").convert_alpha()
+checklist_button = Button(60, 30, checklist_image, 1)
 
 #첫 메인 화면 세팅
 show_main_image = True  # New: Add a flag to control main image display
+show_intro_image = False
+show_settings_overlay = False
+show_checklist_overlay = False
+
 
 # 폰트 정의
 font = pygame.font.SysFont("arialblack", 40)
@@ -144,31 +151,85 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x - img.get_width() // 2, y - img.get_height() // 2))
 
+
+
+
 # 메인 코드 --------------------------------
+current_image = "main"  # 현재 표시할 이미지를 나타내는 변수
+countdown_start_time = None
+countdown_duration = 5
+
 while True:
-    #게임 시작 끝내기와 스페이스로 시작
+    current_time = pygame.time.get_ticks() // 1000  # 현재 시간(초) 가져오기
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                show_main_image = False  # Hide main image when spacebar is pressed
+                if current_image == "main":
+                    current_image = "intro"  # 이미지 변경
             elif event.key == pygame.K_p:
-                show_settings_overlay = not show_settings_overlay 
+                show_settings_overlay = not show_settings_overlay
     
     screen.fill('#71ddee')
 
-    #첫 메인 화면
-    if show_main_image:
-        main_image = pygame.image.load('/Users/joon/Desktop/프레젠테이션1.jpg')
+    if current_image == "main":
+        main_image = pygame.image.load('/Users/joon/Desktop/대지 1.png').convert_alpha()
         main_image_rect = main_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
         screen.blit(main_image, main_image_rect.topleft)
-    else:
+
+    elif current_image == "intro":
+        intro_image = pygame.image.load('/Users/joon/Desktop/Python Game Contest/프레젠테이션2.png').convert_alpha()
+        intro_image_rect = intro_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+        screen.blit(intro_image, intro_image_rect.topleft)
+        
+        # 스페이스바를 눌렀을 때 이미지 변경
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    current_image = "game"  # 이미지 변경
+                    countdown_start_time = current_time  # 카운트다운 시작 시간 설정
+
+    elif current_image == "game":
         camera_group.update()
         camera_group.custom_draw(player)
-    
-    #setting
+
+        #체크리스트 띄우는 코드
+        if checklist_button.draw(screen) or (show_checklist_overlay and event.type == pygame.KEYDOWN and event.key == pygame.K_l):
+            show_checklist_overlay = not show_checklist_overlay
+
+        if show_checklist_overlay:
+            overlay_color = (0, 0, 0, 128)
+            overlay_surface = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
+            overlay_surface.fill(overlay_color)
+            screen.blit(overlay_surface, (0, 0))
+
+            bigchecklist_image = pygame.image.load('/Users/joon/Desktop/Python Game Contest/첵리.png').convert_alpha()
+            bigchecklist_image_rect = bigchecklist_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+            screen.blit(bigchecklist_image, bigchecklist_image_rect.topleft)
+
+        # 카운트 다운 시작
+        if countdown_start_time is not None:
+            remaining_time = countdown_duration - (current_time - countdown_start_time)
+            if remaining_time > 0:
+                countdown_text = f"Time left: {remaining_time // 60:02}:{remaining_time % 60:02}"
+                countdown_font = pygame.font.SysFont("arialblack", 20)
+                countdown_surface = countdown_font.render(countdown_text, True, TEXT_COL)
+                countdown_rect = countdown_surface.get_rect(topright=(screen.get_width() - 10, 10))
+                screen.blit(countdown_surface, countdown_rect)
+
+            #게임 끝 엔딩 화면으로 전환
+            if remaining_time == 0:
+                current_image = "end" 
+    # 게임 엔딩 화면
+    elif current_image == "end":
+        end_image = pygame.image.load('/Users/joon/Desktop/Python Game Contest/Image (10).png').convert_alpha()
+        end_image_rect = end_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+        screen.blit(end_image, end_image_rect.topleft)
+
+    # setting
     if setting_button.draw(screen) or (show_settings_overlay and event.type == pygame.KEYDOWN and event.key == pygame.K_p):
         show_settings_overlay = not show_settings_overlay
 
@@ -193,7 +254,6 @@ while True:
         # 세 번째 상자 그리기
         pygame.draw.rect(screen, box_color, (460, 100, box_width, box_height))
         draw_text("EXIT", font, TEXT_COL, 460 + box_width // 2, 100 + box_height // 2)
-        
 
     pygame.display.update()
     clock.tick(60)
