@@ -216,10 +216,8 @@ while True:
 
         # 체크리스트 띄우는 코드
         if checklist_button.draw(screen) or (show_checklist_overlay and event.type == pygame.KEYDOWN and event.key == pygame.K_l):
-           
             # 체크리스트 노출
             show_checklist_overlay = not show_checklist_overlay
-
             # 화살표 노출
             show_right_arrow = not show_right_arrow
             show_left_arrow = not show_left_arrow
@@ -229,8 +227,17 @@ while True:
             overlay_surface = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
             overlay_surface.fill(overlay_color)
             screen.blit(overlay_surface, (0, 0))
-    
-            bigchecklist_image = pygame.image.load('Image/첵리.png').convert_alpha()
+            if page == 1:
+                bigchecklist_image = pygame.image.load('Image/첵리 1.png').convert_alpha()
+            elif page ==2:
+                bigchecklist_image = pygame.image.load('Image/첵리 2.png').convert_alpha()
+            elif page ==3:
+                bigchecklist_image = pygame.image.load('Image/첵리 3.png').convert_alpha()
+            elif page ==4:
+                bigchecklist_image = pygame.image.load('Image/첵리 4.png').convert_alpha()
+            elif page ==5:
+                bigchecklist_image = pygame.image.load('Image/첵리 5.png').convert_alpha()
+
             checklist_scale = 0.5  # Adjust the scale factor as needed
             bigchecklist_image = pygame.transform.scale(bigchecklist_image, (
             int(bigchecklist_image.get_width() * checklist_scale),
@@ -238,7 +245,13 @@ while True:
             ))
             bigchecklist_image_rect = bigchecklist_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
             screen.blit(bigchecklist_image, bigchecklist_image_rect.topleft)
-
+            
+            """
+            checkline_image = pygame.image.load('Image/line.png').convert_alpha()
+            checkline_image_rect = checkline_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+            screen.blit(checkline_image, checkline_image_rect.topleft)
+            """
+#키보드 안먹힘! 수정 필요
         if show_right_arrow and rightarrow_button.draw(screen):
             page = adjust_value(page, 1, 1, 5)
 
