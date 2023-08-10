@@ -8,7 +8,6 @@ pygame.init()
 #pygame name
 pygame.display.set_caption("러브캐처 인 청운")
 
-
 # CLASS -----------------------------
 # player setting
 class Player(pygame.sprite.Sprite):
@@ -29,16 +28,16 @@ class Player(pygame.sprite.Sprite):
     def input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_w]:
             self.direction.y = -1
-        elif keys[pygame.K_DOWN]:
+        elif keys[pygame.K_s]:
             self.direction.y = 1
         else:
             self.direction.y = 0
 
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_d]:
             self.direction.x = 1
-        elif keys[pygame.K_LEFT]:
+        elif keys[pygame.K_a]:
             self.direction.x = -1
         else:
             self.direction.x = 0
@@ -118,6 +117,10 @@ class Button():
 
 		return action
 
+#page를 위한 함수
+def adjust_value(value, change, min_value, max_value):
+    new_value = value + change
+    return max(min(new_value, max_value), min_value)
 
 # Screen
 screen = pygame.display.set_mode((1280, 900))
@@ -127,18 +130,26 @@ clock = pygame.time.Clock()
 camera_group = Camera()
 player = Player((640, 360), camera_group)
 
-#버튼 이미지 불러오기
+# 누를 수 있는 버튼 세팅
 setting_image = pygame.image.load("Image/설정.png").convert_alpha()
-setting_button = Button(30, 60, setting_image, 0.01)
+setting_button = Button(30, 60, setting_image, 0.02)
 
 checklist_image = pygame.image.load("Image/파일.png").convert_alpha()
-checklist_button = Button(60, 30, checklist_image, 1)
+checklist_button = Button(100, 30, checklist_image, 1)
 
-#첫 메인 화면 세팅
-show_main_image = True  # New: Add a flag to control main image display
+rightarrow_image = pygame.image.load('Image/우 화살표.png').convert_alpha()
+rightarrow_button = Button(screen.get_width() - 100, 800, rightarrow_image, 0.5)  # 위치와 크기 설정
+
+leftarrow_image = pygame.image.load('Image/좌 화살표.png').convert_alpha()
+leftarrow_button = Button(100, 800, leftarrow_image, 0.5)
+
+# 화면 전환을 위한 설정
+show_main_image = True
 show_intro_image = False
 show_settings_overlay = False
 show_checklist_overlay = False
+show_right_arrow = False
+show_left_arrow = False
 
 
 # 폰트 정의
@@ -152,7 +163,8 @@ def draw_text(text, font, text_col, x, y):
     screen.blit(img, (x - img.get_width() // 2, y - img.get_height() // 2))
 
 
-
+# 페이지 정의
+page = 1
 
 # 메인 코드 --------------------------------
 current_image = "main"  # 현재 표시할 이미지를 나타내는 변수
@@ -172,6 +184,12 @@ while True:
                     current_image = "intro"  # 이미지 변경
             elif event.key == pygame.K_p:
                 show_settings_overlay = not show_settings_overlay
+            elif event.key == pygame.K_l:
+                show_checklist_overlay = not show_checklist_overlay
+            elif event.key == pygame.K_SEMICOLON:
+                page = adjust_value(page, 1, 1, 5)
+            elif event.key == pygame.K_k:
+                page = adjust_value(page, -1, 1, 5)
     
     screen.fill('#71ddee')
 
@@ -196,24 +214,39 @@ while True:
         camera_group.update()
         camera_group.custom_draw(player)
 
-        #체크리스트 띄우는 코드
+        # 체크리스트 띄우는 코드
         if checklist_button.draw(screen) or (show_checklist_overlay and event.type == pygame.KEYDOWN and event.key == pygame.K_l):
+           
+            # 체크리스트 노출
             show_checklist_overlay = not show_checklist_overlay
+
+            # 화살표 노출
+            show_right_arrow = not show_right_arrow
+            show_left_arrow = not show_left_arrow
 
         if show_checklist_overlay:
             overlay_color = (0, 0, 0, 128)
             overlay_surface = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
             overlay_surface.fill(overlay_color)
             screen.blit(overlay_surface, (0, 0))
-
+    
             bigchecklist_image = pygame.image.load('Image/첵리.png').convert_alpha()
-            checklist_scale = 0.2  # Adjust the scale factor as needed
+            checklist_scale = 0.5  # Adjust the scale factor as needed
             bigchecklist_image = pygame.transform.scale(bigchecklist_image, (
             int(bigchecklist_image.get_width() * checklist_scale),
             int(bigchecklist_image.get_height() * checklist_scale)
             ))
             bigchecklist_image_rect = bigchecklist_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
             screen.blit(bigchecklist_image, bigchecklist_image_rect.topleft)
+
+        if show_right_arrow and rightarrow_button.draw(screen):
+            page = adjust_value(page, 1, 1, 5)
+
+        if show_left_arrow and leftarrow_button.draw(screen):
+            page = adjust_value(page, -1, 1, 5)
+
+        #잘 카운트 되는지 알아보기 위한 코드 나중에 삭제
+        draw_text(str(page), font, TEXT_COL, screen.get_width() - 50, screen.get_height() - 50)
 
         # 카운트 다운 시작
         if countdown_start_time is not None:
