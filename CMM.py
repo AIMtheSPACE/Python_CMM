@@ -8,7 +8,7 @@ pygame.init()
 #pygame name
 pygame.display.set_caption("러브캐처 인 청운")
 
-# CLASS -----------------------------
+
 # player setting
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group):
