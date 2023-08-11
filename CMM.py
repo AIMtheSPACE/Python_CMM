@@ -143,6 +143,9 @@ rightarrow_button = Button(screen.get_width() - 100, 800, rightarrow_image, 0.5)
 leftarrow_image = pygame.image.load('Image/좌 화살표.png').convert_alpha()
 leftarrow_button = Button(100, 800, leftarrow_image, 0.5)
 
+couple1_image = pygame.image.load('Image/커플1.png').convert_alpha()
+couple1_button = Button(100, 300, couple1_image, 0.1)
+
 # 화면 전환을 위한 설정
 show_main_image = True
 show_intro_image = False
@@ -150,6 +153,7 @@ show_settings_overlay = False
 show_checklist_overlay = False
 show_right_arrow = False
 show_left_arrow = False
+show_couple1line = False
 
 
 # 폰트 정의
@@ -165,6 +169,10 @@ def draw_text(text, font, text_col, x, y):
 
 # 페이지 정의
 page = 1
+
+# 커플코드 잡기 위한 함수(페이지 당 5개의 커플, 현재 설정), 
+page1couple = [0, 0, 0, 0, 0]
+couple1line_image = pygame.image.load('Image/line.png').convert_alpha()
 
 # 메인 코드 --------------------------------
 current_image = "main"  # 현재 표시할 이미지를 나타내는 변수
@@ -186,6 +194,8 @@ while True:
                 show_settings_overlay = not show_settings_overlay
             elif event.key == pygame.K_l:
                 show_checklist_overlay = not show_checklist_overlay
+                show_right_arrow = not show_right_arrow
+                show_left_arrow = not show_left_arrow
             elif event.key == pygame.K_SEMICOLON:
                 page = adjust_value(page, 1, 1, 5)
             elif event.key == pygame.K_k:
@@ -209,7 +219,7 @@ while True:
                 if event.key == pygame.K_SPACE:
                     current_image = "game"  # 이미지 변경
                     countdown_start_time = current_time  # 카운트다운 시작 시간 설정
-
+    # 메인 게임 플레이 시
     elif current_image == "game":
         camera_group.update()
         camera_group.custom_draw(player)
@@ -246,12 +256,11 @@ while True:
             bigchecklist_image_rect = bigchecklist_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
             screen.blit(bigchecklist_image, bigchecklist_image_rect.topleft)
             
-            """
-            checkline_image = pygame.image.load('Image/line.png').convert_alpha()
-            checkline_image_rect = checkline_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
-            screen.blit(checkline_image, checkline_image_rect.topleft)
-            """
-#키보드 안먹힘! 수정 필요
+            
+            #checkline_image = pygame.image.load('Image/line.png').convert_alpha()
+            #checkline_image_rect = checkline_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+            #screen.blit(checkline_image, checkline_image_rect.topleft)
+            
         if show_right_arrow and rightarrow_button.draw(screen):
             page = adjust_value(page, 1, 1, 5)
 
@@ -274,6 +283,43 @@ while True:
             #게임 끝 엔딩 화면으로 전환
             if remaining_time == 0:
                 current_image = "end" 
+
+        if couple1_button.draw(screen):
+            page1couple[0] = 1
+
+        # 커플 코드
+        if show_checklist_overlay:
+            if page == 1:
+                if page1couple[0] == 1:
+                    show_couple1line = True
+                else:
+                    show_couple1line = False
+            else:
+                show_couple1line = False
+
+        if show_couple1line:
+            couple1line_scale = 0.5  # 크기 조절
+            couple1line_image_scaled = pygame.transform.scale(couple1line_image, (
+                int(couple1line_image.get_width() * couple1line_scale),
+                int(couple1line_image.get_height() * couple1line_scale)
+            ))
+            couple1line_image_rect = couple1line_image_scaled.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+            
+            # 이미지가 화면을 벗어나지 않도록 좌표 조정
+            if couple1line_image_rect.left < 0:
+                couple1line_image_rect.left = 0
+            if couple1line_image_rect.right > screen.get_width():
+                couple1line_image_rect.right = screen.get_width()
+            if couple1line_image_rect.top < 0:
+                couple1line_image_rect.top = 0
+            if couple1line_image_rect.bottom > screen.get_height():
+                couple1line_image_rect.bottom = screen.get_height()
+    
+            screen.blit(couple1line_image_scaled, couple1line_image_rect.topleft)
+
+
+
+        
     # 게임 엔딩 화면
     elif current_image == "end":
         end_image = pygame.image.load('Image/ending.png').convert_alpha()
