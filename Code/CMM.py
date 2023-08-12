@@ -203,6 +203,9 @@ couple1_button = Button(100, 300, couple1_image, 0.1)
 endgame_image = pygame.image.load('Image/endgame.png').convert_alpha()
 endgame_button = Button(100, 300, endgame_image, 0.2)
 
+menu_image = pygame.image.load('Image/아이콘.png').convert_alpha()
+menu_button = Button(screen.get_width() - 300, 10, menu_image, 0.5)
+
 # 화면 전환을 위한 설정
 show_main_image = True
 show_intro_image = False
@@ -358,6 +361,9 @@ while True:
             pygame.quit()
             sys.exit()
        
+    if menu_button.draw(screen): # 메뉴 임시 설정
+        pygame.quit()
+        sys.exit()
 
     pygame.display.update()
     clock.tick(60)
