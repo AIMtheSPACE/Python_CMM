@@ -2,11 +2,9 @@ import pygame
 import sys
 from random import randint
 
-#Reset pygame
-pygame.init()
-#pygame name
-pygame.display.set_caption("러브캐처 인 청운")
-
+# setting
+pygame.init() # 초기화
+pygame.display.set_caption("러브캐처 인 청운") # 화면 이름
 
 # player setting
 class Player(pygame.sprite.Sprite):
@@ -116,29 +114,75 @@ class Button():
 
 		return action
 
-# Screen
+# Screen 설정
 screen = pygame.display.set_mode((1280, 900))
 clock = pygame.time.Clock()
 camera_group = Camera()
 player = Player((640, 360), camera_group)
-# 폰트
+
+# 폰트 설정
 font = pygame.font.SysFont("arialblack", 40)
 TEXT_COL = (0, 0, 0)
-def draw_text(text, font, text_col, x, y):
+
+# 여러 함수 설정
+def draw_text(text, font, text_col, x, y): # 글 쓰기
     img = font.render(text, True, text_col)
     screen.blit(img, (x - img.get_width() // 2, y - img.get_height() // 2))
-#page
-def adjust_value(value, change, min_value, max_value):
+
+def adjust_value(value, change, min_value, max_value): #함수 이름 바꿀 것. page 바꾸기
     new_value = value + change
     return max(min(new_value, max_value), min_value)
-page = 1
-# 페이지당 3커플 4페이지.
+
+def draw_scaled_image(image, scale, center_position): # 이미지 스케일링
+    scaled_image = pygame.transform.scale(image, (
+        int(image.get_width() * scale),
+        int(image.get_height() * scale)
+    ))
+    scaled_image_rect = scaled_image.get_rect(center=center_position)
+    screen.blit(scaled_image, scaled_image_rect.topleft)
+
+def draw_checklist_line_image(page, couple_index): # 첵크리스트 선 그리기
+    images = [
+        [],
+        [page1_line_1_image, page1_line_2_image, page1_line_3_image],
+        [page2_line_1_image, page2_line_2_image, page2_line_3_image],
+        [page3_line_1_image, page3_line_2_image, page3_line_3_image],
+        [page4_line_1_image, page4_line_2_image, page4_line_3_image]
+    ]
+    if 1 <= page <= 4:
+        if 0 <= couple_index < len(images[page]):
+            image = images[page][couple_index]
+            draw_scaled_image(image, 0.3, (screen.get_width() // 2, screen.get_height() // 2))
+
+# 페이지당 3커플 4페이지
 page1couple = [0, 0, 0]
 page2couple = [0, 0, 0]
 page3couple = [0, 0, 0]
 page4couple = [0, 0, 0]
 
+# 여러 이미지 초기에 불러오기
 page1_line_1_image = pygame.image.load('Image/line.png').convert_alpha()
+page1_line_2_image = pygame.image.load('Image/line.png').convert_alpha()
+page1_line_3_image = pygame.image.load('Image/line.png').convert_alpha()
+
+page2_line_1_image = pygame.image.load('Image/line.png').convert_alpha()
+page2_line_2_image = pygame.image.load('Image/line.png').convert_alpha()
+page2_line_3_image = pygame.image.load('Image/line.png').convert_alpha()
+
+page3_line_1_image = pygame.image.load('Image/line.png').convert_alpha()
+page3_line_2_image = pygame.image.load('Image/line.png').convert_alpha()
+page3_line_3_image = pygame.image.load('Image/line.png').convert_alpha()
+
+page4_line_1_image = pygame.image.load('Image/line.png').convert_alpha()
+page4_line_2_image = pygame.image.load('Image/line.png').convert_alpha()
+page4_line_3_image = pygame.image.load('Image/line.png').convert_alpha()
+
+
+bigchecklist1_image = pygame.image.load('Image/첵리 1.png').convert_alpha()
+bigchecklist2_image = pygame.image.load('Image/첵리 2.png').convert_alpha()
+bigchecklist3_image = pygame.image.load('Image/첵리 3.png').convert_alpha()
+bigchecklist4_image = pygame.image.load('Image/첵리 4.png').convert_alpha()
+
 
 # 누를 수 있는 버튼 세팅
 setting_image = pygame.image.load("Image/설정.png").convert_alpha()
@@ -167,58 +211,47 @@ show_checklist_overlay = False
 show_right_arrow = False
 show_left_arrow = False
 
-show_page1_line_1 = False
-show_page1_line_2 = False
-show_page1_line_3 = False
-
-show_page2_line_1 = False
-show_page2_line_2 = False
-show_page2_line_3 = False
-
-show_page3_line_1 = False
-show_page3_line_2 = False
-show_page3_line_3 = False
-
-show_page4_line_1 = False
-show_page4_line_2 = False
-show_page4_line_3 = False
-
-
-# 메인 코드 --------------------------------
+# 초기값
+page = 1 #현재 페이지
 current_image = "main"  # 현재 표시할 이미지를 나타내는 변수
 countdown_start_time = None
 countdown_duration = 60
 
+# 메인 이벤트 함수
 while True:
     current_time = pygame.time.get_ticks() // 1000  # 현재 시간(초) 가져오기
+    screen.fill('#71ddee')
 
-    for event in pygame.event.get():
+    for event in pygame.event.get(): # 종류 및 키 값 받아오기 등
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 if current_image == "main":
                     current_image = "intro"  # 이미지 변경
+
             elif event.key == pygame.K_p:
                 show_settings_overlay = not show_settings_overlay
+
             elif event.key == pygame.K_l:
                 show_checklist_overlay = not show_checklist_overlay
                 show_right_arrow = not show_right_arrow
                 show_left_arrow = not show_left_arrow
+
             elif event.key == pygame.K_SEMICOLON:
                 page = adjust_value(page, 1, 1, 4)
+
             elif event.key == pygame.K_k:
                 page = adjust_value(page, -1, 1, 4)
-    
-    screen.fill('#71ddee')
 
-    if current_image == "main":
+    if current_image == "main": # 메인 이미지 노출
         main_image = pygame.image.load('Image/대지 1.png').convert_alpha()
         main_image_rect = main_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
         screen.blit(main_image, main_image_rect.topleft)
 
-    elif current_image == "intro":
+    elif current_image == "intro": # 인트로 이미지 노출
         intro_image = pygame.image.load('Image/intro.png').convert_alpha()
         intro_image_rect = intro_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
         screen.blit(intro_image, intro_image_rect.topleft)
@@ -229,6 +262,7 @@ while True:
                 if event.key == pygame.K_SPACE:
                     current_image = "game"  # 이미지 변경
                     countdown_start_time = current_time  # 카운트다운 시작 시간 설정
+
     # 메인 게임 플레이 시
     elif current_image == "game":
         camera_group.update()
@@ -247,25 +281,17 @@ while True:
             overlay_surface = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
             overlay_surface.fill(overlay_color)
             screen.blit(overlay_surface, (0, 0))
-            
-            if page == 1:
-                bigchecklist_image = pygame.image.load('Image/첵리 1.png').convert_alpha()
-            elif page ==2:
-                bigchecklist_image = pygame.image.load('Image/첵리 2.png').convert_alpha()
-            elif page ==3:
-                bigchecklist_image = pygame.image.load('Image/첵리 3.png').convert_alpha()
-            elif page ==4:
-                bigchecklist_image = pygame.image.load('Image/첵리 4.png').convert_alpha()
 
-            checklist_scale = 0.5  #스케일 조절
-            bigchecklist_image = pygame.transform.scale(bigchecklist_image, (
-            int(bigchecklist_image.get_width() * checklist_scale),
-            int(bigchecklist_image.get_height() * checklist_scale)
-            ))
-            bigchecklist_image_rect = bigchecklist_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
-            screen.blit(bigchecklist_image, bigchecklist_image_rect.topleft)
-            
-            
+            # 선 표시
+            if page == 1:
+                draw_scaled_image(bigchecklist1_image, 0.5, (screen.get_width() // 2, screen.get_height() // 2))
+            elif page == 2:
+                draw_scaled_image(bigchecklist2_image, 0.5, (screen.get_width() // 2, screen.get_height() // 2))
+            elif page ==3:
+                draw_scaled_image(bigchecklist3_image, 0.5, (screen.get_width() // 2, screen.get_height() // 2))
+            elif page ==4:
+                draw_scaled_image(bigchecklist4_image, 0.5, (screen.get_width() // 2, screen.get_height() // 2))
+        
         if show_right_arrow and rightarrow_button.draw(screen):
             page = adjust_value(page, 1, 1, 5)
 
@@ -289,77 +315,24 @@ while True:
             if remaining_time == 0:
                 current_image = "end" 
 
+        # 커플 버튼 값 변경
         if couple1_button.draw(screen):
             page1couple[0] = 1
 
-        # 커플 코드 체크 리스트 코드
+        # [커플코드] 체크 리스트 선 show or not (앞에서 누르면 함수값 1로 바꾸어 주는 거 필요)
         if show_checklist_overlay:
-            if page == 1:
-                if page1couple[0] == 1:
-                    show_couple1line = True
-                elif page1couple[1] == 1:
-                    show_couple1line = True
-                elif page1couple[2] == 1:
-                    show_couple1line = True
-                else:
-                    show_couple1line = False
-
-            elif page == 2:
-                if page1couple[0] == 1:
-                    show_couple1line = True
-                elif page1couple[1] == 1:
-                    show_couple1line = True
-                elif page1couple[2] == 1:
-                    show_couple1line = True
-                else:
-                    show_couple1line = False
-
-            elif page == 3:
-                if page1couple[0] == 1:
-                    show_couple1line = True
-                elif page1couple[1] == 1:
-                    show_couple1line = True
-                elif page1couple[2] == 1:
-                    show_couple1line = True
-                else:
-                    show_couple1line = False
-                    
-            elif page == 4:
-                if page1couple[0] == 1:
-                    show_couple1line = True
-                elif page1couple[1] == 1:
-                    show_couple1line = True
-                elif page1couple[2] == 1:
-                    show_couple1line = True
-                else:
-                    show_couple1line = False
-
-            else:
-                show_couple1line = False
-
-        if show_checklist_overlay == False: #선 사라지게 난머지 첵리도 같게
-            show_couple1line = False
-
-        if show_couple1line:
-            page1_line_1_scale = 0.3  # 크기 조절
-            page1_line_1_image_scaled = pygame.transform.scale(page1_line_1_image, (
-                int(page1_line_1_image.get_width() * page1_line_1_scale),
-                int(page1_line_1_image.get_height() * page1_line_1_scale)
-            ))
-            page1_line_1_image_rect = page1_line_1_image_scaled.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
-          
-            screen.blit(page1_line_1_image_scaled, page1_line_1_image_rect.topleft)
-
-
-
+            for page_index, couple_list in enumerate([page1couple, page2couple, page3couple, page4couple], start=1):
+                if page == page_index:
+                    for couple_index, couple_value in enumerate(couple_list):
+                        if couple_value == 1:
+                            draw_checklist_line_image(page, couple_index)
         
-    # 게임 엔딩 화면
-    elif current_image == "end":
+    elif current_image == "end": # 게임 엔딩 화면
         end_image = pygame.image.load('Image/ending.png').convert_alpha()
         end_image_rect = end_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
         screen.blit(end_image, end_image_rect.topleft)
 
-    # setting
+    # 세팅 버튼 구현
     if setting_button.draw(screen) or (show_settings_overlay and event.type == pygame.KEYDOWN and event.key == pygame.K_p):
         show_settings_overlay = not show_settings_overlay
 
@@ -380,8 +353,6 @@ while True:
         # 두 번째 상자 그리기
         pygame.draw.rect(screen, box_color, (240, 100, box_width, box_height))
         draw_text("CONTROL", font, TEXT_COL, 240 + box_width // 2, 100 + box_height // 2)
-
-        endgame_image_rect = endgame_image.get_rect(center=(screen.get_width(), screen.get_height()))
         
         if endgame_button.draw(screen):
             pygame.quit()
