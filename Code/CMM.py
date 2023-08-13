@@ -154,6 +154,13 @@ def draw_checklist_line_image(page, couple_index): # 첵크리스트 선 그리�
             image = images[page][couple_index]
             draw_scaled_image(image, 0.3, (screen.get_width() // 2, screen.get_height() // 2))
 
+def display_countdown(period, screen, remaining_time): # 카운트 다운 표시
+    countdown_text = f"{period} Period Break Time / Time left : {remaining_time // 60:02}:{remaining_time % 60:02}"
+    countdown_font = pygame.font.SysFont("arialblack", 20)
+    countdown_surface = countdown_font.render(countdown_text, True, TEXT_COL)
+    countdown_rect = countdown_surface.get_rect(topright=(screen.get_width() - 10, 10))
+    screen.blit(countdown_surface, countdown_rect)
+
 # 페이지당 3커플 4페이지
 page1couple = [0, 0, 0]
 page2couple = [0, 0, 0]
@@ -204,7 +211,10 @@ endgame_image = pygame.image.load('Image/endgame.png').convert_alpha()
 endgame_button = Button(100, 300, endgame_image, 0.2)
 
 menu_image = pygame.image.load('Image/아이콘.png').convert_alpha()
-menu_button = Button(screen.get_width() - 300, 10, menu_image, 0.5)
+menu_button = Button(screen.get_width() - 700, 10, menu_image, 0.5)
+
+classtime_image = pygame.image.load('Image/수업 시간에 표시 할 것.png').convert_alpha()
+classtime_button = Button(0, 0 , classtime_image, 0.5)
 
 # 화면 전환을 위한 설정
 show_main_image = True
@@ -215,10 +225,11 @@ show_right_arrow = False
 show_left_arrow = False
 
 # 초기값
+period = 1
 page = 1 #현재 페이지
 current_image = "main"  # 현재 표시할 이미지를 나타내는 변수
 countdown_start_time = None
-countdown_duration = 60
+countdown_duration = 10
 
 # 메인 이벤트 함수
 while True:
@@ -308,15 +319,12 @@ while True:
         if countdown_start_time is not None:
             remaining_time = countdown_duration - (current_time - countdown_start_time)
             if remaining_time > 0:
-                countdown_text = f"Time left: {remaining_time // 60:02}:{remaining_time % 60:02}"
-                countdown_font = pygame.font.SysFont("arialblack", 20)
-                countdown_surface = countdown_font.render(countdown_text, True, TEXT_COL)
-                countdown_rect = countdown_surface.get_rect(topright=(screen.get_width() - 10, 10))
-                screen.blit(countdown_surface, countdown_rect)
+                display_countdown(period, screen, remaining_time)
 
-            #게임 끝 엔딩 화면으로 전환
+            # 게임 끝 엔딩 화면으로 전환 -> 다른 곳으로 전환 되도록 바꿀 것
             if remaining_time == 0:
-                current_image = "end" 
+                current_image = "classtime" 
+                period += 1
 
         # 커플 버튼 값 변경
         if couple1_button.draw(screen):
@@ -334,6 +342,11 @@ while True:
         end_image = pygame.image.load('Image/ending.png').convert_alpha()
         end_image_rect = end_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
         screen.blit(end_image, end_image_rect.topleft)
+
+    if current_image == "classtime":
+        if classtime_button.draw(screen):
+            current_image = "game"
+            countdown_start_time = current_time
 
     # 세팅 버튼 구현
     if setting_button.draw(screen) or (show_settings_overlay and event.type == pygame.KEYDOWN and event.key == pygame.K_p):
