@@ -2,12 +2,8 @@ import pygame
 import sys
 from random import randint
 
-# setting
-pygame.init() # 초기화
-pygame.display.set_caption("러브캐처 인 청운") # 화면 이름
-
-# player setting
-class Player(pygame.sprite.Sprite):
+# --------------------------------- 여러 Class 설정 ---------------------------------
+class Player(pygame.sprite.Sprite): # player setting
     def __init__(self, pos, group):
         super().__init__(group)
         self.image = pygame.image.load('Image/ㅎㅇㅂ.png')
@@ -50,8 +46,7 @@ class Player(pygame.sprite.Sprite):
         if within_x_boundary and within_y_boundary:
             self.rect.center = new_position
 
-# camera setting
-class Camera(pygame.sprite.Group):
+class Camera(pygame.sprite.Group): # camera setting
     #여기 아래 배경 화면 삽입 코드
     def __init__(self):
         super().__init__()
@@ -85,8 +80,7 @@ class Camera(pygame.sprite.Group):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_pos)  # Fixed: use 'offset_pos' instead of 'sprite.rect'
 
-# Button setting
-class Button():
+class Button(): # Button setting
 	def __init__(self, x, y, image, scale):
 		width = image.get_width()
 		height = image.get_height()
@@ -114,17 +108,15 @@ class Button():
 
 		return action
 
-# Screen 설정
-screen = pygame.display.set_mode((1280, 900))
+# --------------------------------- setting ---------------------------------
+pygame.init() # 초기화
+pygame.display.set_caption("러브캐처 인 청운") # 화면 이름
+screen = pygame.display.set_mode((1280, 900)) 
 clock = pygame.time.Clock()
 camera_group = Camera()
 player = Player((640, 360), camera_group)
 
-# 폰트 설정
-font = pygame.font.SysFont("arialblack", 40)
-TEXT_COL = (0, 0, 0)
-
-# 여러 함수 설정
+# --------------------------------- 여러 함수 설정 ---------------------------------
 def draw_text(text, font, text_col, x, y): # 글 쓰기
     img = font.render(text, True, text_col)
     screen.blit(img, (x - img.get_width() // 2, y - img.get_height() // 2))
@@ -161,13 +153,28 @@ def display_countdown(period, screen, remaining_time): # 카운트 다운 표시
     countdown_rect = countdown_surface.get_rect(topright=(screen.get_width() - 10, 10))
     screen.blit(countdown_surface, countdown_rect)
 
-# 페이지당 3커플 4페이지
-page1couple = [0, 0, 0]
-page2couple = [0, 0, 0]
-page3couple = [0, 0, 0]
-page4couple = [0, 0, 0]
+def draw_settings_overlay(screen, font): # 세팅 아이콘 버튼 함수(2곳에 넣어서)
+    overlay_color = (0, 0, 0, 128)
+    overlay_surface = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
+    overlay_surface.fill(overlay_color)
+    screen.blit(overlay_surface, (0, 0))
 
-# 여러 이미지 초기에 불러오기
+    box_color = (255, 255, 255)
+    box_width = 200
+    box_height = 100
+
+    pygame.draw.rect(screen, box_color, (20, 100, box_width, box_height))
+    draw_text("VOLUME", font, TEXT_COL, 20 + box_width // 2, 100 + box_height // 2)
+
+    pygame.draw.rect(screen, box_color, (240, 100, box_width, box_height))
+    draw_text("CONTROL", font, TEXT_COL, 240 + box_width // 2, 100 + box_height // 2)
+
+def draw_endgame_overlay(screen): # 위의 세팅과 같은 이유로 만든 세팅 안의 엔드게임 함수
+    if endgame_button.draw(screen):
+        pygame.quit()
+        sys.exit()
+        
+# --------------------------------- 여러 이미지 초기에 불러오기 ---------------------------------
 page1_line_1_image = pygame.image.load('Image/line.png').convert_alpha()
 page1_line_2_image = pygame.image.load('Image/line.png').convert_alpha()
 page1_line_3_image = pygame.image.load('Image/line.png').convert_alpha()
@@ -216,7 +223,7 @@ menu_button = Button(screen.get_width() - 700, 10, menu_image, 0.5)
 classtime_image = pygame.image.load('Image/수업 시간에 표시 할 것.png').convert_alpha()
 classtime_button = Button(0, 0 , classtime_image, 0.5)
 
-# 화면 전환을 위한 설정
+# --------------------------------- 화면 전환을 위한 설정 ---------------------------------
 show_main_image = True
 show_intro_image = False
 show_settings_overlay = False
@@ -224,14 +231,20 @@ show_checklist_overlay = False
 show_right_arrow = False
 show_left_arrow = False
 
-# 초기값
+# --------------------------------- 초기값 ---------------------------------
 period = 1
 page = 1 #현재 페이지
 current_image = "main"  # 현재 표시할 이미지를 나타내는 변수
 countdown_start_time = None
-countdown_duration = 10
+countdown_duration = 5 # 쉬는 시간 시간 조절 기능(점심 시간은 # 점심 시간 조절 검색해서 바꿀 것))
+font = pygame.font.SysFont("arialblack", 40) # 폰트 설정
+TEXT_COL = (0, 0, 0)
+page1couple = [0, 0, 0] # 4페이지, 페이지당 3커플
+page2couple = [0, 0, 0]
+page3couple = [0, 0, 0]
+page4couple = [0, 0, 0]
 
-# 메인 이벤트 함수
+# --------------------------------- 메인 이벤트 함수 ---------------------------------
 while True:
     current_time = pygame.time.get_ticks() // 1000  # 현재 시간(초) 가져오기
     screen.fill('#71ddee')
@@ -273,14 +286,36 @@ while True:
         # 스페이스바를 눌렀을 때 이미지 변경
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_p:
+                    show_settings_overlay = not show_settings_overlay
+
+                elif event.key == pygame.K_SPACE:
                     current_image = "game"  # 이미지 변경
                     countdown_start_time = current_time  # 카운트다운 시작 시간 설정
+
+            # 세팅 버튼 구현
+        if setting_button.draw(screen) or (show_settings_overlay and event.type == pygame.KEYDOWN and event.key == pygame.K_p):
+            show_settings_overlay = not show_settings_overlay
+
+        if show_settings_overlay:
+            draw_settings_overlay(screen, font)
+            draw_endgame_overlay(screen)
 
     # 메인 게임 플레이 시
     elif current_image == "game":
         camera_group.update()
         camera_group.custom_draw(player)
+
+        if setting_button.draw(screen) or (show_settings_overlay and event.type == pygame.KEYDOWN and event.key == pygame.K_p):
+            show_settings_overlay = not show_settings_overlay
+
+        if show_settings_overlay:
+            draw_settings_overlay(screen, font)
+            draw_endgame_overlay(screen)
+
+        if menu_button.draw(screen): # 메뉴 임시 설정
+            pygame.quit()
+            sys.exit()
 
         # 체크리스트 띄우는 코드
         if checklist_button.draw(screen) or (show_checklist_overlay and event.type == pygame.KEYDOWN and event.key == pygame.K_l):
@@ -319,7 +354,14 @@ while True:
         if countdown_start_time is not None:
             remaining_time = countdown_duration - (current_time - countdown_start_time)
             if remaining_time > 0:
-                display_countdown(period, screen, remaining_time)
+                if period == 4:
+                    countdown_text = f"Lunch Time / Time left : {remaining_time // 60:02}:{remaining_time % 60:02}"
+                    countdown_font = pygame.font.SysFont("arialblack", 20)
+                    countdown_surface = countdown_font.render(countdown_text, True, TEXT_COL)
+                    countdown_rect = countdown_surface.get_rect(topright=(screen.get_width() - 10, 10))
+                    screen.blit(countdown_surface, countdown_rect)
+                else:
+                    display_countdown(period, screen, remaining_time)
 
             # 게임 끝 엔딩 화면으로 전환 -> 다른 곳으로 전환 되도록 바꿀 것
             if remaining_time == 0:
@@ -342,41 +384,19 @@ while True:
         end_image = pygame.image.load('Image/ending.png').convert_alpha()
         end_image_rect = end_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
         screen.blit(end_image, end_image_rect.topleft)
+    
+    
 
+    # 쉬는 시간 설정
     if current_image == "classtime":
         if classtime_button.draw(screen):
             current_image = "game"
-            countdown_start_time = current_time
-
-    # 세팅 버튼 구현
-    if setting_button.draw(screen) or (show_settings_overlay and event.type == pygame.KEYDOWN and event.key == pygame.K_p):
-        show_settings_overlay = not show_settings_overlay
-
-    if show_settings_overlay:
-        overlay_color = (0, 0, 0, 128)
-        overlay_surface = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
-        overlay_surface.fill(overlay_color)
-        screen.blit(overlay_surface, (0, 0))
-
-        # 첫 번째 상자 그리기
-        box_color = (255, 255, 255)
-        box_width = 200
-        box_height = 100
-
-        pygame.draw.rect(screen, box_color, (20, 100, box_width, box_height))
-        draw_text("VOLUME", font, TEXT_COL, 20 + box_width // 2, 100 + box_height // 2)
-
-        # 두 번째 상자 그리기
-        pygame.draw.rect(screen, box_color, (240, 100, box_width, box_height))
-        draw_text("CONTROL", font, TEXT_COL, 240 + box_width // 2, 100 + box_height // 2)
-        
-        if endgame_button.draw(screen):
-            pygame.quit()
-            sys.exit()
+            if period == 4:
+                countdown_start_time = current_time + 10 # 점심 시간 조절
+            elif period == 7:
+                current_image = "end"
+            else:
+                countdown_start_time = current_time
        
-    if menu_button.draw(screen): # 메뉴 임시 설정
-        pygame.quit()
-        sys.exit()
-
     pygame.display.update()
     clock.tick(60)
