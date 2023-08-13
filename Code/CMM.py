@@ -111,6 +111,7 @@ class Button(): # Button setting
 # --------------------------------- setting ---------------------------------
 pygame.init() # 초기화
 pygame.display.set_caption("러브캐처 인 청운") # 화면 이름
+pygame.display.set_icon(pygame.image.load("Image/청운 로고.png") )
 screen = pygame.display.set_mode((1280, 900)) 
 clock = pygame.time.Clock()
 camera_group = Camera()
