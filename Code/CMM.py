@@ -198,7 +198,7 @@ bigchecklist2_image = pygame.image.load('Image/첵리 2.png').convert_alpha()
 bigchecklist3_image = pygame.image.load('Image/첵리 3.png').convert_alpha()
 bigchecklist4_image = pygame.image.load('Image/첵리 4.png').convert_alpha()
 
-
+main_image = pygame.image.load('Image/배경화면.jpeg').convert_alpha()
 # 누를 수 있는 버튼 세팅
 setting_image = pygame.image.load("Image/설정.png").convert_alpha()
 setting_button = Button(30, 60, setting_image, 0.02)
@@ -275,9 +275,8 @@ while True:
                 page = adjust_value(page, -1, 1, 4)
 
     if current_image == "main": # 메인 이미지 노출
-        main_image = pygame.image.load('Image/대지 1.png').convert_alpha()
-        main_image_rect = main_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
-        screen.blit(main_image, main_image_rect.topleft)
+        draw_scaled_image(main_image, 0.9, (screen.get_width() // 2, screen.get_height() // 2))
+        
 
     elif current_image == "intro": # 인트로 이미지 노출
         intro_image = pygame.image.load('Image/intro.png').convert_alpha()
