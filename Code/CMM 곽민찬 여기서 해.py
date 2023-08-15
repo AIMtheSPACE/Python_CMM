@@ -445,7 +445,8 @@ while True:
                 period += 1
 
         # 커플 버튼 값 변경
-        
+        if couple1_button.draw(screen):
+            page1couple[0] = 1
 
         # [커플코드] 체크 리스트 선 show or not (앞에서 누르면 함수값 1로 바꾸어 주는 거 필요)
         if show_checklist_overlay:
