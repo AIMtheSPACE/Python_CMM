@@ -16,8 +16,8 @@ class Game:
         self.screen = pygame.display.set_mode((win_width, win_height))
         self.clock = pygame.time.Clock()
         self.running = True
-        self.terrainsheet = Spritesheet("terrain1.png")
-        self.character_spritesheet = Spritesheet("character.png")
+        self.terrainsheet = Spritesheet("Image/terrain1.png")
+        self.character_spritesheet = Spritesheet("Image/character.png")
 
     def createTilemap(self, tilemap):
         build_map(self, tilemap)
