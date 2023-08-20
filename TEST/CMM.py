@@ -1,84 +1,12 @@
 import pygame
 import sys
 from random import randint
+from main import*
+
+game = Game()
+
+
 # --------------------------------- 여러 Class 설정 ---------------------------------
-class Player(pygame.sprite.Sprite): # player setting
-    def __init__(self, pos, group):
-        super().__init__(group)
-        self.image = pygame.image.load('Image/ㅎㅇㅂ.png')
-        
-        #resizing
-        original_size = self.image.get_size()
-        new_width = 100
-        new_height = int(original_size[1] * (new_width / original_size[0]))
-        self.image = pygame.transform.scale(self.image, (new_width, new_height))
-        
-        self.rect = self.image.get_rect(center=pos)
-        self.direction = pygame.math.Vector2()
-        self.speed = 5
-        
-    def input(self):
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_w]:
-            self.direction.y = -1
-        elif keys[pygame.K_s]:
-            self.direction.y = 1
-        else:
-            self.direction.y = 0
-
-        if keys[pygame.K_d]:
-            self.direction.x = 1
-        elif keys[pygame.K_a]:
-            self.direction.x = -1
-        else:
-            self.direction.x = 0
-
-    def update(self):
-        self.input()
-        new_position = self.rect.center + self.direction * self.speed
-
-        # Check if the new position is within the background boundaries
-        within_x_boundary = 0 <= new_position.x <= camera_group.ground_rect.width
-        within_y_boundary = 0 <= new_position.y <= camera_group.ground_rect.height
-
-        if within_x_boundary and within_y_boundary:
-            self.rect.center = new_position
-
-class Camera(pygame.sprite.Group): # camera setting
-    #여기 아래 배경 화면 삽입 코드
-    def __init__(self):
-        super().__init__()
-        self.display_surface = pygame.display.get_surface()
-        self.offset = pygame.math.Vector2()
-        self.half_w = self.display_surface.get_size()[0] // 2  # Fixed: get_size() instead of get_sixe()
-        self.half_h = self.display_surface.get_size()[1] // 2  # Fixed: get_size() instead of get_sixe()
-        
-        #/Users/joon/Desktop/Python Game Contest/Python_CMM/Image/ground.png
-        # Ground
-        self.ground_surf = pygame.image.load('Image/ground.png').convert_alpha()
-        self.ground_rect = self.ground_surf.get_rect(topleft=(0, 0))
-
-    def center_target_camera(self, target):
-        self.offset.x = target.rect.centerx - self.half_w
-        self.offset.y = target.rect.centery - self.half_h
-        
-        # Adjust camera offset to keep the character within the background boundaries
-        self.offset.x = max(0, min(self.offset.x, self.ground_rect.width - self.display_surface.get_width()))
-        self.offset.y = max(0, min(self.offset.y, self.ground_rect.height - self.display_surface.get_height()))
-
-    def custom_draw(self, player):  # Fixed: typo, should be 'custom_draw' instead of 'center_terget_camera'
-        self.center_target_camera(player)  # Fixed: typo, should be 'center_target_camera'
-
-        # Ground
-        ground_offset = self.ground_rect.topleft - self.offset
-        self.display_surface.blit(self.ground_surf, ground_offset)
-
-        # Active elements
-        for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
-            offset_pos = sprite.rect.topleft - self.offset
-            self.display_surface.blit(sprite.image, offset_pos)  # Fixed: use 'offset_pos' instead of 'sprite.rect'
-
 class Button(): # Button setting
 	def __init__(self, x, y, image, scale):
 		width = image.get_width()
@@ -108,13 +36,8 @@ class Button(): # Button setting
 		return action
 
 # --------------------------------- setting ---------------------------------
-pygame.init() # 초기화
-pygame.display.set_caption("러브캐처 인 청운") # 화면 이름
-pygame.display.set_icon(pygame.image.load("Image/청운 로고.png") )
 screen = pygame.display.set_mode((1280, 900)) 
 clock = pygame.time.Clock()
-camera_group = Camera()
-player = Player((640, 360), camera_group)
 
 # --------------------------------- 여러 함수 설정 ---------------------------------
 def draw_text(text, font, text_col, x, y): # 글 쓰기
@@ -199,11 +122,7 @@ bigchecklist4_image = pygame.image.load('Image/첵리 4.png').convert_alpha()
 
 main_image = pygame.image.load('Image/배경화면.jpeg').convert_alpha()
 # 누를 수 있는 버튼 세팅
-setting_image = pygame.image.load("Image/설정.png").convert_alpha()
-setting_button = Button(30, 60, setting_image, 0.02)
 
-checklist_image = pygame.image.load("Image/파일.png").convert_alpha()
-checklist_button = Button(100, 30, checklist_image, 1)
 
 rightarrow_image = pygame.image.load('Image/우 화살표.png').convert_alpha()
 rightarrow_button = Button(screen.get_width() - 100, 800, rightarrow_image, 0.5)  # 위치와 크기 설정
@@ -214,14 +133,10 @@ leftarrow_button = Button(100, 800, leftarrow_image, 0.5)
 couple1_image = pygame.image.load('Image/커플1.png').convert_alpha()
 couple1_button = Button(100, 300, couple1_image, 0.1)
 
-endgame_image = pygame.image.load('Image/endgame.png').convert_alpha()
-endgame_button = Button(100, 300, endgame_image, 0.2)
 
-menu_image = pygame.image.load('Image/아이콘.png').convert_alpha()
-menu_button = Button(screen.get_width() - 700, 10, menu_image, 0.5)
 
-classtime_image = pygame.image.load('Image/수업 시간에 표시 할 것.png').convert_alpha()
-classtime_button = Button(0, 0 , classtime_image, 0.5)
+
+
 
 # --------------------------------- 화면 전환을 위한 설정 ---------------------------------
 show_main_image = True
@@ -235,8 +150,7 @@ show_left_arrow = False
 period = 1
 page = 1 #현재 페이지
 current_image = "main"  # 현재 표시할 이미지를 나타내는 변수
-countdown_start_time = None
-countdown_duration = 10000# 쉬는 시간 시간 조절 기능(점심 시간은 # 점심 시간 조절 검색해서 바꿀 것))
+
 font = pygame.font.SysFont("arialblack", 40) # 폰트 설정
 TEXT_COL = (0, 0, 0)
 page1couple = [0, 0, 0] # 4페이지, 페이지당 3커플
@@ -302,8 +216,6 @@ while True:
 
     # 메인 게임 플레이 시
     elif current_image == "game":
-        camera_group.update()
-        camera_group.custom_draw(player)
 
         if setting_button.draw(screen) or (show_settings_overlay and event.type == pygame.KEYDOWN and event.key == pygame.K_p):
             show_settings_overlay = not show_settings_overlay
