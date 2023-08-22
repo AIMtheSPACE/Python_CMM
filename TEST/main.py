@@ -133,7 +133,6 @@ class Game:
         pygame.display.update()
 
     def main(self):
-
         while self.running:
             if self.state == "background":
                 self.show_background()
@@ -151,8 +150,7 @@ class Game:
                 self.events()
                 self.update()
                 self.draw()
-
-                
+             
             pygame.display.flip()
             self.clock.tick(fps)
 
@@ -170,6 +168,4 @@ while game.running:
 
 pygame.quit()
 sys.exit()
-
-
 
