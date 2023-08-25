@@ -39,8 +39,19 @@ class Button(pygame.sprite.Sprite):
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 
+
+# 버튼그리려면 해야 할 것 
+# 1. init에 그룹 만들어주기 
+# 2. new에 버튼 만들어주기
+# 3. draw에 그룹 드로잉 해주기
+# 4. 콜백에 쓴 글자와 같은 def콜백 함수 만들어 주기
+
+
+
+
 class Game:
     def __init__(self):
+        pygame.init()
         self.screen = pygame.display.set_mode((win_width, win_height))
         self.clock = pygame.time.Clock()
         self.running = True
@@ -49,9 +60,15 @@ class Game:
 
 
         self.settingbutton = pygame.sprite.Group()
-        self.show_setting = False  # 체크리스트 이미지를 보여줄지 여부를 나타내는 변수
-        
+        self.show_setting = False  
+        self.timer_font = pygame.font.SysFont("arialblack", 40)  # 필요에 따라 폰트 크기 조정
+        self.period = 1  # 초기 기간 값
+        self.min = 1
+        self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
+        self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
 
+
+        
     def createTilemap(self, tilemap):
         build_map(self, tilemap)
 
@@ -80,16 +97,18 @@ class Game:
     def draw(self):
         self.screen.fill("black")
         self.all_sprites.draw(self.screen)
-        self.settingbutton.draw(self.screen) 
-        self.clock.tick(fps)
+        self.settingbutton.draw(self.screen)
 
+        # 카운트 다운 타이머 표시
+        timer_text = f"{self.period} Period Break Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
+        timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2))
+        self.screen.blit(timer_surface, (100, -10))  # 필요에 따라 위치 조정
+
+        self.clock.tick(fps)
         pygame.display.update()
 
-    def main(self):
-        while self.playing:
-            self.events()
-            self.update()
-            self.draw()
+
+    
 
     def setting_callback(self): # 엔드 게임
         if not self.show_setting:
@@ -107,6 +126,26 @@ class Game:
         # 버튼을 누를 때 동작을 여기에 작성
         self.playing = False
         self.running = False
+
+
+
+    def main(self):
+        while self.playing:
+            self.events()
+            self.update()
+
+            # 카운트 다운 타이머 업데이트
+            if self.show_setting: # 함수 이름 밖어서 다른 곳에 연결
+                current_time = pygame.time.get_ticks()
+                if current_time - self.last_time >= 1000:  # 1초마다 업데이트
+                    self.last_time = current_time
+                    self.remaining_time -= 1
+                    if self.remaining_time <= 0:
+                        self.show_setting = False #요기도 바꿔야함
+                        self.remaining_time = self.period * 60 
+
+            self.draw()
+
 
 
 tilemap = maps.world_1.stage_1
