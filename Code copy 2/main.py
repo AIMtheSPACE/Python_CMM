@@ -5,7 +5,6 @@ from map_build import *
 import maps
 from sprites import *
 from config import *
-import time
 
 
 class Game:
@@ -42,23 +41,11 @@ class Game:
 
         pygame.display.update()
 
-    def _time(self):
-        _font = pygame.font.SysFont(None, 100)
-        start_time = int(time.time())
-        remain_time = 0
-        YELLOW = (255, 255, 0)
-
-        while True:
-            remain_time = 60 - (int(time.time()) - start_time)
-            remain_time_image = _font.render('Time {}'.format(remain_time), True, YELLOW)
-            self.screen.blit(remain_time_image, (win_width - 20 - remain_time_image.get_rect(), 20))
-
     def main(self):
         while self.playing:
             self.events()
             self.update()
             self.draw()
-            self._time()
 
 tilemap = maps.world_1.stage_1
 game = Game()
