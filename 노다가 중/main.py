@@ -120,10 +120,12 @@ class Game:
                 if event.key == pygame.K_LEFT:
                     self.page = self.adjust_value(self.page, -1, 1, 4)
                     print(self.page)
+                    self.checklistimg_reset()
                      # 페이지가 변하고 체크리스트가 표시 중일 때만 callback 호출
                 elif event.key == pygame.K_RIGHT:
                     self.page = self.adjust_value(self.page, 1, 1, 4)
                     print(self.page)
+                    self.checklistimg_reset()
                  
 
 
@@ -169,6 +171,10 @@ class Game:
             self.checklistimg_group.empty()  # 이미지 삭제
             self.show_checklist = False
         else:
+            self.checklistimg_reset()
+            self.show_checklist = True
+            
+    def checklistimg_reset(self):
             if self.page == 1:
                 image_path = "Image/첵리 1.png"
             elif self.page == 2:
@@ -182,9 +188,7 @@ class Game:
             scaled_image = ChecklistImage(image_path, 0.5, image_center)
             self.checklistimg_group.empty()  # 기존 이미지 삭제
             self.checklistimg_group.add(scaled_image)  # 새로운 이미지 추가
-            self.show_checklist = True
-            
-
+        
 
 
     def endgame_callback(self): 
