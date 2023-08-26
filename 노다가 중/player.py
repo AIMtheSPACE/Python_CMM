@@ -28,25 +28,25 @@ class Player(pygame.sprite.Sprite):
 
     def movement(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_a]:
             for sprite in self.game.all_sprites:
                 sprite.rect.x += player_speed
             self.x_change -= player_speed
             self.facing = "left"
         
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_d]:
             for sprite in self.game.all_sprites:
                 sprite.rect.x -= player_speed
             self.x_change += player_speed
             self.facing = "right"
         
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_w]:
             for sprite in self.game.all_sprites:
                 sprite.rect.y += player_speed
             self.y_change -= player_speed
             self.facing = "up"
        
-        if keys[pygame.K_DOWN]:
+        if keys[pygame.K_s]:
             for sprite in self.game.all_sprites:
                 sprite.rect.y -= player_speed
             self.y_change += player_speed
