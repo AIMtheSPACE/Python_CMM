@@ -22,13 +22,12 @@ class ChecklistImage(pygame.sprite.Sprite):
 
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, image, x, y, callback, scale=1.0):
+    def __init__(self, image, x, y, callback, scale):
         super().__init__()
         self.image = pygame.image.load(image)
-        if scale != 1.0:
-            original_size = self.image.get_size()
-            new_size = (int(original_size[0] * scale), int(original_size[1] * scale))
-            self.image = pygame.transform.scale(self.image, new_size)
+        original_size = self.image.get_size()
+        new_size = (int(original_size[0] * scale), int(original_size[1] * scale))
+        self.image = pygame.transform.scale(self.image, new_size)
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.callback = callback
@@ -116,7 +115,7 @@ class Game:
             if event.type == pygame.QUIT:
                 self.playing = False
                 self.running = False
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     self.page = self.adjust_value(self.page, -1, 1, 4)
                     print(self.page)
