@@ -5,6 +5,8 @@ from map_build import *
 import maps
 from sprites import *
 from config import *
+import pygame.mixer
+
 
 pygame.init() # 초기화
 pygame.display.set_caption("러브캐처 인 청운") # 화면 이름
@@ -78,7 +80,7 @@ class Game:
         self.classtime_group = pygame.sprite.Group()
         self.checklist_group = pygame.sprite.Group()
         self.checklistimg_group = pygame.sprite.Group()
-
+        self.mute_group = pygame.sprite.Group()
 
         self.show_setting = False  
 
@@ -88,9 +90,16 @@ class Game:
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
         self.show_checklist = False
-
+        self.show_vol = True
         self.page = 1
         self.count_down_start = True
+    
+        # 음악 관련
+        pygame.mixer.init()  # Initialize mixer
+        pygame.mixer.music.load("배달의민족 - 배달은 자신있어.mp3")  # Load background music
+        pygame.mixer.music.set_volume(0)  # Set music volume (0.0 to 1.0)
+        pygame.mixer.music.play(-1)
+        self.button_click_sound = pygame.mixer.Sound("Tiny Button Push Sound.mp3")
 
 
         
@@ -104,14 +113,12 @@ class Game:
         self.createTilemap(tilemap)
 
         # 버튼 생성
-        self.button = Button("Image/설정.png", 10, 10, self.setting_callback, 0.01)
+        self.button = Button("Image/설정.png", 10, 10, self.setting_callback, 1)
         self.setting_group.add(self.button)
 
-        self.checklist_button = Button("Image/checklist.png", 10, 100, self.checklist_callback, 1)
-        self.checklist_group.add(self.checklist_button)
+        #체크리스트 버튼 위치
 
     def events(self):
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.playing = False
@@ -126,6 +133,14 @@ class Game:
                     self.page = self.adjust_value(self.page, 1, 1, 4)
                     print(self.page)
                     self.checklistimg_reset()
+                elif event.key == pygame.K_UP:
+                    if self.show_checklist:  # 이미 체크리스트가 표시 중일 때
+                        self.checklistimg_group.empty()  # 이미지 삭제
+                        self.show_checklist = False
+                    else:
+                        self.checklistimg_reset()
+                        self.show_checklist = True
+                    
                  
 
 
@@ -133,6 +148,7 @@ class Game:
         self.classtime_group.update()
         self.checklist_group.update()
         self.checklistimg_group.update()
+        self.mute_group.update()
 
     def update(self):
         self.all_sprites.update()
@@ -145,6 +161,7 @@ class Game:
         self.checklist_group.draw(self.screen)
         self.classtime_group.draw(self.screen)
         self.checklistimg_group.draw(self.screen)
+        self.mute_group.draw(self.screen)
         
         # 카운트 다운 타이머 표시
         timer_text = f"{self.period} Period Break Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
@@ -155,18 +172,31 @@ class Game:
         pygame.display.update()
 
     def setting_callback(self): # 엔드 게임
+        self.button_click_sound.play()
+
         if not self.show_setting:
             # 새로운 버튼 생성
-            self.new_button = Button("Image/endgame.png", 100, 100, self.endgame_callback, 0.05)
+            self.new_button = Button("Image/endgame.png", 100, 10, self.endgame_callback, 0.05)
             self.setting_group.add(self.new_button)
             
             self.show_setting = True
+
+            self.checklist_button = Button("Image/checklist.png", 10, 100, self.checklist_callback, 2)
+            self.checklist_group.add(self.checklist_button)
+
+            self.mute_button = Button("Image/mute.jpeg", 100, 100, self.mute_callback, 0.1)
+            self.mute_group.add(self.mute_button)
+
         else:
             # 버튼 숨기기
             self.setting_group.remove(self.new_button)
+            self.checklist_group.remove(self.checklist_button)
+            self.mute_group.remove(self.mute_button)
             self.show_setting = False
 
     def checklist_callback(self):
+        self.button_click_sound.play()
+
         if self.show_checklist:  # 이미 체크리스트가 표시 중일 때
             self.checklistimg_group.empty()  # 이미지 삭제
             self.show_checklist = False
@@ -189,9 +219,19 @@ class Game:
             self.checklistimg_group.empty()  # 기존 이미지 삭제
             self.checklistimg_group.add(scaled_image)  # 새로운 이미지 추가
         
+    def mute_callback(self):
+        self.button_click_sound.play()
 
+        if self.show_vol:  # 이미 체크리스트가 표시 중일 때
+            pygame.mixer.music.set_volume(0.5)
+            self.show_vol = False
+        else:
+            pygame.mixer.music.set_volume(0.0)
+            self.show_vol = True
 
     def endgame_callback(self): 
+        self.button_click_sound.play()
+
         # 버튼을 누를 때 동작을 여기에 작성
         self.playing = False
         self.running = False
@@ -236,7 +276,7 @@ class Game:
                         self.count_down_start = False #요기도 바꿔야함
                         self.remaining_time = 60 * self.min
                         self.period += 1 # 교시 숫자 올리기.
-                        # 요기에 카운트 다운 바로 실행하는 코드 필요함(차차))
+                        # 요기에 카운트 다운 바로 실행하는 코드 필요함(차차)
                         self.show_classtime()
 
             self.draw()
@@ -251,3 +291,4 @@ while game.running:
 
 pygame.quit()
 sys.exit()
+pygame.mixer.music.stop()
