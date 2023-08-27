@@ -53,3 +53,18 @@ class Tree(pygame.sprite.Sprite):
         self.rect.x = self.x
         self.rect.y = self.y
         self.image.set_colorkey("white")
+
+class Warp(pygame.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self._layer = warp_layer
+        self.groups = self.game.all_sprites, self.game.warps
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * tilesize
+        self.y = y * tilesize
+        self.width, self.height = tilesize, tilesize
+        self.image = self.game.terrainsheet.get_sprite(0, 64, self.width, self.height)
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y

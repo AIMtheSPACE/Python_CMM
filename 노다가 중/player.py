@@ -58,8 +58,10 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.x += self.x_change
         self.collide_trees("x")
+        self.collide_warps("x")
         self.rect.y += self.y_change
         self.collide_trees("y")
+        self.collide_warps("y")
 
         self.x_change = 0
         self.y_change = 0
@@ -89,6 +91,16 @@ class Player(pygame.sprite.Sprite):
                         sprite.rect.y -= player_speed
                     self.rect.y = hits[0].rect.bottom
     
+    def collide_warps(self, direction):
+        if direction == "x":
+            hits = pygame.sprite.spritecollide(self, self.game.warps, False)
+            if hits:
+                self.game.change_tilemap()  # 타일맵을 변경하는 메서드 호출
+
+        if direction == "y":
+            hits = pygame.sprite.spritecollide(self, self.game.warps, False)
+            if hits:
+                self.game.change_tilemap()
 
     def animate(self):
         Player_animation_animate(self)

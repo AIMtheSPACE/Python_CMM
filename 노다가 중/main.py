@@ -7,7 +7,6 @@ from sprites import *
 from config import *
 import pygame.mixer
 
-
 pygame.init() # 초기화
 pygame.display.set_caption("러브캐처 인 청운") # 화면 이름
 pygame.display.set_icon(pygame.image.load("Image/청운 로고.png") )
@@ -91,31 +90,46 @@ class Game:
         self.show_checklist = False
         self.show_vol = True
         self.page = 1
+        self.stage = 1
         self.count_down_start = True
+
+        self.tilemap = None
     
         # 음악 관련
         pygame.mixer.init()  # Initialize mixer
-        pygame.mixer.music.load("배달의민족 - 배달은 자신있어.mp3")  # Load background music
+        pygame.mixer.music.load("Song/배달의민족 - 배달은 자신있어.mp3")  # Load background music
         pygame.mixer.music.set_volume(0)  # Set music volume (0.0 to 1.0)
         pygame.mixer.music.play(-1)
-        self.button_click_sound = pygame.mixer.Sound("Tiny Button Push Sound.mp3")
+        self.button_click_sound = pygame.mixer.Sound("Song/Tiny Button Push Sound.mp3")
 
 
         
     def createTilemap(self, tilemap):
-        build_map(self, tilemap)
+        self.all_sprites.empty()  # 기존 스프라이트 삭제
+        self.trees.empty()  # 기존 트리 스프라이트 삭제
+        self.warps.empty()  # 기존 워프 스프라이트 삭제
+        build_map(self, tilemap)  
 
     def new(self, tilemap):
         self.playing = True
         self.all_sprites = pygame.sprite.LayeredUpdates()
         self.trees = pygame.sprite.LayeredUpdates()
+        self.warps = pygame.sprite.LayeredUpdates()
+        self.tilemap = tilemap
         self.createTilemap(tilemap)
 
         # 버튼 생성
         self.button = Button("Image/설정.png", 10, 10, self.setting_callback, 1)
         self.setting_group.add(self.button)
 
-        #체크리스트 버튼 위치
+    def change_tilemap(self):
+        # 여기에서 로직에 따라 타일맵을 변경할 수 있습니다.
+        self.tilemap = maps.world_1.stage_2  # 예를 들어, stage 2로 변경
+        self.createTilemap(self.tilemap)
+        self.stage += 1
+
+        # W는 계단 업, 또 다른 알파벳은 계단 다운 등으로 하면 될 듯
+
 
     def events(self):
         for event in pygame.event.get():
@@ -124,12 +138,12 @@ class Game:
                 self.running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    self.page = self.adjust_value(self.page, -1, 1, 4)
+                    self.page = self.adjust_value(self.page, -1, 1, 10)
                     print(self.page)
                     self.checklistimg_reset()
                      # 페이지가 변하고 체크리스트가 표시 중일 때만 callback 호출
                 elif event.key == pygame.K_RIGHT:
-                    self.page = self.adjust_value(self.page, 1, 1, 4)
+                    self.page = self.adjust_value(self.page, 1, 1, 10)
                     print(self.page)
                     self.checklistimg_reset()
                 elif event.key == pygame.K_UP:
@@ -166,6 +180,10 @@ class Game:
         timer_text = f"{self.period} Period Break Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
         timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2))
         self.screen.blit(timer_surface, (400, -10))  # 필요에 따라 위치 조정
+
+        floor_text = f"floor {self.stage}"
+        floor_surface = self.timer_font.render(floor_text, True, (255, 235, 2))
+        self.screen.blit(floor_surface, (10, 850))  # 필요에 따라 위치 조정
 
         self.clock.tick(fps)
         pygame.display.update()
@@ -205,16 +223,29 @@ class Game:
             
     def checklistimg_reset(self):
             if self.page == 1:
-                image_path = "Image/첵리 1.png"
+                image_path = "Image/checklist_1.png"
             elif self.page == 2:
-                image_path = "Image/첵리 2.png"
+                image_path = "Image/checklist_2.png"
             elif self.page == 3:
-                image_path = "Image/첵리 3.png"
+                image_path = "Image/checklist_3.png"
             elif self.page == 4:
-                image_path = "Image/첵리 4.png"
+                image_path = "Image/checklist_4.png"
+            elif self.page == 5:
+                image_path = "Image/checklist_5.png"
+            elif self.page == 6:
+                image_path = "Image/checklist_6.png"
+            elif self.page == 7:
+                image_path = "Image/checklist_7.png"
+            elif self.page == 8:
+                image_path = "Image/checklist_8.png"
+            elif self.page == 9:
+                image_path = "Image/checklist_9.png"
+            elif self.page == 10:
+                image_path = "Image/checklist_10.png"
+           
 
             image_center = (self.screen.get_width() // 2, self.screen.get_height() // 2)
-            scaled_image = ChecklistImage(image_path, 0.5, image_center)
+            scaled_image = ChecklistImage(image_path, 1, image_center)
             self.checklistimg_group.empty()  # 기존 이미지 삭제
             self.checklistimg_group.add(scaled_image)  # 새로운 이미지 추가
         
@@ -285,6 +316,7 @@ class Game:
 tilemap = maps.world_1.stage_1
 game = Game()
 game.new(tilemap)
+
 while game.running:
     game.main()
 

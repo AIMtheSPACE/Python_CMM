@@ -9,3 +9,5 @@ def build_map(self, tilemap):
                 self.Player = Player(self, j, i)
             if column == "T":
                 Tree(self, j, i)
+            if column == "W":
+                Warp(self, j, i)
