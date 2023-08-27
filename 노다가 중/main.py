@@ -83,6 +83,7 @@ class Game:
 
         self.setting_group = pygame.sprite.Group()
         self.classtime_group = pygame.sprite.Group()
+        self.ending_group = pygame.sprite.Group() 
         self.checklist_group = pygame.sprite.Group()
         self.checklistimg_group = pygame.sprite.Group()
         self.mute_group = pygame.sprite.Group()
@@ -91,7 +92,7 @@ class Game:
 
         self.timer_font = pygame.font.SysFont("arialblack", 40)  # 필요에 따라 폰트 크기 조정
         self.period = 1  # 초기 기간 값
-        self.min = 1
+        self.min = 0.05
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
         self.show_checklist = False
@@ -149,8 +150,6 @@ class Game:
             self.tilemap = maps.world_1.stage_5
 
         self.createTilemap(self.tilemap)
-        
-
     def change_tilemap_down(self):
         self.stage -= 1
         if self.stage == 1:
@@ -198,6 +197,7 @@ class Game:
 
         self.setting_group.update()
         self.classtime_group.update()
+        self.ending_group.update()
         self.checklist_group.update()
         self.checklistimg_group.update()
         self.mute_group.update()
@@ -212,6 +212,7 @@ class Game:
         self.setting_group.draw(self.screen)
         self.checklist_group.draw(self.screen)
         self.classtime_group.draw(self.screen)
+        self.ending_group.draw(self.screen)
         self.checklistimg_group.draw(self.screen)
         self.mute_group.draw(self.screen)
         
@@ -310,6 +311,10 @@ class Game:
     def show_classtime(self): # 수업 시간 표시 기능
         self.classtime_button = Button("Image/수업 시간에 표시 할 것.png", 100, 100, self.classtime_callback, 0.5)
         self.classtime_group.add(self.classtime_button)
+
+    def show_ending(self): # 수업 시간 표시 기능
+        self.ending_button = Button("Image/ending.png", 100, 100, self.classtime_callback, 0.5)
+        self.ending_group.add(self.ending_button)
         
     def classtime_callback(self):
         self.classtime_group.remove(self.classtime_button)
@@ -365,15 +370,25 @@ class Game:
             # 카운트 다운 타이머 업데이트
             if self.count_down_start: # 함수 이름 밖어서 다른 곳에 연결
                 current_time = pygame.time.get_ticks()
-                if current_time - self.last_time >= 1000:  # 1초마다 업데이트
+                if current_time - self.last_time >= 1000: # 1초마다 업데이트
                     self.last_time = current_time
                     self.remaining_time -= 1
                     if self.remaining_time <= 0:
-                        self.count_down_start = False #요기도 바꿔야함
-                        self.remaining_time = 60 * self.min
-                        self.period += 1 # 교시 숫자 올리기.
-                        # 요기에 카운트 다운 바로 실행하는 코드 필요함(차차)
-                        self.show_classtime()
+                        if self.period == 3: # 4교시 쉬는 시간(점심시간)
+                            self.count_down_start = False
+                            self.remaining_time = 90 * self.min # 임시 시간
+                            self.period += 1
+                            self.show_classtime()
+
+                        elif self.period == 8:
+                            self.show_ending()
+
+                        else:
+                            self.count_down_start = False #요기도 바꿔야함
+                            self.remaining_time = 60 * self.min
+                            self.period += 1
+                            self.show_classtime()
+
 
             self.draw()
 
