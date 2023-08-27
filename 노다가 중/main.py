@@ -220,7 +220,7 @@ class Game:
         timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2))
         self.screen.blit(timer_surface, (400, -10))  # 필요에 따라 위치 조정
 
-        floor_text = f"floor {self.stage}"
+        floor_text = f"Floor {self.stage}"
         floor_surface = self.timer_font.render(floor_text, True, (255, 235, 2))
         self.screen.blit(floor_surface, (10, 850))  # 필요에 따라 위치 조정
 

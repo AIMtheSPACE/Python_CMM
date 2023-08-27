@@ -6,7 +6,7 @@ fps = 60
 
 player_speed = 3
 
-player_layer = 5
-block_layer = 3
 ground_layer = 1
-warp_layer = 2
+block_layer = 3
+warp_layer = 4
+player_layer = 5
