@@ -106,7 +106,7 @@ class Warp_Up(pygame.sprite.Sprite):
         self.x = x * tilesize
         self.y = y * tilesize
         self.width, self.height = tilesize, tilesize
-        self.image = self.game.terrainsheet.get_sprite(0, 64, self.width, self.height)
+        self.image = self.game.warp_up_spritesheet.get_sprite(0, 0, self.width, self.height)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -121,7 +121,7 @@ class Warp_Down(pygame.sprite.Sprite):
         self.x = x * tilesize
         self.y = y * tilesize
         self.width, self.height = tilesize, tilesize
-        self.image = self.game.terrainsheet.get_sprite(0, 64, self.width, self.height)
+        self.image = self.game.warp_down_spritesheet.get_sprite(0, 0, self.width, self.height)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y

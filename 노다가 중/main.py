@@ -76,6 +76,8 @@ class Game:
         self.closet_spritesheet = Spritesheet("Image/tile shoes closet.jpeg")
         self.wooden_spritesheet = Spritesheet("Image/tile wooden.jpeg")
         self.wall_spritesheet = Spritesheet("Image/tile wall.png")
+        self.warp_up_spritesheet = Spritesheet("Image/tile up.jpeg")
+        self.warp_down_spritesheet = Spritesheet("Image/tile down.jpeg")
         self.character_spritesheet = Spritesheet("Image/character.png")
 
 
