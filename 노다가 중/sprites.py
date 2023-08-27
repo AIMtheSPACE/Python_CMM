@@ -16,7 +16,7 @@ class Spritesheet:
         sprite.set_colorkey("black")
         return sprite
 
-class Ground(pygame.sprite.Sprite):
+class Hallway(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
         self.game = game
         self._layer = ground_layer
@@ -26,39 +26,96 @@ class Ground(pygame.sprite.Sprite):
         self.x = x * tilesize
         self.y = y * tilesize
         self.width, self.height = tilesize, tilesize
-        self.image = self.game.terrainsheet.get_sprite(0, 96, self.width, self.height)
+        self.image = self.game.hallway_spritesheet.get_sprite(0, 0, self.width, self.height)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.x, self.y
 
-class Tree(pygame.sprite.Sprite):
+class Wooden(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
-
         self.game = game
-        self._layer = block_layer
-        self.groups = self.game.all_sprites, self.game.trees
+        self._layer = ground_layer
+        self.groups = self.game.all_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         self.x = x * tilesize
         self.y = y * tilesize
         self.width, self.height = tilesize, tilesize
-        tree_1 = [0, 0]
-        tree_2 = [31, 0]
-        tree_3 = [0, 32]
-        tree_4 = [31, 32]
-        tree_list = [tree_1, tree_2, tree_3, tree_4]
-        tree = random.choice(tree_list)
+        self.image = self.game.wooden_spritesheet.get_sprite(0, 0, self.width, self.height)
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = self.x, self.y
 
-        self.image = self.game.terrainsheet.get_sprite(tree[0], tree[1], self.width, self.height)
+class Desk(pygame.sprite.Sprite):
+    def __init__(self, game, x, y):
+
+        self.game = game
+        self._layer = block_layer
+        self.groups = self.game.all_sprites, self.game.desks
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * tilesize
+        self.y = y * tilesize
+        self.width, self.height = tilesize, tilesize
+
+        self.image = self.game.desk_spritesheet.get_sprite(0, 0, self.width, self.height)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
         self.image.set_colorkey("white")
 
-class Warp(pygame.sprite.Sprite):
+class Wall(pygame.sprite.Sprite):
+    def __init__(self, game, x, y):
+
+        self.game = game
+        self._layer = block_layer
+        self.groups = self.game.all_sprites, self.game.walls
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * tilesize
+        self.y = y * tilesize
+        self.width, self.height = tilesize, tilesize
+
+        self.image = self.game.wall_spritesheet.get_sprite(0, 0, self.width, self.height)
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+class Closet(pygame.sprite.Sprite):
+    def __init__(self, game, x, y):
+
+        self.game = game
+        self._layer = block_layer
+        self.groups = self.game.all_sprites, self.game.closets
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * tilesize
+        self.y = y * tilesize
+        self.width, self.height = tilesize, tilesize
+
+        self.image = self.game.closet_spritesheet.get_sprite(0, 0, self.width, self.height)
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+class Warp_Up(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
         self.game = game
         self._layer = warp_layer
-        self.groups = self.game.all_sprites, self.game.warps
+        self.groups = self.game.all_sprites, self.game.warp_up
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * tilesize
+        self.y = y * tilesize
+        self.width, self.height = tilesize, tilesize
+        self.image = self.game.terrainsheet.get_sprite(0, 64, self.width, self.height)
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+class Warp_Down(pygame.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self._layer = warp_layer
+        self.groups = self.game.all_sprites, self.game.warp_down
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         self.x = x * tilesize

@@ -57,18 +57,24 @@ class Player(pygame.sprite.Sprite):
         self.animate()
 
         self.rect.x += self.x_change
-        self.collide_trees("x")
-        self.collide_warps("x")
+        self.collide_walls("x")
+        self.collide_desks("x")
+        self.collide_closets("x")
+        self.collide_warp_up("x")
+        self.collide_warp_down("x")
         self.rect.y += self.y_change
-        self.collide_trees("y")
-        self.collide_warps("y")
+        self.collide_walls("y")
+        self.collide_desks("y")
+        self.collide_closets("y")
+        self.collide_warp_up("y")
+        self.collide_warp_down("y")
 
         self.x_change = 0
         self.y_change = 0
 
-    def collide_trees(self, direction):
+    def collide_walls(self, direction):
         if direction == "x":
-            hits = pygame.sprite.spritecollide(self, self.game.trees, False)
+            hits = pygame.sprite.spritecollide(self, self.game.walls, False)
             if hits:
                 if self.x_change > 0:
                     for sprite in self.game.all_sprites:
@@ -80,7 +86,57 @@ class Player(pygame.sprite.Sprite):
                     self.rect.x = hits[0].rect.right
 
         if direction == "y":
-            hits = pygame.sprite.spritecollide(self, self.game.trees, False)
+            hits = pygame.sprite.spritecollide(self, self.game.walls, False)
+            if hits:
+                if self.y_change > 0:
+                    for sprite in self.game.all_sprites:
+                        sprite.rect.y += player_speed
+                    self.rect.y = hits[0].rect.top - self.rect.height
+                if self.y_change < 0:
+                    for sprite in self.game.all_sprites:
+                        sprite.rect.y -= player_speed
+                    self.rect.y = hits[0].rect.bottom
+
+    def collide_desks(self, direction):
+        if direction == "x":
+            hits = pygame.sprite.spritecollide(self, self.game.desks, False)
+            if hits:
+                if self.x_change > 0:
+                    for sprite in self.game.all_sprites:
+                        sprite.rect.x += player_speed
+                    self.rect.x = hits[0].rect.left - self.rect.width
+                if self.x_change < 0:
+                    for sprite in self.game.all_sprites:
+                        sprite.rect.x -= player_speed
+                    self.rect.x = hits[0].rect.right
+
+        if direction == "y":
+            hits = pygame.sprite.spritecollide(self, self.game.desks, False)
+            if hits:
+                if self.y_change > 0:
+                    for sprite in self.game.all_sprites:
+                        sprite.rect.y += player_speed
+                    self.rect.y = hits[0].rect.top - self.rect.height
+                if self.y_change < 0:
+                    for sprite in self.game.all_sprites:
+                        sprite.rect.y -= player_speed
+                    self.rect.y = hits[0].rect.bottom
+
+    def collide_closets(self, direction):
+        if direction == "x":
+            hits = pygame.sprite.spritecollide(self, self.game.closets, False)
+            if hits:
+                if self.x_change > 0:
+                    for sprite in self.game.all_sprites:
+                        sprite.rect.x += player_speed
+                    self.rect.x = hits[0].rect.left - self.rect.width
+                if self.x_change < 0:
+                    for sprite in self.game.all_sprites:
+                        sprite.rect.x -= player_speed
+                    self.rect.x = hits[0].rect.right
+
+        if direction == "y":
+            hits = pygame.sprite.spritecollide(self, self.game.closets, False)
             if hits:
                 if self.y_change > 0:
                     for sprite in self.game.all_sprites:
@@ -91,16 +147,27 @@ class Player(pygame.sprite.Sprite):
                         sprite.rect.y -= player_speed
                     self.rect.y = hits[0].rect.bottom
     
-    def collide_warps(self, direction):
+    def collide_warp_up(self, direction):
         if direction == "x":
-            hits = pygame.sprite.spritecollide(self, self.game.warps, False)
+            hits = pygame.sprite.spritecollide(self, self.game.warp_up, False)
             if hits:
-                self.game.change_tilemap()  # 타일맵을 변경하는 메서드 호출
+                self.game.change_tilemap_up()  # 타일맵을 변경하는 메서드 호출
 
         if direction == "y":
-            hits = pygame.sprite.spritecollide(self, self.game.warps, False)
+            hits = pygame.sprite.spritecollide(self, self.game.warp_up, False)
             if hits:
-                self.game.change_tilemap()
+                self.game.change_tilemap_up()
+
+    def collide_warp_down(self, direction):
+        if direction == "x":
+            hits = pygame.sprite.spritecollide(self, self.game.warp_down, False)
+            if hits:
+                self.game.change_tilemap_down()
+
+        if direction == "y":
+            hits = pygame.sprite.spritecollide(self, self.game.warp_down, False)
+            if hits:
+                self.game.change_tilemap_down()
 
     def animate(self):
         Player_animation_animate(self)

@@ -71,6 +71,11 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.terrainsheet = Spritesheet("Image/terrain1.png")
+        self.desk_spritesheet = Spritesheet("Image/tile desk.png")
+        self.hallway_spritesheet = Spritesheet("Image/tile hallway.jpeg")
+        self.closet_spritesheet = Spritesheet("Image/tile shoes closet.jpeg")
+        self.wooden_spritesheet = Spritesheet("Image/tile wooden.jpeg")
+        self.wall_spritesheet = Spritesheet("Image/tile wall.png")
         self.character_spritesheet = Spritesheet("Image/character.png")
 
 
@@ -106,15 +111,21 @@ class Game:
         
     def createTilemap(self, tilemap):
         self.all_sprites.empty()  # 기존 스프라이트 삭제
-        self.trees.empty()  # 기존 트리 스프라이트 삭제
-        self.warps.empty()  # 기존 워프 스프라이트 삭제
+        self.desks.empty()  # 기존 책상 스프라이트 삭제
+        self.walls.empty()  # 기존 벽 스프라이트 삭제
+        self.closets.empty()  # 기존 신발장 스프라이트 삭제
+        self.warp_up.empty()  # 기존 워프 스프라이트 삭제
+        self.warp_down.empty()  # 기존 워프 스프라이트 삭제
         build_map(self, tilemap)  
 
     def new(self, tilemap):
         self.playing = True
         self.all_sprites = pygame.sprite.LayeredUpdates()
-        self.trees = pygame.sprite.LayeredUpdates()
-        self.warps = pygame.sprite.LayeredUpdates()
+        self.desks = pygame.sprite.LayeredUpdates()
+        self.walls = pygame.sprite.LayeredUpdates()
+        self.closets = pygame.sprite.LayeredUpdates()
+        self.warp_up = pygame.sprite.LayeredUpdates()
+        self.warp_down = pygame.sprite.LayeredUpdates()
         self.tilemap = tilemap
         self.createTilemap(tilemap)
 
@@ -122,11 +133,37 @@ class Game:
         self.button = Button("Image/설정.png", 10, 10, self.setting_callback, 1)
         self.setting_group.add(self.button)
 
-    def change_tilemap(self):
-        # 여기에서 로직에 따라 타일맵을 변경할 수 있습니다.
-        self.tilemap = maps.world_1.stage_2  # 예를 들어, stage 2로 변경
-        self.createTilemap(self.tilemap)
+    def change_tilemap_up(self):
         self.stage += 1
+        if self.stage == 1:
+            self.tilemap = maps.world_1.stage_1
+        elif self.stage == 2:
+            self.tilemap = maps.world_1.stage_2
+        elif self.stage == 3:
+            self.tilemap = maps.world_1.stage_3
+        elif self.stage == 4:
+            self.tilemap = maps.world_1.stage_4
+        elif self.stage == 5:
+            self.tilemap = maps.world_1.stage_5
+
+        self.createTilemap(self.tilemap)
+        
+
+    def change_tilemap_down(self):
+        self.stage -= 1
+        if self.stage == 1:
+            self.tilemap = maps.world_1.stage_1
+        elif self.stage == 2:
+            self.tilemap = maps.world_1.stage_2
+        elif self.stage == 3:
+            self.tilemap = maps.world_1.stage_3
+        elif self.stage == 4:
+            self.tilemap = maps.world_1.stage_4
+        elif self.stage == 5:
+            self.tilemap = maps.world_1.stage_5
+        
+        self.createTilemap(self.tilemap)
+        
 
         # W는 계단 업, 또 다른 알파벳은 계단 다운 등으로 하면 될 듯
 
@@ -290,8 +327,35 @@ class Game:
         scaled_image_rect = scaled_image.get_rect(center=center_position)
         self.screen.blit(scaled_image, scaled_image_rect.topleft)
 
+    def show_intro_images(self):
+        intro_images = ["Image/배경화면.jpeg", "Image/intro.png", "Image/대지 1.png"] # 첫번째 
+        current_intro_index = 0
+        total_intro_images = len(intro_images)
+        show_intro = True
+
+        while show_intro:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        current_intro_index += 1
+                        if current_intro_index >= total_intro_images:
+                            show_intro = False
+
+            if current_intro_index < total_intro_images:
+                intro_image = pygame.image.load(intro_images[current_intro_index])
+                intro_image = pygame.transform.scale(intro_image, (win_width, win_height))
+                self.screen.blit(intro_image, (0, 0))
+                pygame.display.flip()
+                self.clock.tick(60)
+            else:
+                show_intro = False
 
     def main(self):
+        self.show_intro_images()
+
         while self.playing:
             self.events()
             self.update()

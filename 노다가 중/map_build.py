@@ -4,10 +4,15 @@ from sprites import *
 def build_map(self, tilemap):
     for i, row in enumerate(tilemap):
         for j, column in enumerate(row):
-            Ground(self, j, i)
+            Wooden(self, j, i)
             if column == "P":
                 self.Player = Player(self, j, i)
+            if column == "C":
+                Desk(self, j, i)
             if column == "T":
-                Tree(self, j, i)
+                Wall(self, j, i)
             if column == "W":
-                Warp(self, j, i)
+                Warp_Up(self, j, i)
+            if column == "D":
+                Warp_Down(self, j, i)
+                
