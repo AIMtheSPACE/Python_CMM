@@ -93,7 +93,7 @@ class Game:
 
         self.timer_font = pygame.font.SysFont("arialblack", 40)  # 필요에 따라 폰트 크기 조정
         self.period = 1  # 초기 기간 값
-        self.min = 0.05
+        self.min = 1
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
         self.show_checklist = False
@@ -216,10 +216,10 @@ class Game:
 
         self.setting_group.draw(self.screen)
         self.checklist_group.draw(self.screen)
-        self.classtime_group.draw(self.screen)
         self.ending_group.draw(self.screen)
         self.checklistimg_group.draw(self.screen)
         self.mute_group.draw(self.screen)
+        self.classtime_group.draw(self.screen)
         
         # 카운트 다운 타이머 표시
         timer_text = f"{self.period} Period Break Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
@@ -314,11 +314,11 @@ class Game:
 
 
     def show_classtime(self): # 수업 시간 표시 기능
-        self.classtime_button = Button("Image/수업 시간에 표시 할 것.png", 100, 100, self.classtime_callback, 0.5)
+        self.classtime_button = Button("Image/수업 시간에 표시 할 것.png", 0, 0, self.classtime_callback, 0.7)
         self.classtime_group.add(self.classtime_button)
 
-    def show_ending(self): # 수업 시간 표시 기능
-        self.ending_button = Button("Image/ending.png", 100, 100, self.classtime_callback, 0.5)
+    def show_ending(self): # 엔딩 코드 여기다 !!!! 수정 필
+        self.ending_button = Button("Image/ending.png", 100, 100, self.endgame_callback, 0.5)
         self.ending_group.add(self.ending_button)
         
     def classtime_callback(self):
@@ -385,7 +385,7 @@ class Game:
                             self.period += 1
                             self.show_classtime()
 
-                        elif self.period == 8:
+                        elif self.period == 9:
                             self.show_ending()
 
                         else:
