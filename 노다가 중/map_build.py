@@ -7,11 +7,11 @@ def build_map(self, tilemap):
             Wooden(self, j, i)
             if column == "P":
                 self.Player = Player(self, j, i)
-            if column == "C":
+            if column == "B":
                 Desk(self, j, i)
             if column == "T":
                 Wall(self, j, i)
-            if column == "W":
+            if column == "U":
                 Warp_Up(self, j, i)
             if column == "D":
                 Warp_Down(self, j, i)
@@ -19,3 +19,5 @@ def build_map(self, tilemap):
                 Empty(self, j, i)
             if column == "H":
                 Hallway(self, j, i)
+            if column == "C":
+                Couple(self, j, i)

@@ -62,12 +62,14 @@ class Player(pygame.sprite.Sprite):
         self.collide_closets("x")
         self.collide_warp_up("x")
         self.collide_warp_down("x")
+        self.collide_couple("x")
         self.rect.y += self.y_change
         self.collide_walls("y")
         self.collide_desks("y")
         self.collide_closets("y")
         self.collide_warp_up("y")
         self.collide_warp_down("y")
+        self.collide_couple("y")
 
         self.x_change = 0
         self.y_change = 0
@@ -168,6 +170,17 @@ class Player(pygame.sprite.Sprite):
             hits = pygame.sprite.spritecollide(self, self.game.warp_down, False)
             if hits:
                 self.game.change_tilemap_down()
+
+    def collide_couple(self, direction):
+        if direction == "x":
+            hits = pygame.sprite.spritecollide(self, self.game.couples, False)
+            if hits:
+                print("Catch!")
+
+        if direction == "y":
+            hits = pygame.sprite.spritecollide(self, self.game.couples, False)
+            if hits:
+                print("Catch!")
 
     def animate(self):
         Player_animation_animate(self)

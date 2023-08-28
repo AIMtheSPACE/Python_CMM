@@ -80,6 +80,7 @@ class Game:
         self.warp_down_spritesheet = Spritesheet("Image/tile down.jpeg")
         self.character_spritesheet = Spritesheet("Image/character.png")
         self.empty_spritesheet = Spritesheet("Image/tile black.png")
+        self.couple_spritesheet = Spritesheet("Image/tile couple.png")
 
 
         self.setting_group = pygame.sprite.Group()
@@ -122,6 +123,7 @@ class Game:
         self.warp_down.empty()  # 기존 워프 스프라이트 삭제
         self.emptys.empty()
         self.hallways.empty()
+        self.couples.empty()
         build_map(self, tilemap)  
 
     def new(self, tilemap):
@@ -134,6 +136,7 @@ class Game:
         self.warp_down = pygame.sprite.LayeredUpdates()
         self.emptys = pygame.sprite.LayeredUpdates()
         self.hallways = pygame.sprite.LayeredUpdates()
+        self.couples = pygame.sprite.LayeredUpdates()
         self.tilemap = tilemap
         self.createTilemap(tilemap)
 
