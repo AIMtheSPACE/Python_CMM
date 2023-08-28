@@ -15,7 +15,7 @@ def build_map(self, tilemap):
                 Warp_Up(self, j, i)
             if column == "D":
                 Warp_Down(self, j, i)
-            if column == "E":
+            if column == "0":
                 Empty(self, j, i)
             if column == "H":
                 Hallway(self, j, i)
