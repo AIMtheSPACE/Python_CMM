@@ -1,4 +1,3 @@
-
 win_width = 1280
 win_height = 900
 tilesize = 32

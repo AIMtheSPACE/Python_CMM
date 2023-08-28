@@ -16,20 +16,6 @@ class Spritesheet:
         sprite.set_colorkey("black")
         return sprite
 
-class Hallway(pygame.sprite.Sprite):
-    def __init__(self, game, x, y):
-        self.game = game
-        self._layer = ground_layer
-        self.groups = self.game.all_sprites
-        pygame.sprite.Sprite.__init__(self, self.groups)
-
-        self.x = x * tilesize
-        self.y = y * tilesize
-        self.width, self.height = tilesize, tilesize
-        self.image = self.game.hallway_spritesheet.get_sprite(0, 0, self.width, self.height)
-        self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = self.x, self.y
-
 class Wooden(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
         self.game = game
@@ -44,9 +30,37 @@ class Wooden(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.x, self.y
 
+class Hallway(pygame.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self._layer = block_layer
+        self.groups = self.game.all_sprites, self.game.hallways
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * tilesize
+        self.y = y * tilesize
+        self.width, self.height = tilesize, tilesize
+        self.image = self.game.hallway_spritesheet.get_sprite(0, 0, self.width, self.height)
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = self.x, self.y
+
+class Empty(pygame.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self._layer = block_layer
+        self.groups = self.game.all_sprites, self.game.emptys
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * tilesize
+        self.y = y * tilesize
+        self.width, self.height = tilesize, tilesize
+        self.image = self.game.empty_spritesheet.get_sprite(0, 0, self.width, self.height)
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = self.x, self.y
+        self.image.set_colorkey("White")
+
 class Desk(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
-
         self.game = game
         self._layer = block_layer
         self.groups = self.game.all_sprites, self.game.desks
@@ -64,7 +78,6 @@ class Desk(pygame.sprite.Sprite):
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
-
         self.game = game
         self._layer = block_layer
         self.groups = self.game.all_sprites, self.game.walls
@@ -81,7 +94,6 @@ class Wall(pygame.sprite.Sprite):
 
 class Closet(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
-
         self.game = game
         self._layer = block_layer
         self.groups = self.game.all_sprites, self.game.closets
