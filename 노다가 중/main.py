@@ -216,10 +216,10 @@ class Game:
 
         self.setting_group.draw(self.screen)
         self.checklist_group.draw(self.screen)
-        self.classtime_group.draw(self.screen)
         self.ending_group.draw(self.screen)
         self.checklistimg_group.draw(self.screen)
         self.mute_group.draw(self.screen)
+        self.classtime_group.draw(self.screen)
         
         # 카운트 다운 타이머 표시
         timer_text = f"{self.period} Period Break Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
