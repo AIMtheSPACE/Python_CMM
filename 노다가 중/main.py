@@ -92,7 +92,8 @@ class Game:
 
         self.show_setting = False  
 
-        self.timer_font = pygame.font.SysFont("arialblack", 40)  # 필요에 따라 폰트 크기 조정
+        self.timer_font = pygame.font.SysFont("arialblack", 40) 
+        self.couple_font = pygame.font.SysFont("arialblack", 20) # 필요에 따라 폰트 크기 조정
         self.period = 1  # 초기 기간 값
         self.min = 1
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
@@ -102,6 +103,8 @@ class Game:
         self.page = 1
         self.stage = 1
         self.count_down_start = True
+
+        self.coupleOX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
         self.tilemap = None
     
@@ -174,7 +177,33 @@ class Game:
         self.createTilemap(self.tilemap)
         
 
-        # W는 계단 업, 또 다른 알파벳은 계단 다운 등으로 하면 될 듯
+    def couplecaught(self):
+        if self.stage == 1:
+            self.coupleOX[0] = 1
+        elif self.stage == 2:
+            self.coupleOX[2] = 1
+        elif self.stage == 3:
+            self.coupleOX[4] = 1
+        elif self.stage == 4:
+            self.coupleOX[6] = 1
+        elif self.stage == 5:
+            self.coupleOX[8] = 1
+
+    def text_couple(self): 
+        coupleleft_text = f"{self.coupleOX.count(0)} couple(s) left"
+        coupleleft_surface = self.couple_font.render(coupleleft_text, True, (255, 235, 2))
+        self.screen.blit(coupleleft_surface, (10, 450))  # 필요에 따라 위치 조정
+
+        for index, value in enumerate(self.coupleOX):
+            if value == 1:
+                couplecaught_text = f"{index + 1} couple caught"
+                couplecaught_surface = self.couple_font.render(couplecaught_text, True, (255, 235, 2))
+                self.screen.blit(couplecaught_surface, (10, 500 + index*30))  # 필요에 따라 위치 조정
+            elif value == 0:
+                couplecaught_text = f"{index + 1} couple not caught"
+                couplecaught_surface = self.couple_font.render(couplecaught_text, True, (25, 25, 2))
+                self.screen.blit(couplecaught_surface, (10, 500 + index*30))  # 필요에 따라 위치 조정
+
 
 
     def events(self):
@@ -231,7 +260,10 @@ class Game:
 
         floor_text = f"Floor {self.stage}"
         floor_surface = self.timer_font.render(floor_text, True, (255, 235, 2))
-        self.screen.blit(floor_surface, (10, 850))  # 필요에 따라 위치 조정
+        self.screen.blit(floor_surface, (200, -10))  # 필요에 따라 위치 조정
+
+        if self.show_setting: # 그냥 귀찮아서 원래 있던 함수 따라 씀.
+            self.text_couple()
 
         self.clock.tick(fps)
         pygame.display.update()

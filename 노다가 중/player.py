@@ -175,12 +175,12 @@ class Player(pygame.sprite.Sprite):
         if direction == "x":
             hits = pygame.sprite.spritecollide(self, self.game.couples, False)
             if hits:
-                print("Catch!")
+                self.game.couplecaught()
 
         if direction == "y":
             hits = pygame.sprite.spritecollide(self, self.game.couples, False)
             if hits:
-                print("Catch!")
+                self.game.couplecaught()
 
     def animate(self):
         Player_animation_animate(self)
