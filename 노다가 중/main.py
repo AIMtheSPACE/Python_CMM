@@ -95,7 +95,7 @@ class Game:
         self.timer_font = pygame.font.SysFont("arialblack", 40) 
         self.couple_font = pygame.font.SysFont("arialblack", 15) # 필요에 따라 폰트 크기 조정
         self.period = 1  # 초기 기간 값
-        self.min = 1
+        self.min = 0.3
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
         self.show_checklist = False
@@ -107,6 +107,8 @@ class Game:
         self.coupleOX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
         self.tilemap = None
+
+        self.show_classtime_page = False
     
         # 음악 관련
         pygame.mixer.init()  # Initialize mixer
@@ -114,6 +116,9 @@ class Game:
         pygame.mixer.music.set_volume(0)  # Set music volume (0.0 to 1.0)
         pygame.mixer.music.play(-1)
         self.button_click_sound = pygame.mixer.Sound("Song/Tiny Button Push Sound.mp3")
+        self.class_start_sound = pygame.mixer.Sound("Song/41 시작종.mp3")
+        self.class_end_sound = pygame.mixer.Sound("Song/42 종료종.mp3")
+
 
 
         
@@ -229,8 +234,11 @@ class Game:
                     else:
                         self.checklistimg_reset()
                         self.show_checklist = True
-                    
-                 
+                elif event.key == pygame.K_SPACE:
+                    if not self.count_down_start:
+                        self.show_classtime_page = False
+                        self.count_down_start = True
+                        self.class_start_sound.play()
 
 
         self.setting_group.update()
@@ -239,6 +247,7 @@ class Game:
         self.checklist_group.update()
         self.checklistimg_group.update()
         self.mute_group.update()
+
 
     def update(self):
         self.all_sprites.update()
@@ -252,6 +261,10 @@ class Game:
             rect_height = 350
             rect_color = (230, 20, 232, 128) 
             pygame.draw.rect(self.screen, rect_color, (10, 450, rect_width, rect_height))
+
+        if self.show_classtime_page:
+            self.draw_scaled_image("Image/수업 시간에 표시 할 것.png", 1, (640, 450))
+            
 
         rect_width = 1050
         rect_height = 50
@@ -368,8 +381,16 @@ class Game:
 
 
     def show_classtime(self): # 수업 시간 표시 기능
-        self.classtime_button = Button("Image/수업 시간에 표시 할 것.png", 0, 0, self.classtime_callback, 0.7)
-        self.classtime_group.add(self.classtime_button)
+        show_classtime_img = True
+        while show_classtime_img:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        show_classtime_img = False
+                        self.count_down_start = True
         
 
 
@@ -378,6 +399,7 @@ class Game:
         self.ending_group.add(self.ending_button)
         
     def classtime_callback(self):
+        self.class_start_sound.play()
         self.classtime_group.remove(self.classtime_button)
         self.count_down_start = True
 
@@ -441,7 +463,9 @@ class Game:
                             self.count_down_start = False
                             self.remaining_time = 90 * self.min # 임시 시간
                             self.period += 1
-                            self.show_classtime()
+                            self.show_classtime_page = True
+                            self.class_end_sound.play()
+                            
 
                         elif self.period == 9:
                             self.show_ending()
@@ -450,7 +474,10 @@ class Game:
                             self.count_down_start = False #요기도 바꿔야함
                             self.remaining_time = 60 * self.min
                             self.period += 1
-                            self.show_classtime()
+                            self.show_classtime_page = True
+                            self.class_end_sound.play()
+                            
+                            # 여기다 그릴 것
 
 
             self.draw()
