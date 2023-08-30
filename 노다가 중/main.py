@@ -479,7 +479,7 @@ class Game:
         self.screen.blit(scaled_image, scaled_image_rect.topleft)
 
     def show_intro_images(self):
-        intro_images = ["Image/배경화면.jpeg", "Image/intro.png", "Image/대지 1.png"] # 첫번째 
+        intro_images = ["Image/배경화면.png", "Image/intro.png", "Image/대지 1.png"] # 첫번째 
         current_intro_index = 0
         total_intro_images = len(intro_images)
         show_intro = True
