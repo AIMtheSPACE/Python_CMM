@@ -93,7 +93,7 @@ class Game:
         self.show_setting = False  
 
         self.timer_font = pygame.font.SysFont("arialblack", 40) 
-        self.couple_font = pygame.font.SysFont("arialblack", 20) # 필요에 따라 폰트 크기 조정
+        self.couple_font = pygame.font.SysFont("arialblack", 15) # 필요에 따라 폰트 크기 조정
         self.period = 1  # 초기 기간 값
         self.min = 1
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
@@ -161,6 +161,7 @@ class Game:
             self.tilemap = maps.world_1.stage_5
 
         self.createTilemap(self.tilemap)
+        self,
     def change_tilemap_down(self):
         self.stage -= 1
         if self.stage == 1:
@@ -246,6 +247,18 @@ class Game:
         self.screen.fill("black")
         self.all_sprites.draw(self.screen)
 
+        if self.show_setting:
+            rect_width = 175
+            rect_height = 350
+            rect_color = (230, 20, 232, 128) 
+            pygame.draw.rect(self.screen, rect_color, (10, 450, rect_width, rect_height))
+
+        rect_width = 1050
+        rect_height = 50
+        rect_color = (230, 20, 232, 8)  # Semi-transparent black color
+        pygame.draw.rect(self.screen, rect_color, (190, 0, rect_width, rect_height))
+
+
         self.setting_group.draw(self.screen)
         self.checklist_group.draw(self.screen)
         self.ending_group.draw(self.screen)
@@ -281,7 +294,7 @@ class Game:
             self.checklist_button = Button("Image/checklist.png", 10, 100, self.checklist_callback, 2)
             self.checklist_group.add(self.checklist_button)
 
-            self.mute_button = Button("Image/mute.jpeg", 100, 100, self.mute_callback, 0.1)
+            self.mute_button = Button("Image/mute.png", 100, 100, self.mute_callback, 2)
             self.mute_group.add(self.mute_button)
 
         else:
@@ -332,12 +345,18 @@ class Game:
     def mute_callback(self):
         self.button_click_sound.play()
 
-        if self.show_vol:  # 이미 체크리스트가 표시 중일 때
+        if self.show_vol:  
             pygame.mixer.music.set_volume(0.5)
             self.show_vol = False
         else:
             pygame.mixer.music.set_volume(0.0)
             self.show_vol = True
+
+        self.mute_group.empty()
+        mute_button_image = "Image/not mute.png" if self.show_vol else "Image/mute.png"
+        mute_button = Button(mute_button_image, 100, 100, self.mute_callback, 2)
+        self.mute_group.add(mute_button)
+
 
     def endgame_callback(self): 
         self.button_click_sound.play()
@@ -351,6 +370,8 @@ class Game:
     def show_classtime(self): # 수업 시간 표시 기능
         self.classtime_button = Button("Image/수업 시간에 표시 할 것.png", 0, 0, self.classtime_callback, 0.7)
         self.classtime_group.add(self.classtime_button)
+        
+
 
     def show_ending(self): # 엔딩 코드 여기다 !!!! 수정 필
         self.ending_button = Button("Image/ending.png", 100, 100, self.endgame_callback, 0.5)
@@ -359,6 +380,8 @@ class Game:
     def classtime_callback(self):
         self.classtime_group.remove(self.classtime_button)
         self.count_down_start = True
+
+        
 
     def adjust_value(self, value, change, min_value, max_value):
             new_value = value + change
