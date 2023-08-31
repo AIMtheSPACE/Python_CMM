@@ -95,7 +95,7 @@ class Game:
         self.timer_font = pygame.font.SysFont("arialblack", 40) 
         self.couple_font = pygame.font.SysFont("arialblack", 15) # 필요에 따라 폰트 크기 조정
         self.period = 1  # 초기 기간 값
-        self.min = 0.05
+        self.min = 1
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
         self.show_checklist = False
@@ -278,14 +278,16 @@ class Game:
         self.screen.fill("black")
         self.all_sprites.draw(self.screen)
 
+        
+
+        if self.show_classtime_page:
+            self.draw_scaled_image("Image/수업 시간에 표시 할 것.png", 1, (640, 450))
+
         if self.show_setting:
             rect_width = 175
             rect_height = 350
             rect_color = (230, 20, 232, 128) 
             pygame.draw.rect(self.screen, rect_color, (10, 450, rect_width, rect_height))
-
-        if self.show_classtime_page:
-            self.draw_scaled_image("Image/수업 시간에 표시 할 것.png", 1, (640, 450))
 
         if self.show_checklist_img:
             if self.page == 1:
