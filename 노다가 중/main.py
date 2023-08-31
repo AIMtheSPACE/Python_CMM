@@ -240,6 +240,7 @@ class Game: # 메인 게임 실행 클래스
                     if not self.count_down_start:
                         self.show_classtime_page = False
                         self.count_down_start = True
+                        self.class_start_sound.play()
                 elif event.key == pygame.K_q: # 단축키 '큐' 세팅 열기
                     if not self.show_setting: 
                         # 새로운 버튼 생성
