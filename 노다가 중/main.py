@@ -99,6 +99,8 @@ class Game: # 메인 게임 실행 클래스
         self.min = 1 # 테스르 하려면 이 값 줄여서 게임 빨리 진행 시키기
         self.page = 1
         self.stage = 1
+        self.last_mute_toggle_time = 0 # 함수 명 바꾸자... 디파인 뮤트에 있음
+        self.mute_toggle_delay = 100
 
         # True / False를 가지는 함수
         self.show_setting = False
@@ -114,6 +116,7 @@ class Game: # 메인 게임 실행 클래스
         self.tilemap = None
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
+        self.mute_button = Button("Image/not mute.png", 100, 100, self.mute_callback, 2) # 세팅 누를 뺴마자 초기화 안 시키려고 뺌.
 
         # 음악 시작 하자 마자 실행 / 음악 관련 초기 설정
         pygame.mixer.init()  # Initialize mixer
@@ -241,6 +244,7 @@ class Game: # 메인 게임 실행 클래스
                         self.show_classtime_page = False
                         self.count_down_start = True
                         self.class_start_sound.play()
+                        
                 elif event.key == pygame.K_q: # 단축키 '큐' 세팅 열기
                     if not self.show_setting: 
                         # 새로운 버튼 생성
@@ -386,8 +390,7 @@ class Game: # 메인 게임 실행 클래스
             self.checklist_button = Button("Image/checklist.png", 10, 100, self.checklist_callback, 2)
             self.checklist_group.add(self.checklist_button)
 
-            self.mute_button = Button("Image/mute.png", 100, 100, self.mute_callback, 2)
-            self.mute_group.add(self.mute_button)
+            self.mute_group.add(self.mute_button) # 다른 버튼 설정하는 부분은 init에 빼 두었음. 아니면 이미지가 자꾸 초기화 됨.
 
         else:
             # 버튼 숨기기
@@ -409,21 +412,20 @@ class Game: # 메인 게임 실행 클래스
             self.show_checklist_img = True
             
     # 뮤트 버튼 눌렸을 떄 실행
-    def mute_callback(self):
-        self.button_click_sound.play()
+    def mute_callback(self): # 요기 아래 코드 자세한 설명 필요!!
+            current_time = pygame.time.get_ticks()
+            if current_time - self.last_mute_toggle_time >= self.mute_toggle_delay:
+                self.button_click_sound.play()
+                self.show_vol = not self.show_vol
+                pygame.mixer.music.set_volume(0.0 if self.show_vol else 0.5)
+                self.last_mute_toggle_time = current_time
 
-        if self.show_vol:  
-            pygame.mixer.music.set_volume(0.5)
-            self.show_vol = False
-        else:
-            pygame.mixer.music.set_volume(0.0)
-            self.show_vol = True
-
-        self.mute_group.empty()
-        mute_button_image = "Image/not mute.png" if self.show_vol else "Image/mute.png"
-        mute_button = Button(mute_button_image, 100, 100, self.mute_callback, 2)
-        self.mute_group.add(mute_button)
-
+                # 뮤트 버튼 업데이트 하기
+                mute_button_image = "Image/not mute.png" if self.show_vol else "Image/mute.png"
+                self.mute_button = Button(mute_button_image, 100, 100, self.mute_callback, 2)
+                self.mute_group.empty()
+                self.mute_group.add(self.mute_button)
+                
     # 엔스게임 콜백 이건 지금 작동 안할걸? 나중에 다시 확인해보고 삭제
     def endgame_callback(self): 
         self.button_click_sound.play()
