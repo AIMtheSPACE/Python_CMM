@@ -3,7 +3,7 @@ from sprites import *
 
 def build_map(self, tilemap):
     for i, row in enumerate(tilemap):
-        for j, column in enumerate(row):
+        for j, column in enumerate(row): # 또는 여기 값
             Wooden(self, j, i)
             if column == "P":
                 self.Player = Player(self, j, i)

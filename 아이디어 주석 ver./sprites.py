@@ -3,8 +3,7 @@ from config import *
 import random
 from animation import *
 import maps
-from player import Player, get_location_x
-from player import Player, get_location_y
+
 
 
 class Spritesheet:
@@ -24,12 +23,9 @@ class Wooden(pygame.sprite.Sprite):
         self.groups = self.game.all_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
 
-        self.location_x = get_location_x(Player())
-        self.location_y = get_location_y(Player())
-
-        self.x = x * tilesize + self.location_x
-        self.y = y * tilesize + self.location_y
-        self.width, self.height = tilesize, tilesize 
+        self.x = x * tilesize # 여기에 값 넣으면 맵 움직일 수 있음. 그렇다면 여기에 +변수 를 하면 변수 값이 변하는거에 따라 할 수 있지 않을까... 
+        self.y = y * tilesize # 그리고 변수 수정 된 걸로 그리는 거는 맵이 새로 그려졌을 떄만 되도록
+        self.width, self.height = tilesize, tilesize
         self.image = self.game.wooden_spritesheet.get_sprite(0, 0, self.width, self.height)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.x, self.y

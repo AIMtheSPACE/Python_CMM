@@ -24,9 +24,6 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.x, self.y
 
-        self.location_x = 0
-        self.location_y = 0
-
         Player_animation(self)
 
     def movement(self):
@@ -59,9 +56,6 @@ class Player(pygame.sprite.Sprite):
         self.movement()
         self.animate()
 
-        self.location_x += self.x_change
-        self.location_y += self.y_change
-
         self.rect.x += self.x_change
         self.collide_walls("x")
         self.collide_desks("x")
@@ -79,12 +73,6 @@ class Player(pygame.sprite.Sprite):
 
         self.x_change = 0
         self.y_change = 0
-
-    def get_location_x(self):
-        return self.location_x
-    
-    def get_location_y(self):
-        return self.location_y
 
     def collide_walls(self, direction):
         if direction == "x":
