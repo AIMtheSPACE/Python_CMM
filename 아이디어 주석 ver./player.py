@@ -51,6 +51,8 @@ class Player(pygame.sprite.Sprite):
                 sprite.rect.y -= player_speed
             self.y_change += player_speed
             self.facing = "down"
+        print(self.rect.x)
+        
 
     def update(self):
         self.movement()
@@ -184,3 +186,4 @@ class Player(pygame.sprite.Sprite):
 
     def animate(self):
         Player_animation_animate(self)
+        
