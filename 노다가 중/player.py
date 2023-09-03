@@ -71,6 +71,8 @@ class Player(pygame.sprite.Sprite):
         self.collide_warp_down("y")
         self.collide_couple("y")
 
+        
+
         self.x_change = 0
         self.y_change = 0
 

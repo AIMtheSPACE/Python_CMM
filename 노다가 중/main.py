@@ -186,7 +186,12 @@ class Game: # 메인 게임 실행 클래스
             self.tilemap = maps.world_1.stage_5
         
         self.createTilemap(self.tilemap)
-        
+    
+    def go_back_to_office(self): # 쉬는 시간 끝나면 다시 교무실로
+        self.stage = 1
+        self.tilemap = maps.world_1.stage_1
+        self.createTilemap(self.tilemap)
+
     # 커플이 잡혔는지 확인
     def couplecaught(self):
         if self.stage == 1:
@@ -360,11 +365,19 @@ class Game: # 메인 게임 실행 클래스
         if self.drawcountdown:
             rect_width = 1050
             rect_height = 50
-            rect_color = (230, 20, 232, 8)  # Semi-transparent black color
-            pygame.draw.rect(self.screen, rect_color, (190, 0, rect_width, rect_height))
-            timer_text = f"{self.period} Period Break Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
-            timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2))
-            self.screen.blit(timer_surface, (400, -10))  # 필요에 따라 위치 조정
+            # 점심 시간 쉬는 시간 구분을 위해서
+            if self.period == 4:
+                rect_color = (230, 20, 232, 8)
+                pygame.draw.rect(self.screen, rect_color, (190, 0, rect_width, rect_height))
+                timer_text = f"Lunch Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
+                timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2))
+                self.screen.blit(timer_surface, (400, -10))  # 필요에 따라 위치 조정
+            else:
+                rect_color = (230, 20, 232, 8)
+                pygame.draw.rect(self.screen, rect_color, (190, 0, rect_width, rect_height))
+                timer_text = f"{self.period} Period Break Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
+                timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2))
+                self.screen.blit(timer_surface, (400, -10))  # 필요에 따라 위치 조정
 
             floor_text = f"Floor {self.stage}"
             floor_surface = self.timer_font.render(floor_text, True, (255, 235, 2))
@@ -523,6 +536,7 @@ class Game: # 메인 게임 실행 클래스
                             self.period += 1
                             self.show_classtime_page = True
                             self.class_end_sound.play()
+                            self.go_back_to_office()
                             
 
                         elif self.period == 9:
@@ -535,6 +549,7 @@ class Game: # 메인 게임 실행 클래스
                             self.period += 1
                             self.show_classtime_page = True
                             self.class_end_sound.play()
+                            self.go_back_to_office()
                             
                             # 여기다 그릴 것
             self.draw()
