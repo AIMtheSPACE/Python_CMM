@@ -200,18 +200,34 @@ class Game: # 메인 게임 실행 클래스
         self.tilemap = maps.world_1.stage_1
         self.createTilemap(self.tilemap)
 
+    def end_of_the_game(self): # 엔딩 조건을 먼족 시켰을 떄 가는 맵
+        self.tilemap = maps.world_1.stage_ending
+        self.createTilemap(self.tilemap)
+    
     # 커플이 잡혔는지 확인
-    def couplecaught(self):
-        if self.stage == 1:
+    def couplecaught(self, couple_num):
+        print(f"Couple {couple_num} was caught!")
+
+        if couple_num == 1:
             self.coupleOX[0] = 1
-        elif self.stage == 2:
+        elif couple_num == 2:
+            self.coupleOX[1] = 1
+        elif couple_num == 3:
             self.coupleOX[2] = 1
-        elif self.stage == 3:
+        elif couple_num == 4:
+            self.coupleOX[3] = 1
+        elif couple_num == 5:
             self.coupleOX[4] = 1
-        elif self.stage == 4:
+        elif couple_num == 6:
+            self.coupleOX[5] = 1
+        elif couple_num == 7:
             self.coupleOX[6] = 1
-        elif self.stage == 5:
+        elif couple_num == 8:
+            self.coupleOX[7] = 1
+        elif couple_num == 9:
             self.coupleOX[8] = 1
+        elif couple_num == 10:
+            self.coupleOX[9] = 1
 
     # 좌측 하단 세팅 버튼 눌렀을 떄 커플 관련 정보 표출
     def text_couple(self): 
@@ -530,6 +546,10 @@ class Game: # 메인 게임 실행 클래스
         while self.playing:
             self.events()
             self.update()
+            
+            # 엔딩 볼 때 넘어가는 스테이지
+            if self.coupleOX.count(1) == 1:
+                self.end_of_the_game()
 
             # 카운트 다운 타이머 업데이트
             if self.count_down_start: # 함수 이름 밖어서 다른 곳에 연결
@@ -560,6 +580,7 @@ class Game: # 메인 게임 실행 클래스
                             self.go_back_to_office()
                             
                             # 여기다 그릴 것
+            
             self.draw()
 
 tilemap = maps.world_1.stage_1

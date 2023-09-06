@@ -3,6 +3,7 @@ from pygame.sprite import *
 from sprites import *
 import maps
 import random
+from config import*
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -172,16 +173,21 @@ class Player(pygame.sprite.Sprite):
             if hits:
                 self.game.change_tilemap_down()
 
+
     def collide_couple(self, direction):
         if direction == "x":
             hits = pygame.sprite.spritecollide(self, self.game.couples, False)
             if hits:
-                self.game.couplecaught()
+                couple_num = hits[0].num  # hits 리스트의 첫 번째 요소에서 num을 가져옵니다.
+                self.game.couplecaught(couple_num) # couplecaught 메서드에 전달합니다.
 
         if direction == "y":
             hits = pygame.sprite.spritecollide(self, self.game.couples, False)
             if hits:
-                self.game.couplecaught()
+                couple_num = hits[0].num  # hits 리스트의 첫 번째 요소에서 num을 가져옵니다.
+                self.game.couplecaught(couple_num) # couplecaught 메서드에 전달합니다.
+
+    
 
     def animate(self):
         Player_animation_animate(self)
