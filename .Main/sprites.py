@@ -139,6 +139,7 @@ class Warp_Down(pygame.sprite.Sprite):
         self.rect.y = self.y
 
 class Couple(pygame.sprite.Sprite):
+    num = 0
     def __init__(self, game, x, y, num):
         self.game = game
         self._layer = block_layer
@@ -149,6 +150,8 @@ class Couple(pygame.sprite.Sprite):
         self.y = y * tilesize
         self.width, self.height = (tilesize * 2), tilesize
         
+        self.num = num
+
         if num == 1:
             self.image = self.game.couple1_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 2:

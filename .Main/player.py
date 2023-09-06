@@ -178,14 +178,17 @@ class Player(pygame.sprite.Sprite):
         if direction == "x":
             hits = pygame.sprite.spritecollide(self, self.game.couples, False)
             if hits:
-                couple_num = hits[0].num  # hits 리스트의 첫 번째 요소에서 num을 가져옵니다.
-                self.game.couplecaught(couple_num) # couplecaught 메서드에 전달합니다.
+                couple_num = hits[0].num 
+                self.game.couplecaught(couple_num) 
 
         if direction == "y":
             hits = pygame.sprite.spritecollide(self, self.game.couples, False)
             if hits:
-                couple_num = hits[0].num  # hits 리스트의 첫 번째 요소에서 num을 가져옵니다.
-                self.game.couplecaught(couple_num) # couplecaught 메서드에 전달합니다.
+                couple_num = hits[0].num
+                self.game.couplecaught(couple_num)
+                
+        # hits 리스트의 첫 번째 요소에서 num을 가져옵니다.
+        # couplecaught 메서드에 전달합니다.
 
     
 
