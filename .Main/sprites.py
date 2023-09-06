@@ -139,7 +139,7 @@ class Warp_Down(pygame.sprite.Sprite):
         self.rect.y = self.y
 
 class Couple(pygame.sprite.Sprite):
-    def __init__(self, game, x, y):
+    def __init__(self, game, x, y, num):
         self.game = game
         self._layer = block_layer
         self.groups = self.game.all_sprites, self.game.couples
@@ -147,8 +147,29 @@ class Couple(pygame.sprite.Sprite):
 
         self.x = x * tilesize
         self.y = y * tilesize
-        self.width, self.height = tilesize, tilesize
-        self.image = self.game.couple_spritesheet.get_sprite(0, 0, self.width, self.height)
+        self.width, self.height = tilesize * 2, tilesize
+        
+        if num == 1:
+            self.image = self.game.couple1_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 2:
+            self.image = self.game.couple2_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 3:
+            self.image = self.game.couple3_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 4:
+            self.image = self.game.couple4_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 5:
+            self.image = self.game.couple5_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 6:
+            self.image = self.game.couple6_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 7:
+            self.image = self.game.couple7_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 8:
+            self.image = self.game.couple8_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 9:
+            self.image = self.game.couple9_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 10:
+            self.image = self.game.couple10_spritesheet.get_sprite(0, 0, self.width, self.height)
+        
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y

@@ -80,7 +80,16 @@ class Game: # 메인 게임 실행 클래스
         self.warp_down_spritesheet = Spritesheet("Image/tile down.jpeg")
         self.character_spritesheet = Spritesheet("Image/character.png")
         self.empty_spritesheet = Spritesheet("Image/tile black.png")
-        self.couple_spritesheet = Spritesheet("Image/tile couple.png")
+        self.couple1_spritesheet = Spritesheet("Image/tile couple1.png")
+        self.couple2_spritesheet = Spritesheet("Image/tile couple2.png")
+        self.couple3_spritesheet = Spritesheet("Image/tile couple3.png")
+        self.couple4_spritesheet = Spritesheet("Image/tile couple4.png")
+        self.couple5_spritesheet = Spritesheet("Image/tile couple5.png")
+        self.couple6_spritesheet = Spritesheet("Image/tile couple6.png")
+        self.couple7_spritesheet = Spritesheet("Image/tile couple7.png")
+        self.couple8_spritesheet = Spritesheet("Image/tile couple8.png")
+        self.couple9_spritesheet = Spritesheet("Image/tile couple9.png")
+        self.couple10_spritesheet = Spritesheet("Image/tile couple10.png")
 
         # 그룹 생성하기
         self.setting_group = pygame.sprite.Group()

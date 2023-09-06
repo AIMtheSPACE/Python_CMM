@@ -9,3 +9,6 @@ ground_layer = 1
 block_layer = 3
 warp_layer = 4
 player_layer = 5
+
+a = -29.65
+b = -70
