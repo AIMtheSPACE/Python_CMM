@@ -5,7 +5,7 @@ from config import *
 def build_map(self, tilemap):
     for i, row in enumerate(tilemap):
         for j, column in enumerate(row):
-            Wooden(self, j+a, i+b)
+            Hallway(self, j+a, i+b)
             if column == "P":
                 self.Player = Player(self, j, i)
             if column == "B":
@@ -19,7 +19,9 @@ def build_map(self, tilemap):
             if column == "0":
                 Empty(self, j+a, i+b)
             if column == "H":
-                Hallway(self, j+a, i+b)
+                Wooden(self, j+a, i+b)
+            if column == "S":
+                Closet(self, j+a, i+b)
             
             # 커플 배치
             if column == "1":

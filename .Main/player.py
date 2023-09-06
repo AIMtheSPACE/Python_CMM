@@ -2,7 +2,6 @@ import pygame
 from pygame.sprite import *
 from sprites import *
 import maps
-from sounds import *
 import random
 
 class Player(pygame.sprite.Sprite):
@@ -12,7 +11,7 @@ class Player(pygame.sprite.Sprite):
         self.groups = self.game.all_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
 
-        self.x, self.y = 640, 450
+        self.x, self.y = 624, 434
         self.width, self.height = tilesize, tilesize
 
         self.x_change = 0

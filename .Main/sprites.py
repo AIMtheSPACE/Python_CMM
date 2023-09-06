@@ -33,7 +33,7 @@ class Wooden(pygame.sprite.Sprite):
 class Hallway(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
         self.game = game
-        self._layer = block_layer
+        self._layer = ground_layer
         self.groups = self.game.all_sprites, self.game.hallways
         pygame.sprite.Sprite.__init__(self, self.groups)
 
@@ -147,7 +147,7 @@ class Couple(pygame.sprite.Sprite):
 
         self.x = x * tilesize
         self.y = y * tilesize
-        self.width, self.height = tilesize * 2, tilesize
+        self.width, self.height = (tilesize * 2), tilesize
         
         if num == 1:
             self.image = self.game.couple1_spritesheet.get_sprite(0, 0, self.width, self.height)

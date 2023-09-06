@@ -1,5 +1,4 @@
 import pygame, sys
-from sounds import *
 from player import *
 from map_build import *
 import maps
