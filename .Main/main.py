@@ -1,5 +1,4 @@
 import pygame, sys
-from sounds import *
 from player import *
 from map_build import *
 import maps
@@ -202,17 +201,29 @@ class Game: # 메인 게임 실행 클래스
         self.createTilemap(self.tilemap)
 
     # 커플이 잡혔는지 확인
-    def couplecaught(self):
-        if self.stage == 1:
+    def couplecaught(self, couple_num):
+        print(f"Couple {couple_num} was caught!")
+
+        if couple_num == 1:
             self.coupleOX[0] = 1
-        elif self.stage == 2:
+        elif couple_num == 2:
+            self.coupleOX[1] = 1
+        elif couple_num == 3:
             self.coupleOX[2] = 1
-        elif self.stage == 3:
+        elif couple_num == 4:
+            self.coupleOX[3] = 1
+        elif couple_num == 5:
             self.coupleOX[4] = 1
-        elif self.stage == 4:
+        elif couple_num == 6:
+            self.coupleOX[5] = 1
+        elif couple_num == 7:
             self.coupleOX[6] = 1
-        elif self.stage == 5:
+        elif couple_num == 8:
+            self.coupleOX[7] = 1
+        elif couple_num == 9:
             self.coupleOX[8] = 1
+        elif couple_num == 10:
+            self.coupleOX[9] = 1
 
     # 좌측 하단 세팅 버튼 눌렀을 떄 커플 관련 정보 표출
     def text_couple(self): 
@@ -529,38 +540,41 @@ class Game: # 메인 게임 실행 클래스
         self.show_intro_images()
 
         while self.playing:
-            self.events()
-            self.update()
+            if self.coupleOX.count(1) == 10:
+                self.show_ending()
+            else:
+                self.events()
+                self.update()
 
-            # 카운트 다운 타이머 업데이트
-            if self.count_down_start: # 함수 이름 밖어서 다른 곳에 연결
-                current_time = pygame.time.get_ticks()
-                if current_time - self.last_time >= 1000: # 1초마다 업데이트
-                    self.last_time = current_time
-                    self.remaining_time -= 1
-                    if self.remaining_time <= 0:
-                        if self.period == 3: # 4교시 쉬는 시간(점심시간)
-                            self.count_down_start = False
-                            self.remaining_time = 90 * self.min # 임시 시간
-                            self.period += 1
-                            self.show_classtime_page = True
-                            self.class_end_sound.play()
-                            self.go_back_to_office()
-                            
+                # 카운트 다운 타이머 업데이트
+                if self.count_down_start: # 함수 이름 밖어서 다른 곳에 연결
+                    current_time = pygame.time.get_ticks()
+                    if current_time - self.last_time >= 1000: # 1초마다 업데이트
+                        self.last_time = current_time
+                        self.remaining_time -= 1
+                        if self.remaining_time <= 0:
+                            if self.period == 3: # 4교시 쉬는 시간(점심시간)
+                                self.count_down_start = False
+                                self.remaining_time = 90 * self.min # 임시 시간
+                                self.period += 1
+                                self.show_classtime_page = True
+                                self.class_end_sound.play()
+                                self.go_back_to_office()
+                                
 
-                        elif self.period == 9:
-                            self.show_ending()
-                            self.drawcountdown = False # 카운트 다운 표시 하지 않게 하기 위함
+                            elif self.period == 9:
+                                self.show_ending()
+                                self.drawcountdown = False # 카운트 다운 표시 하지 않게 하기 위함
 
-                        else:
-                            self.count_down_start = False #요기도 바꿔야함
-                            self.remaining_time = 60 * self.min
-                            self.period += 1
-                            self.show_classtime_page = True
-                            self.class_end_sound.play()
-                            self.go_back_to_office()
-                            
-                            # 여기다 그릴 것
+                            else:
+                                self.count_down_start = False #요기도 바꿔야함
+                                self.remaining_time = 60 * self.min
+                                self.period += 1
+                                self.show_classtime_page = True
+                                self.class_end_sound.play()
+                                self.go_back_to_office()
+                                
+                                # 여기다 그릴 것
             self.draw()
 
 tilemap = maps.world_1.stage_1
