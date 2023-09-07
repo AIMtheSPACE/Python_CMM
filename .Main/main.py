@@ -548,7 +548,7 @@ class Game: # 메인 게임 실행 클래스
             self.update()
             
             # 엔딩 볼 때 넘어가는 스테이지
-            if self.coupleOX.count(1) == 1:
+            if self.coupleOX.count(1) == 10:
                 self.end_of_the_game()
 
             # 카운트 다운 타이머 업데이트
