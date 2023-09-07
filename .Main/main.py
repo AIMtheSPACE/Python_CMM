@@ -79,6 +79,7 @@ class Game: # 메인 게임 실행 클래스
         self.warp_down_spritesheet = Spritesheet("Image/tile down.jpeg")
         self.character_spritesheet = Spritesheet("Image/character.png")
         self.empty_spritesheet = Spritesheet("Image/tile black.png")
+        self.stair_spritesheet = Spritesheet("Image/tile marble.png")
         self.couple1_spritesheet = Spritesheet("Image/tile couple1.png")
         self.couple2_spritesheet = Spritesheet("Image/tile couple2.png")
         self.couple3_spritesheet = Spritesheet("Image/tile couple3.png")
@@ -89,6 +90,13 @@ class Game: # 메인 게임 실행 클래스
         self.couple8_spritesheet = Spritesheet("Image/tile couple8.png")
         self.couple9_spritesheet = Spritesheet("Image/tile couple9.png")
         self.couple10_spritesheet = Spritesheet("Image/tile couple10.png")
+        self.student1_spritesheet = Spritesheet("Image/tile student1.png")
+        self.student2_spritesheet = Spritesheet("Image/tile student2.png")
+        self.student3_spritesheet = Spritesheet("Image/tile student3.png")
+        self.student4_spritesheet = Spritesheet("Image/tile student4.png")
+        self.student5_spritesheet = Spritesheet("Image/tile student5.png")
+        self.student6_spritesheet = Spritesheet("Image/tile student6.png")
+        
 
         # 그룹 생성하기
         self.setting_group = pygame.sprite.Group()
@@ -118,8 +126,6 @@ class Game: # 메인 게임 실행 클래스
         self.show_vol = True
         self.count_down_start = True
         self.drawcountdown = True
-        self.show_ending_stage = True
-        self.show_fail_ending_stage = True
 
         # 그 외의 초기 설정
         self.coupleOX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -139,6 +145,7 @@ class Game: # 메인 게임 실행 클래스
 
     def createTilemap(self, tilemap):
         self.all_sprites.empty()  # 기존 스프라이트 삭제
+        self.woodens.empty()
         self.desks.empty()  # 기존 책상 스프라이트 삭제
         self.walls.empty()  # 기존 벽 스프라이트 삭제
         self.closets.empty()  # 기존 신발장 스프라이트 삭제
@@ -147,16 +154,14 @@ class Game: # 메인 게임 실행 클래스
         self.emptys.empty()
         self.hallways.empty()
         self.couples.empty()
-
-        # 맵 그리는데, 시작 위치가 다르게 함.
-        if self.coupleOX.count(1) == 1 or self.period == 9:
-            build_map_end(self,tilemap)
-        else:
-            build_map(self, tilemap) # 맵 그리기
+        self.stairs.empty()
+        self.students.empty()
+        build_map(self, tilemap) # 맵 그리기
 
     def new(self, tilemap):
         self.playing = True
         self.all_sprites = pygame.sprite.LayeredUpdates()
+        self.woodens = pygame.sprite.LayeredUpdates()
         self.desks = pygame.sprite.LayeredUpdates()
         self.walls = pygame.sprite.LayeredUpdates()
         self.closets = pygame.sprite.LayeredUpdates()
@@ -165,6 +170,8 @@ class Game: # 메인 게임 실행 클래스
         self.emptys = pygame.sprite.LayeredUpdates()
         self.hallways = pygame.sprite.LayeredUpdates()
         self.couples = pygame.sprite.LayeredUpdates()
+        self.stairs = pygame.sprite.LayeredUpdates()
+        self.students = pygame.sprite.LayeredUpdates()
         self.tilemap = tilemap
         self.createTilemap(tilemap)
         
@@ -208,17 +215,10 @@ class Game: # 메인 게임 실행 클래스
         self.tilemap = maps.world_1.stage_1
         self.createTilemap(self.tilemap)
 
-
-    # 성공 / 실패 엔딩 용
-    def show_end_of_the_game(self): # 엔딩 조건을 먼족 시켰을 떄 가는 맵
-        self.tilemap = maps.world_1.stage_ending_success
+    def end_of_the_game(self): # 엔딩 조건을 먼족 시켰을 떄 가는 맵
+        self.tilemap = maps.world_1.stage_ending
         self.createTilemap(self.tilemap)
-
-    def show_end_of_the_game_fail(self): # 실패 엔딩
-        self.tilemap = maps.world_1.stage_ending_fail
-        self.createTilemap(self.tilemap)
-
-       
+    
     # 커플이 잡혔는지 확인
     def couplecaught(self, couple_num):
         print(f"Couple {couple_num} was caught!")
@@ -324,121 +324,106 @@ class Game: # 메인 게임 실행 클래스
         self.screen.fill("black")
         self.all_sprites.draw(self.screen)
 
-        # 성공 엔딩 보여 줄때 출력 할 것
-        if not self.show_ending_stage:
-            ending_text = "Congratulations! You caught all!"
-            ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2))
-            self.screen.blit(ending_surface, (300, 450)) 
+        if self.show_classtime_page:
+            self.draw_scaled_image("Image/수업 시간에 표시 할 것.png", 1, (640, 450))
 
-        # 실패 엔딩 보여 줄때 출력 할 것
-        if not self.show_fail_ending_stage:
-            ending_text = "You Failed."
-            ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2))
-            self.screen.blit(ending_surface, (300, 450)) 
+        if self.show_setting:
+            rect_width = 175
+            rect_height = 350
+            rect_color = (230, 20, 232, 128) 
+            pygame.draw.rect(self.screen, rect_color, (10, 450, rect_width, rect_height))
 
-        # self.show_ending_stage 엔딩을 보게 되면 Fasle로 바뀌며 이게 다 실행되지 않음.
-        if self.show_ending_stage and self.show_fail_ending_stage:
-            if self.show_classtime_page:
-                self.draw_scaled_image("Image/수업 시간에 표시 할 것.png", 1, (640, 450))
-
-            if self.show_setting:
-                rect_width = 175
-                rect_height = 350
-                rect_color = (230, 20, 232, 128) 
-                pygame.draw.rect(self.screen, rect_color, (10, 450, rect_width, rect_height))
-
-            # 픽셀로 그려진 커플 체크리스트 표시(잡혔는지 아닌지에 따라 다른 그림)
-            if self.show_checklist_img:
-                if self.page == 1:
-                    if self.coupleOX[0] == 1:
-                        image_path = "Image/checklist_1.png"
-                    else:
-                        image_path = "Image/checklist_1_not.png"
-                elif self.page == 2:
-                    if self.coupleOX[1] == 1:
-                        image_path = "Image/checklist_2.png"
-                    else:
-                        image_path = "Image/checklist_2_not.png"
-                elif self.page == 3:
-                    if self.coupleOX[2] == 1:
-                        image_path = "Image/checklist_3.png"
-                    else:
-                        image_path = "Image/checklist_3_not.png"
-                elif self.page == 4:
-                    if self.coupleOX[3] == 1:
-                        image_path = "Image/checklist_4.png"
-                    else:
-                        image_path = "Image/checklist_4_not.png"
-                elif self.page == 5:
-                    if self.coupleOX[4] == 1:
-                        image_path = "Image/checklist_5.png"
-                    else:
-                        image_path = "Image/checklist_5_not.png"
-                elif self.page == 6:
-                    if self.coupleOX[5] == 1:
-                        image_path = "Image/checklist_6.png"
-                    else:
-                        image_path = "Image/checklist_6_not.png"
-                elif self.page == 7:
-                    if self.coupleOX[6] == 1:
-                        image_path = "Image/checklist_7.png"
-                    else:
-                        image_path = "Image/checklist_7_not.png"
-                elif self.page == 8:
-                    if self.coupleOX[7] == 1:
-                        image_path = "Image/checklist_8.png"
-                    else:
-                        image_path = "Image/checklist_8_not.png"
-                elif self.page == 9:
-                    if self.coupleOX[8] == 1:
-                        image_path = "Image/checklist_9.png"
-                    else:
-                        image_path = "Image/checklist_9_not.png"
-                elif self.page == 10:
-                    if self.coupleOX[9] == 1:
-                        image_path = "Image/checklist_10.png"
-                    else:
-                        image_path = "Image/checklist_10_not.png"
-                
-                image_center = (self.screen.get_width() // 2, self.screen.get_height() // 2)
-                scaled_image = ChecklistImage(image_path, 1, image_center)
-                self.checklistimg_group.empty()  # 기존 이미지 삭제
-                self.checklistimg_group.add(scaled_image)  # 새로운 이미지 추가
-                self.show_checklist_img = False
-
-            # 그룹에 추가한 요소들 그리기
-            self.setting_group.draw(self.screen)
-            self.checklist_group.draw(self.screen)
-            self.ending_group.draw(self.screen)
-            self.checklistimg_group.draw(self.screen)
-            self.mute_group.draw(self.screen)
-            self.classtime_group.draw(self.screen)
-            
-            # 카운트 다운 타이머 표시
-            if self.drawcountdown:
-                rect_width = 1050
-                rect_height = 50
-                # 점심 시간 쉬는 시간 구분을 위해서
-                if self.period == 4:
-                    rect_color = (230, 20, 232, 8)
-                    pygame.draw.rect(self.screen, rect_color, (190, 0, rect_width, rect_height))
-                    timer_text = f"Lunch Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
-                    timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2))
-                    self.screen.blit(timer_surface, (400, -10))  # 필요에 따라 위치 조정
+        # 픽셀로 그려진 커플 체크리스트 표시(잡혔는지 아닌지에 따라 다른 그림)
+        if self.show_checklist_img:
+            if self.page == 1:
+                if self.coupleOX[0] == 1:
+                    image_path = "Image/checklist_1.png"
                 else:
-                    rect_color = (230, 20, 232, 8)
-                    pygame.draw.rect(self.screen, rect_color, (190, 0, rect_width, rect_height))
-                    timer_text = f"{self.period} Period Break Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
-                    timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2))
-                    self.screen.blit(timer_surface, (400, -10))  # 필요에 따라 위치 조정
+                    image_path = "Image/checklist_1_not.png"
+            elif self.page == 2:
+                if self.coupleOX[1] == 1:
+                    image_path = "Image/checklist_2.png"
+                else:
+                    image_path = "Image/checklist_2_not.png"
+            elif self.page == 3:
+                if self.coupleOX[2] == 1:
+                    image_path = "Image/checklist_3.png"
+                else:
+                    image_path = "Image/checklist_3_not.png"
+            elif self.page == 4:
+                if self.coupleOX[3] == 1:
+                    image_path = "Image/checklist_4.png"
+                else:
+                    image_path = "Image/checklist_4_not.png"
+            elif self.page == 5:
+                if self.coupleOX[4] == 1:
+                    image_path = "Image/checklist_5.png"
+                else:
+                    image_path = "Image/checklist_5_not.png"
+            elif self.page == 6:
+                if self.coupleOX[5] == 1:
+                    image_path = "Image/checklist_6.png"
+                else:
+                    image_path = "Image/checklist_6_not.png"
+            elif self.page == 7:
+                if self.coupleOX[6] == 1:
+                    image_path = "Image/checklist_7.png"
+                else:
+                    image_path = "Image/checklist_7_not.png"
+            elif self.page == 8:
+                if self.coupleOX[7] == 1:
+                    image_path = "Image/checklist_8.png"
+                else:
+                    image_path = "Image/checklist_8_not.png"
+            elif self.page == 9:
+                if self.coupleOX[8] == 1:
+                    image_path = "Image/checklist_9.png"
+                else:
+                    image_path = "Image/checklist_9_not.png"
+            elif self.page == 10:
+                if self.coupleOX[9] == 1:
+                    image_path = "Image/checklist_10.png"
+                else:
+                    image_path = "Image/checklist_10_not.png"
+            
+            image_center = (self.screen.get_width() // 2, self.screen.get_height() // 2)
+            scaled_image = ChecklistImage(image_path, 1, image_center)
+            self.checklistimg_group.empty()  # 기존 이미지 삭제
+            self.checklistimg_group.add(scaled_image)  # 새로운 이미지 추가
+            self.show_checklist_img = False
 
-                floor_text = f"Floor {self.stage}"
-                floor_surface = self.timer_font.render(floor_text, True, (255, 235, 2))
-                self.screen.blit(floor_surface, (200, -10))  # 필요에 따라 위치 조정
+        # 그룹에 추가한 요소들 그리기
+        self.setting_group.draw(self.screen)
+        self.checklist_group.draw(self.screen)
+        self.ending_group.draw(self.screen)
+        self.checklistimg_group.draw(self.screen)
+        self.mute_group.draw(self.screen)
+        self.classtime_group.draw(self.screen)
+        
+        # 카운트 다운 타이머 표시
+        if self.drawcountdown:
+            rect_width = 1050
+            rect_height = 50
+            # 점심 시간 쉬는 시간 구분을 위해서
+            if self.period == 4:
+                rect_color = (230, 20, 232, 8)
+                pygame.draw.rect(self.screen, rect_color, (190, 0, rect_width, rect_height))
+                timer_text = f"Lunch Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
+                timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2))
+                self.screen.blit(timer_surface, (400, -10))  # 필요에 따라 위치 조정
+            else:
+                rect_color = (230, 20, 232, 8)
+                pygame.draw.rect(self.screen, rect_color, (190, 0, rect_width, rect_height))
+                timer_text = f"{self.period} Period Break Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
+                timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2))
+                self.screen.blit(timer_surface, (400, -10))  # 필요에 따라 위치 조정
 
-            if self.show_setting: # 그냥 귀찮아서 원래 있던 함수 따라 씀. 세팅이 눌렸을 떄 실행
-                self.text_couple()
+            floor_text = f"Floor {self.stage}"
+            floor_surface = self.timer_font.render(floor_text, True, (255, 235, 2))
+            self.screen.blit(floor_surface, (200, -10))  # 필요에 따라 위치 조정
 
+        if self.show_setting: # 그냥 귀찮아서 원래 있던 함수 따라 씀. 세팅이 눌렸을 떄 실행
+            self.text_couple()
 
         self.clock.tick(fps)
         pygame.display.update()
@@ -513,6 +498,14 @@ class Game: # 메인 게임 실행 클래스
                     if event.key == pygame.K_SPACE:
                         show_classtime_img = False
                         self.count_down_start = True
+        
+    def show_ending(self): # 엔딩 코드 여기다 !!!! 수정 필수 여기가 찐
+        self.ending_button = Button("Image/endgame.png", 100, 100, self.endgame_callback, 0.5)
+        self.ending_group.add(self.ending_button)
+        if self.coupleOX.count(1) == 10:
+            print("성공")
+        else:
+            print("실패")
 
     # 클래스 타임 화면에서 사라지고, 카운트 다운 시작
     def classtime_callback(self):
@@ -570,13 +563,8 @@ class Game: # 메인 게임 실행 클래스
             self.update()
             
             # 엔딩 볼 때 넘어가는 스테이지
-            if self.coupleOX.count(1) == 1 and self.show_ending_stage:
-                self.show_ending_stage = False
-                self.show_end_of_the_game()
-                
-            if self.period == 9 and self.show_fail_ending_stage:
-                self.show_fail_ending_stage = False
-                self.show_end_of_the_game_fail()
+            if self.coupleOX.count(1) == 10:
+                self.end_of_the_game()
 
             # 카운트 다운 타이머 업데이트
             if self.count_down_start: # 함수 이름 밖어서 다른 곳에 연결
@@ -595,6 +583,7 @@ class Game: # 메인 게임 실행 클래스
                             
 
                         elif self.period == 9:
+                            self.show_ending()
                             self.drawcountdown = False # 카운트 다운 표시 하지 않게 하기 위함
 
                         else:
