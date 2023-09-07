@@ -12,6 +12,8 @@ def build_map(self, tilemap):
                 Desk(self, j+a, i+b)
             if column == "T":
                 Wall(self, j+a, i+b)
+            if column == "R":
+                Stair(self, j+a, i+b)
             if column == "U":
                 Warp_Up(self, j+a, i+b)
             if column == "D":
@@ -22,6 +24,7 @@ def build_map(self, tilemap):
                 Wooden(self, j+a, i+b)
             if column == "S":
                 Closet(self, j+a, i+b)
+            
             
             # 커플 배치
             if column == "1":
@@ -44,3 +47,17 @@ def build_map(self, tilemap):
                 Couple(self, j+a, i+b, 9)
             if column == "*":
                 Couple(self, j+a, i+b, 10)
+
+            # 일반 학생 배치
+            if column == "a":
+                Student(self, j+a, i+b, 1)
+            if column == "b":
+                Student(self, j+a, i+b, 2)
+            if column == "c":
+                Student(self, j+a, i+b, 3)
+            if column == "d":
+                Student(self, j+a, i+b, 4)
+            if column == "e":
+                Student(self, j+a, i+b, 5)
+            if column == "f":
+                Student(self, j+a, i+b, 6)

@@ -11,4 +11,4 @@ warp_layer = 4
 player_layer = 5
 
 a = -30
-b = -60
+b = -80

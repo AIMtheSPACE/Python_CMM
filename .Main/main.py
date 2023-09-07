@@ -79,6 +79,7 @@ class Game: # 메인 게임 실행 클래스
         self.warp_down_spritesheet = Spritesheet("Image/tile down.jpeg")
         self.character_spritesheet = Spritesheet("Image/character.png")
         self.empty_spritesheet = Spritesheet("Image/tile black.png")
+        self.stair_spritesheet = Spritesheet("Image/tile marble.png")
         self.couple1_spritesheet = Spritesheet("Image/tile couple1.png")
         self.couple2_spritesheet = Spritesheet("Image/tile couple2.png")
         self.couple3_spritesheet = Spritesheet("Image/tile couple3.png")
@@ -89,6 +90,13 @@ class Game: # 메인 게임 실행 클래스
         self.couple8_spritesheet = Spritesheet("Image/tile couple8.png")
         self.couple9_spritesheet = Spritesheet("Image/tile couple9.png")
         self.couple10_spritesheet = Spritesheet("Image/tile couple10.png")
+        self.student1_spritesheet = Spritesheet("Image/tile student1.png")
+        self.student2_spritesheet = Spritesheet("Image/tile student2.png")
+        self.student3_spritesheet = Spritesheet("Image/tile student3.png")
+        self.student4_spritesheet = Spritesheet("Image/tile student4.png")
+        self.student5_spritesheet = Spritesheet("Image/tile student5.png")
+        self.student6_spritesheet = Spritesheet("Image/tile student6.png")
+        
 
         # 그룹 생성하기
         self.setting_group = pygame.sprite.Group()
@@ -137,6 +145,7 @@ class Game: # 메인 게임 실행 클래스
 
     def createTilemap(self, tilemap):
         self.all_sprites.empty()  # 기존 스프라이트 삭제
+        self.woodens.empty()
         self.desks.empty()  # 기존 책상 스프라이트 삭제
         self.walls.empty()  # 기존 벽 스프라이트 삭제
         self.closets.empty()  # 기존 신발장 스프라이트 삭제
@@ -145,11 +154,14 @@ class Game: # 메인 게임 실행 클래스
         self.emptys.empty()
         self.hallways.empty()
         self.couples.empty()
+        self.stairs.empty()
+        self.students.empty()
         build_map(self, tilemap) # 맵 그리기
 
     def new(self, tilemap):
         self.playing = True
         self.all_sprites = pygame.sprite.LayeredUpdates()
+        self.woodens = pygame.sprite.LayeredUpdates()
         self.desks = pygame.sprite.LayeredUpdates()
         self.walls = pygame.sprite.LayeredUpdates()
         self.closets = pygame.sprite.LayeredUpdates()
@@ -158,6 +170,8 @@ class Game: # 메인 게임 실행 클래스
         self.emptys = pygame.sprite.LayeredUpdates()
         self.hallways = pygame.sprite.LayeredUpdates()
         self.couples = pygame.sprite.LayeredUpdates()
+        self.stairs = pygame.sprite.LayeredUpdates()
+        self.students = pygame.sprite.LayeredUpdates()
         self.tilemap = tilemap
         self.createTilemap(tilemap)
 
