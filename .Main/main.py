@@ -167,8 +167,9 @@ class Game: # 메인 게임 실행 클래스
         self.couples = pygame.sprite.LayeredUpdates()
         self.tilemap = tilemap
         self.createTilemap(tilemap)
+        
 
-        # 버튼 생성
+        # 버튼 생성하기
         self.button = Button("Image/설정.png", 10, 10, self.setting_callback, 1)
         self.setting_group.add(self.button)
 
