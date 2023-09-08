@@ -106,8 +106,8 @@ class Game: # 메인 게임 실행 클래스
         self.mute_group = pygame.sprite.Group()
 
         # 폰트 초기 설정
-        self.timer_font = pygame.font.SysFont("arialblack", 40) 
-        self.couple_font = pygame.font.SysFont("arialblack", 15) # 필요에 따라 폰트 크기 조정하기
+        self.timer_font = pygame.font.SysFont("neodgm_code.ttf", 60) 
+        self.couple_font = pygame.font.SysFont("neodgm_code.ttf", 25) # 필요에 따라 폰트 크기 조정하기
 
         # 값을 가지는 변수
         self.period = 1  # 초기 기간 값
@@ -159,7 +159,7 @@ class Game: # 메인 게임 실행 클래스
         self.students.empty()
 
         # 맵 그리는데, 시작 위치가 다르게 함.
-        if self.coupleOX.count(1) == 10 or self.period == 9:
+        if self.coupleOX.count(1) == 1 or self.period == 9:
             build_map_end(self,tilemap)
         else:
             build_map(self, tilemap) # 맵 그리기
@@ -259,7 +259,7 @@ class Game: # 메인 게임 실행 클래스
     # 좌측 하단 세팅 버튼 눌렀을 떄 커플 관련 정보 표출
     def text_couple(self): 
         coupleleft_text = f"{self.coupleOX.count(0)} couple(s) left"
-        coupleleft_surface = self.couple_font.render(coupleleft_text, True, (255, 235, 2))
+        coupleleft_surface = self.couple_font.render(coupleleft_text, True, (255, 235, 2), (0, 255, 0))
         self.screen.blit(coupleleft_surface, (10, 450))  # 필요에 따라 위치 조정
 
         for index, value in enumerate(self.coupleOX):
@@ -339,13 +339,13 @@ class Game: # 메인 게임 실행 클래스
         # 성공 엔딩 보여 줄때 출력 할 것
         if not self.show_ending_stage:
             ending_text = "Congratulations! You caught all!"
-            ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2))
+            ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2), (0, 0, 0))
             self.screen.blit(ending_surface, (300, 450)) 
 
         # 실패 엔딩 보여 줄때 출력 할 것
         if not self.show_fail_ending_stage:
             ending_text = "You Failed."
-            ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2))
+            ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2), (0, 0, 0))
             self.screen.blit(ending_surface, (300, 450)) 
 
         # self.show_ending_stage 엔딩을 보게 되면 Fasle로 바뀌며 이게 다 실행되지 않음.
@@ -432,21 +432,19 @@ class Game: # 메인 게임 실행 클래스
                 rect_height = 50
                 # 점심 시간 쉬는 시간 구분을 위해서
                 if self.period == 4:
-                    rect_color = (230, 20, 232, 8)
-                    pygame.draw.rect(self.screen, rect_color, (190, 0, rect_width, rect_height))
+                    rect_color = (230, 20, 232)
                     timer_text = f"Lunch Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
-                    timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2))
-                    self.screen.blit(timer_surface, (400, -10))  # 필요에 따라 위치 조정
+                    timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2), rect_color)
+                    self.screen.blit(timer_surface, (400, 0))  # 필요에 따라 위치 조정
                 else:
-                    rect_color = (230, 20, 232, 8)
-                    pygame.draw.rect(self.screen, rect_color, (190, 0, rect_width, rect_height))
+                    rect_color = (230, 20, 232)
                     timer_text = f"{self.period} Period Break Time / Time left : {self.remaining_time // 60:02}:{self.remaining_time % 60:02}"
-                    timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2))
-                    self.screen.blit(timer_surface, (400, -10))  # 필요에 따라 위치 조정
+                    timer_surface = self.timer_font.render(timer_text, True, (255, 235, 2), rect_color)
+                    self.screen.blit(timer_surface, (400, 0))  # 필요에 따라 위치 조정
 
                 floor_text = f"Floor {self.stage}"
-                floor_surface = self.timer_font.render(floor_text, True, (255, 235, 2))
-                self.screen.blit(floor_surface, (200, -10))  # 필요에 따라 위치 조정
+                floor_surface = self.timer_font.render(floor_text, True, (255, 235, 2), rect_color)
+                self.screen.blit(floor_surface, (200, 0))  # 필요에 따라 위치 조정
 
             if self.show_setting: # 그냥 귀찮아서 원래 있던 함수 따라 씀. 세팅이 눌렸을 떄 실행
                 self.text_couple()
@@ -582,7 +580,7 @@ class Game: # 메인 게임 실행 클래스
             self.update()
             
             # 엔딩 볼 때 넘어가는 스테이지
-            if self.coupleOX.count(1) == 10 and self.show_ending_stage:
+            if self.coupleOX.count(1) == 1 and self.show_ending_stage:
                 self.show_ending_stage = False
                 self.show_end_of_the_game()
                 
@@ -590,35 +588,36 @@ class Game: # 메인 게임 실행 클래스
                 self.show_fail_ending_stage = False
                 self.show_end_of_the_game_fail()
 
-            # 카운트 다운 타이머 업데이트
-            if self.count_down_start: # 함수 이름 밖어서 다른 곳에 연결
-                current_time = pygame.time.get_ticks()
-                if current_time - self.last_time >= 1000: # 1초마다 업데이트
-                    self.last_time = current_time
-                    self.remaining_time -= 1
-                    if self.remaining_time <= 0:
-                        if self.period == 3: # 4교시 쉬는 시간(점심시간)
-                            self.count_down_start = False
-                            self.remaining_time = 90 * self.min # 임시 시간
-                            self.period += 1
-                            self.show_classtime_page = True
-                            self.class_end_sound.play()
-                            self.go_back_to_office()
-                            
+            if self.show_fail_ending_stage and self.show_ending_stage:
+                # 카운트 다운 타이머 업데이트
+                if self.count_down_start: # 함수 이름 밖어서 다른 곳에 연결
+                    current_time = pygame.time.get_ticks()
+                    if current_time - self.last_time >= 1000: # 1초마다 업데이트
+                        self.last_time = current_time
+                        self.remaining_time -= 1
+                        if self.remaining_time <= 0:
+                            if self.period == 3: # 4교시 쉬는 시간(점심시간)
+                                self.count_down_start = False
+                                self.remaining_time = 90 * self.min # 임시 시간
+                                self.period += 1
+                                self.show_classtime_page = True
+                                self.class_end_sound.play()
+                                self.go_back_to_office()
+                                
 
-                        elif self.period == 9:
-                            self.drawcountdown = False # 카운트 다운 표시 하지 않게 하기 위함
+                            elif self.period == 9:
+                                self.drawcountdown = False # 카운트 다운 표시 하지 않게 하기 위함
 
-                        else:
-                            self.count_down_start = False #요기도 바꿔야함
-                            self.remaining_time = 60 * self.min
-                            self.period += 1
-                            self.show_classtime_page = True
-                            self.class_end_sound.play()
-                            self.go_back_to_office()
-                            
-                            # 여기다 그릴 것
-            
+                            else:
+                                self.count_down_start = False #요기도 바꿔야함
+                                self.remaining_time = 60 * self.min
+                                self.period += 1
+                                self.show_classtime_page = True
+                                self.class_end_sound.play()
+                                self.go_back_to_office()
+                                
+                                # 여기다 그릴 것
+                
             self.draw()
 
 tilemap = maps.world_1.stage_1
