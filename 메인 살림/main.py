@@ -69,7 +69,6 @@ class Game: # 메인 게임 실행 클래스
         self.running = True
 
         # 이미지 활용을 위한 설정
-        self.terrainsheet = Spritesheet("Image/terrain1.png")
         self.desk_spritesheet = Spritesheet("Image/tile desk.png")
         self.hallway_spritesheet = Spritesheet("Image/tile hallway.jpeg")
         self.closet_spritesheet = Spritesheet("Image/tile shoes closet.jpeg")
@@ -113,7 +112,7 @@ class Game: # 메인 게임 실행 클래스
         self.period = 1  # 초기 기간 값
         self.min = 1 # 테스르 하려면 이 값 줄여서 게임 빨리 진행 시키기
         self.page = 1
-        self.stage = 1
+        self.stage = 2
         self.last_mute_toggle_time = 0 # 디파인 뮤트에 있음
         self.mute_toggle_delay = 100
 
@@ -216,8 +215,8 @@ class Game: # 메인 게임 실행 클래스
         self.createTilemap(self.tilemap)
     
     def go_back_to_office(self): # 쉬는 시간 끝나면 다시 교무실로
-        self.stage = 1
-        self.tilemap = maps.world_1.stage_1
+        self.stage = 2
+        self.tilemap = maps.world_1.stage_2
         self.createTilemap(self.tilemap)
 
 
@@ -351,7 +350,7 @@ class Game: # 메인 게임 실행 클래스
         # self.show_ending_stage 엔딩을 보게 되면 Fasle로 바뀌며 이게 다 실행되지 않음.
         if self.show_ending_stage and self.show_fail_ending_stage:
             if self.show_classtime_page:
-                self.draw_scaled_image("Image/claatimeIMG.png", 0.25, (640, 450))
+                self.draw_scaled_image("Image/claatimeIMG.png", 0.25, (675, 485))
 
             if self.show_setting:
                 rect_width = 175
@@ -620,7 +619,7 @@ class Game: # 메인 게임 실행 클래스
                 
             self.draw()
 
-tilemap = maps.world_1.stage_1
+tilemap = maps.world_1.stage_2
 game = Game()
 game.new(tilemap)
 
