@@ -114,7 +114,7 @@ class Game: # 메인 게임 실행 클래스
         self.min = 1 # 테스르 하려면 이 값 줄여서 게임 빨리 진행 시키기
         self.page = 1
         self.stage = 1
-        self.last_mute_toggle_time = 0 # 함수 명 바꾸자... 디파인 뮤트에 있음
+        self.last_mute_toggle_time = 0 # 디파인 뮤트에 있음
         self.mute_toggle_delay = 100
 
         # True / False를 가지는 함수
@@ -159,7 +159,7 @@ class Game: # 메인 게임 실행 클래스
         self.students.empty()
 
         # 맵 그리는데, 시작 위치가 다르게 함.
-        if self.coupleOX.count(1) == 1 or self.period == 9:
+        if self.coupleOX.count(1) == 10 or self.period == 9:
             build_map_end(self,tilemap)
         else:
             build_map(self, tilemap) # 맵 그리기
@@ -582,7 +582,7 @@ class Game: # 메인 게임 실행 클래스
             self.update()
             
             # 엔딩 볼 때 넘어가는 스테이지
-            if self.coupleOX.count(1) == 1 and self.show_ending_stage:
+            if self.coupleOX.count(1) == 10 and self.show_ending_stage:
                 self.show_ending_stage = False
                 self.show_end_of_the_game()
                 

@@ -20,7 +20,7 @@ class Wooden(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
         self.game = game
         self._layer = ground_layer
-        self.groups = self.game.all_sprites, self.game.woodens
+        self.groups = self.game.all_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         self.x = x * tilesize
@@ -165,6 +165,8 @@ class Couple(pygame.sprite.Sprite):
         self.x = x * tilesize
         self.y = y * tilesize
         self.width, self.height = (tilesize * 2), tilesize
+        
+        self.num = num
 
         if num == 1:
             self.image = self.game.couple1_spritesheet.get_sprite(0, 0, self.width, self.height)
@@ -192,8 +194,8 @@ class Couple(pygame.sprite.Sprite):
         self.rect.y = self.y
 
 class Student(pygame.sprite.Sprite):
-    numnum = 0
-    def __init__(self, game, x, y, numnum):
+    num = 0
+    def __init__(self, game, x, y, num):
         self.game = game
         self._layer = block_layer
         self.groups = self.game.all_sprites, self.game.students
@@ -203,17 +205,17 @@ class Student(pygame.sprite.Sprite):
         self.y = y * tilesize
         self.width, self.height = tilesize, tilesize
 
-        if numnum == 1:
+        if num == 1:
             self.image = self.game.student1_spritesheet.get_sprite(0, 0, self.width, self.height)
-        elif numnum == 2:
+        elif num == 2:
             self.image = self.game.student2_spritesheet.get_sprite(0, 0, self.width, self.height)
-        elif numnum == 3:
+        elif num == 3:
             self.image = self.game.student3_spritesheet.get_sprite(0, 0, self.width, self.height)
-        elif numnum == 4:
+        elif num == 4:
             self.image = self.game.student4_spritesheet.get_sprite(0, 0, self.width, self.height)
-        elif numnum == 5:
+        elif num == 5:
             self.image = self.game.student5_spritesheet.get_sprite(0, 0, self.width, self.height)
-        elif numnum == 6:
+        elif num == 6:
             self.image = self.game.student6_spritesheet.get_sprite(0, 0, self.width, self.height)
         
         self.rect = self.image.get_rect()
