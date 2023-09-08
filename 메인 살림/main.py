@@ -68,8 +68,7 @@ class Game: # 메인 게임 실행 클래스
         self.clock = pygame.time.Clock()
         self.running = True
 
-        # 이미지 활용을 위한 설정
-        self.terrainsheet = Spritesheet("Image/terrain1.png")
+        # 이미지 활용을 위한 설정d
         self.desk_spritesheet = Spritesheet("Image/tile desk.png")
         self.hallway_spritesheet = Spritesheet("Image/tile hallway.jpeg")
         self.closet_spritesheet = Spritesheet("Image/tile shoes closet.jpeg")
