@@ -106,8 +106,8 @@ class Game: # 메인 게임 실행 클래스
         self.mute_group = pygame.sprite.Group()
 
         # 폰트 초기 설정
-        self.timer_font = pygame.font.SysFont("neodgm_code.ttf", 60) 
-        self.couple_font = pygame.font.SysFont("neodgm_code.ttf", 25) # 필요에 따라 폰트 크기 조정하기
+        self.timer_font = pygame.font.SysFont("Font/neodgm_code.ttf", 60) 
+        self.couple_font = pygame.font.SysFont("Font/neodgm_code.ttf", 25) # 필요에 따라 폰트 크기 조정하기
 
         # 값을 가지는 변수
         self.period = 1  # 초기 기간 값
@@ -351,7 +351,7 @@ class Game: # 메인 게임 실행 클래스
         # self.show_ending_stage 엔딩을 보게 되면 Fasle로 바뀌며 이게 다 실행되지 않음.
         if self.show_ending_stage and self.show_fail_ending_stage:
             if self.show_classtime_page:
-                self.draw_scaled_image("Image/수업 시간에 표시 할 것.png", 1, (640, 450))
+                self.draw_scaled_image("Image/claatimeIMG.png", 0.25, (640, 450))
 
             if self.show_setting:
                 rect_width = 175
@@ -547,7 +547,7 @@ class Game: # 메인 게임 실행 클래스
 
     # 시작 인트로 이미지 표시 기능(추가 원하면, 그 리스트 늘리면 됨 그리고 관련 수정 좀 하고)
     def show_intro_images(self):
-        intro_images = ["Image/배경화면.png", "Image/조작법.png", "Image/대지 1.png"] # 첫번째 
+        intro_images = ["Image/배경화면.png", "Image/조작법.png", "Image/info.png"] # 첫번째 
         current_intro_index = 0
         total_intro_images = len(intro_images)
         show_intro = True
