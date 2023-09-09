@@ -230,3 +230,34 @@ class Student(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
+
+class Umbrella(pygame.sprite.Sprite):
+    num = 0
+    def __init__(self, game, x, y, num):
+        self.game = game
+        self._layer = block_layer
+        self.groups = self.game.all_sprites, self.game.umbrellas
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * tilesize
+        self.y = y * tilesize
+        self.width, self.height = tilesize * 2, tilesize * 2
+
+        if num == 1:
+            self.image = self.game.umbrella1_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 2:
+            self.image = self.game.umbrella2_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 3:
+            self.image = self.game.umbrella3_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 4:
+            self.image = self.game.umbrella4_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 5:
+            self.image = self.game.umbrella5_spritesheet.get_sprite(0, 0, self.width, self.height)
+        """
+        elif num == 6:
+            self.image = self.game.umbrella6_spritesheet.get_sprite(0, 0, self.width, self.height)
+        """
+        
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y

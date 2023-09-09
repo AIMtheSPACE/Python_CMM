@@ -73,6 +73,7 @@ class Game: # 메인 게임 실행 클래스
         self.desk2_spritesheet = Spritesheet("Image/tile desk2.png")
         self.desk3_spritesheet = Spritesheet("Image/tile desk3.png")
         self.desk4_spritesheet = Spritesheet("Image/tile desk4.png")
+        
         self.hallway_spritesheet = Spritesheet("Image/tile hallway.jpeg")
         self.closet_spritesheet = Spritesheet("Image/tile shoes closet.jpeg")
         self.wooden_spritesheet = Spritesheet("Image/tile wooden.jpeg")
@@ -82,6 +83,7 @@ class Game: # 메인 게임 실행 클래스
         self.character_spritesheet = Spritesheet("Image/character.png")
         self.empty_spritesheet = Spritesheet("Image/tile black.png")
         self.stair_spritesheet = Spritesheet("Image/tile marble.png")
+        
         self.couple1_spritesheet = Spritesheet("Image/tile couple1.png")
         self.couple2_spritesheet = Spritesheet("Image/tile couple2.png")
         self.couple3_spritesheet = Spritesheet("Image/tile couple3.png")
@@ -92,12 +94,19 @@ class Game: # 메인 게임 실행 클래스
         self.couple8_spritesheet = Spritesheet("Image/tile couple8.png")
         self.couple9_spritesheet = Spritesheet("Image/tile couple9.png")
         self.couple10_spritesheet = Spritesheet("Image/tile couple10.png")
+        
         self.student1_spritesheet = Spritesheet("Image/tile student1.png")
         self.student2_spritesheet = Spritesheet("Image/tile student2.png")
         self.student3_spritesheet = Spritesheet("Image/tile student3.png")
         self.student4_spritesheet = Spritesheet("Image/tile student4.png")
         self.student5_spritesheet = Spritesheet("Image/tile student5.png")
         self.student6_spritesheet = Spritesheet("Image/tile student6.png")
+        
+        self.umbrella1_spritesheet = Spritesheet("Image/tile umbrella1.png")
+        self.umbrella2_spritesheet = Spritesheet("Image/tile umbrella2.png")
+        self.umbrella3_spritesheet = Spritesheet("Image/tile umbrella3.png")
+        self.umbrella4_spritesheet = Spritesheet("Image/tile umbrella4.png")
+        self.umbrella5_spritesheet = Spritesheet("Image/tile umbrella5.png")
 
         # 그룹 생성하기
         self.setting_group = pygame.sprite.Group()
@@ -159,6 +168,7 @@ class Game: # 메인 게임 실행 클래스
         self.couples.empty()
         self.stairs.empty()
         self.students.empty()
+        self.umbrellas.empty()
 
         # 맵 그리는데, 시작 위치가 다르게 함.
         if self.coupleOX.count(1) == 1 or self.period == 9:
@@ -180,6 +190,7 @@ class Game: # 메인 게임 실행 클래스
         self.couples = pygame.sprite.LayeredUpdates()
         self.stairs = pygame.sprite.LayeredUpdates()
         self.students = pygame.sprite.LayeredUpdates()
+        self.umbrellas = pygame.sprite.LayeredUpdates()
         self.tilemap = tilemap
         self.createTilemap(tilemap)
 

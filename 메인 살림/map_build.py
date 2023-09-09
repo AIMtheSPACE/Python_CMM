@@ -56,6 +56,7 @@ def build_map(self, tilemap):
             if column == "*":
                 Couple(self, j+a, i+b, 10)
             
+            # 일반 학생 배치
             if column == "a":
                 Student(self, j+a, i+b, 1)
             if column == "b":
@@ -68,6 +69,18 @@ def build_map(self, tilemap):
                 Student(self, j+a, i+b, 5)
             if column == "f":
                 Student(self, j+a, i+b, 6)
+
+            # 우산 배치
+            if column == "o":
+                Umbrella(self, j+a, i+b, 1)
+            if column == "p":
+                Umbrella(self, j+a, i+b, 2)
+            if column == "q":
+                Umbrella(self, j+a, i+b, 3)
+            if column == "r":
+                Umbrella(self, j+a, i+b, 4)
+            if column == "s":
+                Umbrella(self, j+a, i+b, 5)
 
 def build_map_end(self, tilemap):
     for i, row in enumerate(tilemap):
