@@ -124,7 +124,7 @@ class Game: # 메인 게임 실행 클래스
 
         # 값을 가지는 변수
         self.period = 1  # 초기 기간 값
-        self.min = 0.05 # 테스르 하려면 이 값 줄여서 게임 빨리 진행 시키기
+        self.min = 1 # 테스르 하려면 이 값 줄여서 게임 빨리 진행 시키기
         self.page = 1
         self.stage = 2
         self.last_mute_toggle_time = 0 # 디파인 뮤트에 있음
