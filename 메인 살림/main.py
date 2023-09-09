@@ -546,6 +546,7 @@ class Game: # 메인 게임 실행 클래스
     # 클래스 타임 화면에서 사라지고, 카운트 다운 시작
     def classtime_callback(self):
         self.class_start_sound.play()
+        self.main_sound.play(fade_ms = 3000)
         self.classtime_group.remove(self.classtime_button)
         self.count_down_start = True
 
@@ -584,8 +585,8 @@ class Game: # 메인 게임 실행 클래스
                         current_intro_index += 1
                         if current_intro_index >= total_intro_images:
                             show_intro = False
-                            self.intro_sound.fadeout(1000) # 페이드 아웃
-                            self.main_sound.play(fade_ms = 1000) # 페이드 인
+                            self.intro_sound.fadeout(2000) # 페이드 아웃
+                            self.main_sound.play(loops = -1, fade_ms = 20000) # 페이드 인
 
             if current_intro_index < total_intro_images:
                 intro_image = pygame.image.load(intro_images[current_intro_index])
@@ -625,6 +626,7 @@ class Game: # 메인 게임 실행 클래스
                                 self.remaining_time = 90 * self.min # 임시 시간
                                 self.period += 1
                                 self.show_classtime_page = True
+                                self.main_sound.fadeout(1000)
                                 self.class_end_sound.play()
                                 self.go_back_to_office()
                                 
