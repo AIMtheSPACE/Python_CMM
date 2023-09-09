@@ -33,6 +33,8 @@ def build_map(self, tilemap):
                 Wooden(self, j+a, i+b)
             if column == "S":
                 Closet(self, j+a, i+b)
+            if column == "I":
+                White(self, j+a, i+b)
             
             # 커플 배치
             if column == "1":

@@ -65,6 +65,7 @@ class Player(pygame.sprite.Sprite):
         self.collide_couples("x")
         self.collide_students("x")
         self.collide_umbrellas("x")
+        self.collide_white("x")
         self.rect.y += self.y_change
         self.collide_walls("y")
         self.collide_desks("y")
@@ -74,6 +75,7 @@ class Player(pygame.sprite.Sprite):
         self.collide_couples("y")
         self.collide_students("y")
         self.collide_umbrellas("y")
+        self.collide_white("y")
 
         self.x_change = 0
         self.y_change = 0
@@ -242,6 +244,30 @@ class Player(pygame.sprite.Sprite):
                         sprite.rect.y -= player_speed
                     self.rect.y = hits[0].rect.bottom
     
+    def collide_white(self, direction):
+        if direction == "x":
+            hits = pygame.sprite.spritecollide(self, self.game.white, False)
+            if hits:
+                if self.x_change > 0:
+                    for sprite in self.game.all_sprites:
+                        sprite.rect.x += player_speed
+                    self.rect.x = hits[0].rect.left - self.rect.width
+                if self.x_change < 0:
+                    for sprite in self.game.all_sprites:
+                        sprite.rect.x -= player_speed
+                    self.rect.x = hits[0].rect.right
+
+        if direction == "y":
+            hits = pygame.sprite.spritecollide(self, self.game.white, False)
+            if hits:
+                if self.y_change > 0:
+                    for sprite in self.game.all_sprites:
+                        sprite.rect.y += player_speed
+                    self.rect.y = hits[0].rect.top - self.rect.height
+                if self.y_change < 0:
+                    for sprite in self.game.all_sprites:
+                        sprite.rect.y -= player_speed
+                    self.rect.y = hits[0].rect.bottom
 
     def animate(self):
         Player_animation_animate(self)
