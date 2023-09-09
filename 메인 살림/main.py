@@ -107,6 +107,7 @@ class Game: # 메인 게임 실행 클래스
         self.umbrella3_spritesheet = Spritesheet("Image/tile umbrella3.png")
         self.umbrella4_spritesheet = Spritesheet("Image/tile umbrella4.png")
         self.umbrella5_spritesheet = Spritesheet("Image/tile umbrella5.png")
+        self.umbrella6_spritesheet = Spritesheet("Image/tile umbrella6.png")
 
         # 그룹 생성하기
         self.setting_group = pygame.sprite.Group()

@@ -81,6 +81,8 @@ def build_map(self, tilemap):
                 Umbrella(self, j+a, i+b, 4)
             if column == "s":
                 Umbrella(self, j+a, i+b, 5)
+            if column == "t":
+                Umbrella(self, j+a, i+b, 6)
 
 def build_map_end(self, tilemap):
     for i, row in enumerate(tilemap):

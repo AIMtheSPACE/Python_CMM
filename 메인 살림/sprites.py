@@ -253,10 +253,8 @@ class Umbrella(pygame.sprite.Sprite):
             self.image = self.game.umbrella4_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 5:
             self.image = self.game.umbrella5_spritesheet.get_sprite(0, 0, self.width, self.height)
-        """
         elif num == 6:
             self.image = self.game.umbrella6_spritesheet.get_sprite(0, 0, self.width, self.height)
-        """
         
         self.rect = self.image.get_rect()
         self.rect.x = self.x
