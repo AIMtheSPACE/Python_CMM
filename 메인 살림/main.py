@@ -142,7 +142,7 @@ class Game: # 메인 게임 실행 클래스
         self.show_fail_ending_stage = True
 
         # 그 외의 초기 설정
-        self.coupleOX = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self.coupleOX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.tilemap = None
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
@@ -154,7 +154,7 @@ class Game: # 메인 게임 실행 클래스
         self.class_start_sound = pygame.mixer.Sound("Song/41 시작종.mp3")
         self.class_end_sound = pygame.mixer.Sound("Song/42 종료종.mp3")
         self.couple_caught_sound = pygame.mixer.Sound("Song/Correct 9.mp3")
-        self.intro_sound = pygame.mixer.Sound("Song/13-01 Back in my days.wav")
+        self.intro_sound = pygame.mixer.Sound("Songs/13-01 Back in my days.wav")
         self.main_sound = pygame.mixer.Sound("Song/13-03 Dinosaurs Are Still Alive.wav")
 
 
@@ -175,7 +175,7 @@ class Game: # 메인 게임 실행 클래스
         self.umbrellas.empty() # 여러 기존 스프라이트 삭제
 
         # 맵의 시작 위치를 다르게
-        if self.coupleOX.count(1) == 2 or self.period == 9:
+        if self.coupleOX.count(1) == 10 or self.period == 9:
             build_map_end(self,tilemap)
         else:
             build_map(self, tilemap) # 맵 그리기
@@ -612,7 +612,7 @@ class Game: # 메인 게임 실행 클래스
             self.update()
             
             # 엔딩 볼 때 넘어가는 스테이지
-            if self.coupleOX.count(1) == 2 and self.show_ending_stage:
+            if self.coupleOX.count(1) == 10 and self.show_ending_stage:
                 self.show_ending_stage = False
                 self.show_end_of_the_game()
                 
