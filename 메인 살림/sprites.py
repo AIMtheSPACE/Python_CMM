@@ -74,8 +74,8 @@ class White(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = self.x, self.y
 
 class Desk(pygame.sprite.Sprite):
-    way = 0
-    def __init__(self, game, x, y, way):
+    num = 0
+    def __init__(self, game, x, y, num):
         self.game = game
         self._layer = block_layer
         self.groups = self.game.all_sprites, self.game.desks
@@ -85,14 +85,22 @@ class Desk(pygame.sprite.Sprite):
         self.y = y * tilesize
         self.width, self.height = tilesize, tilesize
 
-        if way == 1:
+        if num == 1:
             self.image = self.game.desk1_spritesheet.get_sprite(0, 0, self.width, self.height)
-        elif way == 2:
+        elif num == 2:
             self.image = self.game.desk2_spritesheet.get_sprite(0, 0, self.width, self.height)
-        elif way == 3:
+        elif num == 3:
             self.image = self.game.desk3_spritesheet.get_sprite(0, 0, self.width, self.height)
-        elif way == 4:
+        elif num == 4:
             self.image = self.game.desk4_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 5:
+            self.image = self.game.desk5_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 6:
+            self.image = self.game.desk6_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 7:
+            self.image = self.game.desk7_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 8:
+            self.image = self.game.desk8_spritesheet.get_sprite(0, 0, self.width, self.height)
 
         self.rect = self.image.get_rect()
         self.rect.x = self.x

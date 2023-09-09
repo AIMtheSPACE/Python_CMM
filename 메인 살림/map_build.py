@@ -18,6 +18,14 @@ def build_map(self, tilemap):
                 Desk(self, j+a, i+b, 3)
             if column == "Z":
                 Desk(self, j+a, i+b, 4)
+            if column == "w":
+                Desk(self, j+a, i+b, 5)
+            if column == "x":
+                Desk(self, j+a, i+b, 6)
+            if column == "y":
+                Desk(self, j+a, i+b, 7)
+            if column == "z":
+                Desk(self, j+a, i+b, 8)
             
             if column == "T":
                 Wall(self, j+a, i+b)
