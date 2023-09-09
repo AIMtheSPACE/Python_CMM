@@ -158,7 +158,7 @@ class Game: # 메인 게임 실행 클래스
         self.class_start_sound = pygame.mixer.Sound("Song/41 시작종.mp3")
         self.class_end_sound = pygame.mixer.Sound("Song/42 종료종.mp3")
         self.couple_caught_sound = pygame.mixer.Sound("Song/Correct 9.mp3")
-        self.intro_sound = pygame.mixer.Sound("Songs/13-01 Back in my days.wav")
+        self.intro_sound = pygame.mixer.Sound("Song/13-01 Back in my days.wav")
         self.main_sound = pygame.mixer.Sound("Song/13-03 Dinosaurs Are Still Alive.wav")
 
 
@@ -365,13 +365,13 @@ class Game: # 메인 게임 실행 클래스
         if not self.show_ending_stage:
             ending_text = "Congratulations! You caught all!"
             ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2), (0, 0, 0))
-            self.screen.blit(ending_surface, (300, 600)) 
+            self.screen.blit(ending_surface, (330, 500)) 
 
         # 실패 엔딩 보여 줄때 출력 할 것
         if not self.show_fail_ending_stage:
             ending_text = "You Failed."
             ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2), (0, 0, 0))
-            self.screen.blit(ending_surface, (300, 600)) 
+            self.screen.blit(ending_surface, (518, 500)) 
 
         # 성공 / 실패 둘 중 하나의 엔딩을 보게 되면 Fasle로 바뀌며 이게 다 실행되지 않음.
         if self.show_ending_stage and self.show_fail_ending_stage:
@@ -446,8 +446,7 @@ class Game: # 메인 게임 실행 클래스
             self.ending_group.draw(self.screen)
             self.checklistimg_group.draw(self.screen)
             self.mute_group.draw(self.screen)
-            #self.classtime_group.draw(self.screen)
-            
+           
             # 카운트 다운 타이머 표시
             if self.drawcountdown:
                 rect_width = 1050
@@ -553,13 +552,6 @@ class Game: # 메인 게임 실행 클래스
                     if event.key == pygame.K_SPACE:
                         show_classtime_img = False
                         self.count_down_start = True
-
-    # 클래스 타임 화면에서 사라지고, 카운트 다운 시작
-    #def classtime_callback(self):
-     #   self.class_start_sound.play()
-      #  self.main_sound.play(fade_ms = 3000)
-       # self.classtime_group.remove(self.classtime_button)
-        #self.count_down_start = True
 
     # 화살표로 변수 값 변경할때 리미트 주는거
     def adjust_value(self, value, change, min_value, max_value):
