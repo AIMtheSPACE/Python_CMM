@@ -59,6 +59,20 @@ class Empty(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = self.x, self.y
         self.image.set_colorkey("White")
 
+class White(pygame.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self._layer = block_layer
+        self.groups = self.game.all_sprites, self.game.white
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * tilesize
+        self.y = y * tilesize
+        self.width, self.height = tilesize, tilesize
+        self.image = self.game.white_spritesheet.get_sprite(0, 0, self.width, self.height)
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = self.x, self.y
+
 class Desk(pygame.sprite.Sprite):
     way = 0
     def __init__(self, game, x, y, way):
@@ -253,10 +267,8 @@ class Umbrella(pygame.sprite.Sprite):
             self.image = self.game.umbrella4_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 5:
             self.image = self.game.umbrella5_spritesheet.get_sprite(0, 0, self.width, self.height)
-        """
         elif num == 6:
             self.image = self.game.umbrella6_spritesheet.get_sprite(0, 0, self.width, self.height)
-        """
         
         self.rect = self.image.get_rect()
         self.rect.x = self.x

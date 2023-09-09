@@ -33,6 +33,8 @@ def build_map(self, tilemap):
                 Wooden(self, j+a, i+b)
             if column == "S":
                 Closet(self, j+a, i+b)
+            if column == "I":
+                White(self, j+a, i+b)
             
             # 커플 배치
             if column == "1":
@@ -81,6 +83,8 @@ def build_map(self, tilemap):
                 Umbrella(self, j+a, i+b, 4)
             if column == "s":
                 Umbrella(self, j+a, i+b, 5)
+            if column == "t":
+                Umbrella(self, j+a, i+b, 6)
 
 def build_map_end(self, tilemap):
     for i, row in enumerate(tilemap):

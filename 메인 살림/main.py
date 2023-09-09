@@ -83,6 +83,7 @@ class Game: # 메인 게임 실행 클래스
         self.character_spritesheet = Spritesheet("Image/character.png")
         self.empty_spritesheet = Spritesheet("Image/tile black.png")
         self.stair_spritesheet = Spritesheet("Image/tile marble.png")
+        self.white_spritesheet = Spritesheet("Image/tile white.png")
         
         self.couple1_spritesheet = Spritesheet("Image/tile couple1.png")
         self.couple2_spritesheet = Spritesheet("Image/tile couple2.png")
@@ -107,6 +108,7 @@ class Game: # 메인 게임 실행 클래스
         self.umbrella3_spritesheet = Spritesheet("Image/tile umbrella3.png")
         self.umbrella4_spritesheet = Spritesheet("Image/tile umbrella4.png")
         self.umbrella5_spritesheet = Spritesheet("Image/tile umbrella5.png")
+        self.umbrella6_spritesheet = Spritesheet("Image/tile umbrella6.png")
 
         # 그룹 생성하기
         self.setting_group = pygame.sprite.Group()
@@ -165,6 +167,7 @@ class Game: # 메인 게임 실행 클래스
         self.warp_up.empty()  # 기존 워프 스프라이트 삭제
         self.warp_down.empty()  # 기존 워프 스프라이트 삭제
         self.emptys.empty()
+        self.white.empty()
         self.hallways.empty()
         self.couples.empty()
         self.stairs.empty()
@@ -187,6 +190,7 @@ class Game: # 메인 게임 실행 클래스
         self.warp_up = pygame.sprite.LayeredUpdates()
         self.warp_down = pygame.sprite.LayeredUpdates()
         self.emptys = pygame.sprite.LayeredUpdates()
+        self.white = pygame.sprite.LayeredUpdates()
         self.hallways = pygame.sprite.LayeredUpdates()
         self.couples = pygame.sprite.LayeredUpdates()
         self.stairs = pygame.sprite.LayeredUpdates()
