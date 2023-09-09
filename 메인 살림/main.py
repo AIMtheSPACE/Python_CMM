@@ -116,7 +116,6 @@ class Game: # 메인 게임 실행 클래스
 
         # 그룹 생성하기
         self.setting_group = pygame.sprite.Group()
-        #self.classtime_group = pygame.sprite.Group()
         self.ending_group = pygame.sprite.Group() 
         self.checklist_group = pygame.sprite.Group()
         self.checklistimg_group = pygame.sprite.Group()
@@ -233,7 +232,7 @@ class Game: # 메인 게임 실행 클래스
         elif self.stage == 4:
             self.tilemap = maps.world_1.stage_4
         elif self.stage == 5:
-            self.tilemap = maps.world_1.stage_5
+            self.tilemap = maps.worldW_1.stage_5
         
         self.createTilemap(self.tilemap)
     

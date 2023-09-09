@@ -105,7 +105,6 @@ class Desk(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
-        self.image.set_colorkey("white")
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
