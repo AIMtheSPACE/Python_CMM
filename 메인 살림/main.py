@@ -444,7 +444,7 @@ class Game: # 메인 게임 실행 클래스
             self.checklist_group.draw(self.screen)
             self.ending_group.draw(self.screen)
             self.checklistimg_group.draw(self.screen)
-            self.mute_group.draw(self.screen)
+            self.mute_group.draw(self.screen) #@
            
             # 카운트 다운 타이머 표시
             if self.drawcountdown:
@@ -513,7 +513,7 @@ class Game: # 메인 게임 실행 클래스
             self.show_checklist = True
             self.show_checklist_img = True
             
-    # 뮤트 버튼 눌렸을 떄 실행
+    # 뮤트 버튼 눌렸을 떄 실행 @
     def mute_callback(self):
             current_time = pygame.time.get_ticks()
             if current_time - self.last_mute_toggle_time >= self.mute_toggle_delay:
@@ -531,10 +531,8 @@ class Game: # 메인 게임 실행 클래스
                 self.mute_group.empty()
                 self.mute_group.add(self.mute_button)
                 
-    # 엔스게임 콜백 이건 지금 작동 안할걸? 나중에 다시 확인해보고 삭제
     def endgame_callback(self): 
         self.button_click_sound.play()
-
         # 버튼을 누를 때 동작을 여기에!
         self.playing = False
         self.running = False
@@ -598,6 +596,8 @@ class Game: # 메인 게임 실행 클래스
                 self.clock.tick(60)
             else:
                 show_intro = False
+
+                
     # 메인 실행 코드
     def main(self):
         self.show_intro_images()

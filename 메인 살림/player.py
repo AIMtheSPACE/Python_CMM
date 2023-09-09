@@ -191,8 +191,8 @@ class Player(pygame.sprite.Sprite):
                 couple_num = hits[0].num
                 self.game.couplecaught(couple_num)
                 
-        # hits 리스트의 첫 번째 요소에서 num을 가져옵니다.
-        # couplecaught 메서드에 전달합니다.
+        # hits 리스트의 첫 번째 요소에서 num을 가져온다.
+        # couplecaught 전달
 
     def collide_students(self, direction):
         if direction == "x":
