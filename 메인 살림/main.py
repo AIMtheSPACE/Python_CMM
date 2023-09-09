@@ -360,13 +360,13 @@ class Game: # 메인 게임 실행 클래스
         if not self.show_ending_stage:
             ending_text = "Congratulations! You caught all!"
             ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2), (0, 0, 0))
-            self.screen.blit(ending_surface, (300, 450)) 
+            self.screen.blit(ending_surface, (300, 600)) 
 
         # 실패 엔딩 보여 줄때 출력 할 것
         if not self.show_fail_ending_stage:
             ending_text = "You Failed."
             ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2), (0, 0, 0))
-            self.screen.blit(ending_surface, (300, 450)) 
+            self.screen.blit(ending_surface, (300, 600)) 
 
         # self.show_ending_stage 엔딩을 보게 되면 Fasle로 바뀌며 이게 다 실행되지 않음.
         if self.show_ending_stage and self.show_fail_ending_stage:
