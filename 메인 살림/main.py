@@ -145,7 +145,7 @@ class Game: # 메인 게임 실행 클래스
         self.show_fail_ending_stage = True
 
         # 그 외의 초기 설정
-        self.coupleOX = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self.coupleOX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.tilemap = None
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
@@ -178,7 +178,7 @@ class Game: # 메인 게임 실행 클래스
         self.umbrellas.empty() # 여러 기존 스프라이트 삭제
 
         # 맵의 시작 위치를 다르게
-        if self.coupleOX.count(1) == 2 or self.period == 9:
+        if self.coupleOX.count(1) == 10 or self.period == 9:
             build_map_end(self,tilemap)
         else:
             build_map(self, tilemap) # 맵 그리기
@@ -364,13 +364,13 @@ class Game: # 메인 게임 실행 클래스
         if not self.show_ending_stage:
             ending_text = "Congratulations! You caught all!"
             ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2), (0, 0, 0))
-            self.screen.blit(ending_surface, (300, 600)) 
+            self.screen.blit(ending_surface, (330, 500)) 
 
         # 실패 엔딩 보여 줄때 출력 할 것
         if not self.show_fail_ending_stage:
             ending_text = "You Failed."
             ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2), (0, 0, 0))
-            self.screen.blit(ending_surface, (300, 600)) 
+            self.screen.blit(ending_surface, (518, 500)) 
 
         # 성공 / 실패 둘 중 하나의 엔딩을 보게 되면 Fasle로 바뀌며 이게 다 실행되지 않음.
         if self.show_ending_stage and self.show_fail_ending_stage:
@@ -445,8 +445,7 @@ class Game: # 메인 게임 실행 클래스
             self.ending_group.draw(self.screen)
             self.checklistimg_group.draw(self.screen)
             self.mute_group.draw(self.screen)
-            #self.classtime_group.draw(self.screen)
-            
+           
             # 카운트 다운 타이머 표시
             if self.drawcountdown:
                 rect_width = 1050
@@ -553,13 +552,6 @@ class Game: # 메인 게임 실행 클래스
                         show_classtime_img = False
                         self.count_down_start = True
 
-    # 클래스 타임 화면에서 사라지고, 카운트 다운 시작
-    #def classtime_callback(self):
-     #   self.class_start_sound.play()
-      #  self.main_sound.play(fade_ms = 3000)
-       # self.classtime_group.remove(self.classtime_button)
-        #self.count_down_start = True
-
     # 화살표로 변수 값 변경할때 리미트 주는거
     def adjust_value(self, value, change, min_value, max_value):
             new_value = value + change
@@ -615,7 +607,7 @@ class Game: # 메인 게임 실행 클래스
             self.update()
             
             # 엔딩 볼 때 넘어가는 스테이지
-            if self.coupleOX.count(1) == 2 and self.show_ending_stage:
+            if self.coupleOX.count(1) == 10 and self.show_ending_stage:
                 self.show_ending_stage = False
                 self.show_end_of_the_game()
                 
