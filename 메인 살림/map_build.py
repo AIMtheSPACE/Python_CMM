@@ -8,8 +8,17 @@ def build_map(self, tilemap):
             Hallway(self, j+a, i+b)
             if column == "P":
                 self.Player = Player(self, j, i)
-            if column == "B":
-                Desk(self, j+a, i+b)
+            
+            #의자 방향별 배치
+            if column == "W":
+                Desk(self, j+a, i+b, 1)
+            if column == "X":
+                Desk(self, j+a, i+b, 2)
+            if column == "Y":
+                Desk(self, j+a, i+b, 3)
+            if column == "Z":
+                Desk(self, j+a, i+b, 4)
+            
             if column == "T":
                 Wall(self, j+a, i+b)
             if column == "R":
