@@ -13,7 +13,7 @@ pygame.display.set_icon(pygame.image.load("Image/청운 로고.png") ) # 게임 
 class ChecklistImage(pygame.sprite.Sprite): # 체크리스트 이미지 보여주는 클래스
     def __init__(self, image_path, scale, center_position):
         super().__init__()
-        self.image = pygame.image.load(image_path)
+        self.image = pygame.image.load(image_path) # 이미지 불러오기, 아래 스케일 조절
         self.image = pygame.transform.scale(self.image, (
             int(self.image.get_width() * scale),
             int(self.image.get_height() * scale)
@@ -30,7 +30,7 @@ class Button(pygame.sprite.Sprite): # 게임 내의 전체적인 버튼들을 �
         self.image = pygame.transform.scale(self.image, new_size)
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
-        self.callback = callback
+        self.callback = callback # 콜백 사용 할 수 있는 기능을 추가함.
         self.is_mouse_over = False
         self.is_clicked = False
         self.prev_mouse_state = False  # 이전의 마우스 상태 확인
@@ -47,7 +47,7 @@ class Button(pygame.sprite.Sprite): # 게임 내의 전체적인 버튼들을 �
         else:
             self.is_mouse_over = False
 
-        self.prev_mouse_state = pygame.mouse.get_pressed()[0]  # 마우스 상태를 원래대로 되돌리가
+        self.prev_mouse_state = pygame.mouse.get_pressed()[0]  # 마우스 상태를 원래대로 되돌리기
 
 
     def draw(self, surface):
@@ -63,7 +63,7 @@ class Button(pygame.sprite.Sprite): # 게임 내의 전체적인 버튼들을 �
 
 class Game: # 메인 게임 실행 클래스
     def __init__(self):
-        pygame.init()
+        pygame.init() # 초기화 및 게임 초기 설정
         self.screen = pygame.display.set_mode((win_width, win_height))
         self.clock = pygame.time.Clock()
         self.running = True
@@ -112,19 +112,19 @@ class Game: # 메인 게임 실행 클래스
 
         # 그룹 생성하기
         self.setting_group = pygame.sprite.Group()
-        self.classtime_group = pygame.sprite.Group()
+        #self.classtime_group = pygame.sprite.Group()
         self.ending_group = pygame.sprite.Group() 
         self.checklist_group = pygame.sprite.Group()
         self.checklistimg_group = pygame.sprite.Group()
         self.mute_group = pygame.sprite.Group()
 
         # 폰트 초기 설정
-        self.timer_font = pygame.font.SysFont("Font/neodgm_code.ttf", 60) 
-        self.couple_font = pygame.font.SysFont("Font/neodgm_code.ttf", 25) # 필요에 따라 폰트 크기 조정하기
+        self.timer_font = pygame.font.SysFont("Font/neodgm_code.ttf", 60)  # 타이머 용 폰트
+        self.couple_font = pygame.font.SysFont("Font/neodgm_code.ttf", 25) # 커플 용 폰트
 
         # 값을 가지는 변수
         self.period = 1  # 초기 기간 값
-        self.min = 1 # 테스르 하려면 이 값 줄여서 게임 빨리 진행 시키기
+        self.min = 0.05 # 테스르 하려면 이 값 줄여서 게임 빨리 진행 시키기
         self.page = 1
         self.stage = 2
         self.last_mute_toggle_time = 0 # 디파인 뮤트에 있음
@@ -148,7 +148,7 @@ class Game: # 메인 게임 실행 클래스
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
         self.mute_button = Button("Image/mute.png", 100, 100, self.mute_callback, 2) # 세팅 누를 뺴마자 초기화 안 시키려고 뺌.
 
-        # 음악 시작 하자 마자 실행 / 음악 관련 초기 설정
+        # 음악 파일 불러오기
         pygame.mixer.init()
         self.button_click_sound = pygame.mixer.Sound("Song/Tiny Button Push Sound.mp3")
         self.class_start_sound = pygame.mixer.Sound("Song/41 시작종.mp3")
@@ -158,9 +158,9 @@ class Game: # 메인 게임 실행 클래스
         self.main_sound = pygame.mixer.Sound("Song/배달의민족 - 배달은 자신있어.mp3")
 
 
-    def createTilemap(self, tilemap):
+    def createTilemap(self, tilemap): # 타일맵 제작 코드
         self.all_sprites.empty()  # 기존 스프라이트 삭제
-        self.woodens.empty()
+        self.woodens.empty() 
         self.desks.empty()  # 기존 책상 스프라이트 삭제
         self.walls.empty()  # 기존 벽 스프라이트 삭제
         self.closets.empty()  # 기존 신발장 스프라이트 삭제
@@ -172,9 +172,9 @@ class Game: # 메인 게임 실행 클래스
         self.couples.empty()
         self.stairs.empty()
         self.students.empty()
-        self.umbrellas.empty()
+        self.umbrellas.empty() # 여러 기존 스프라이트 삭제
 
-        # 맵 그리는데, 시작 위치가 다르게 함.
+        # 맵의 시작 위치를 다르게
         if self.coupleOX.count(1) == 1 or self.period == 9:
             build_map_end(self,tilemap)
         else:
@@ -199,7 +199,7 @@ class Game: # 메인 게임 실행 클래스
         self.tilemap = tilemap
         self.createTilemap(tilemap)
 
-        # 버튼 생성
+        # 설정 버튼 생성
         self.button = Button("Image/설정.png", 10, 10, self.setting_callback, 1)
         self.setting_group.add(self.button)
 
@@ -282,7 +282,7 @@ class Game: # 메인 게임 실행 클래스
         coupleleft_surface = self.couple_font.render(coupleleft_text, True, (255, 235, 2), (0, 255, 0))
         self.screen.blit(coupleleft_surface, (10, 450))  # 필요에 따라 위치 조정
 
-        for index, value in enumerate(self.coupleOX):
+        for index, value in enumerate(self.coupleOX): # 반복적인 일을 처리하기 위함
             if value == 1:
                 couplecaught_text = f"{index + 1} couple caught"
                 couplecaught_surface = self.couple_font.render(couplecaught_text, True, (255, 235, 2))
@@ -319,7 +319,7 @@ class Game: # 메인 게임 실행 클래스
                     if not self.count_down_start:
                         self.show_classtime_page = False
                         self.count_down_start = True
-                        self.class_start_sound.play()
+                        self.class_start_sound.play() 
                         
                 elif event.key == pygame.K_q: # 단축키 '큐' 세팅 열기
                     if not self.show_setting: 
@@ -343,7 +343,7 @@ class Game: # 메인 게임 실행 클래스
 
         # 업데이트
         self.setting_group.update()
-        self.classtime_group.update()
+        #self.classtime_group.update()
         self.ending_group.update()
         self.checklist_group.update()
         self.checklistimg_group.update()
@@ -352,9 +352,10 @@ class Game: # 메인 게임 실행 클래스
     def update(self):
         self.all_sprites.update()
 
-    def draw(self):
+    def draw(self): # 화면에 그리는 기능을 담당
         self.screen.fill("black")
         self.all_sprites.draw(self.screen)
+        
 
         # 성공 엔딩 보여 줄때 출력 할 것
         if not self.show_ending_stage:
@@ -368,11 +369,8 @@ class Game: # 메인 게임 실행 클래스
             ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2), (0, 0, 0))
             self.screen.blit(ending_surface, (300, 600)) 
 
-        # self.show_ending_stage 엔딩을 보게 되면 Fasle로 바뀌며 이게 다 실행되지 않음.
+        # 성공 / 실패 둘 중 하나의 엔딩을 보게 되면 Fasle로 바뀌며 이게 다 실행되지 않음.
         if self.show_ending_stage and self.show_fail_ending_stage:
-            if self.show_classtime_page:
-                self.draw_scaled_image("Image/claatimeIMG.png", 0.25, (675, 485))
-
             if self.show_setting:
                 rect_width = 175
                 rect_height = 350
@@ -444,7 +442,7 @@ class Game: # 메인 게임 실행 클래스
             self.ending_group.draw(self.screen)
             self.checklistimg_group.draw(self.screen)
             self.mute_group.draw(self.screen)
-            self.classtime_group.draw(self.screen)
+            #self.classtime_group.draw(self.screen)
             
             # 카운트 다운 타이머 표시
             if self.drawcountdown:
@@ -468,6 +466,11 @@ class Game: # 메인 게임 실행 클래스
 
             if self.show_setting: # 그냥 귀찮아서 원래 있던 함수 따라 씀. 세팅이 눌렸을 떄 실행
                 self.text_couple()
+
+
+            # 가장 위에 표시하기 위함
+            if self.show_classtime_page:
+                self.draw_scaled_image("Image/classtimeIMG.png", 0.25, (675, 485))
 
 
         self.clock.tick(fps)
@@ -548,11 +551,11 @@ class Game: # 메인 게임 실행 클래스
                         self.count_down_start = True
 
     # 클래스 타임 화면에서 사라지고, 카운트 다운 시작
-    def classtime_callback(self):
-        self.class_start_sound.play()
-        self.main_sound.play(fade_ms = 3000)
-        self.classtime_group.remove(self.classtime_button)
-        self.count_down_start = True
+    #def classtime_callback(self):
+     #   self.class_start_sound.play()
+      #  self.main_sound.play(fade_ms = 3000)
+       # self.classtime_group.remove(self.classtime_button)
+        #self.count_down_start = True
 
     # 화살표로 변수 값 변경할때 리미트 주는거
     def adjust_value(self, value, change, min_value, max_value):
