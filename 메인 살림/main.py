@@ -144,18 +144,17 @@ class Game: # 메인 게임 실행 클래스
         self.tilemap = None
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
-        self.mute_button = Button("Image/not mute.png", 100, 100, self.mute_callback, 2) # 세팅 누를 뺴마자 초기화 안 시키려고 뺌.
+        self.mute_button = Button("Image/mute.png", 100, 100, self.mute_callback, 2) # 세팅 누를 뺴마자 초기화 안 시키려고 뺌.
 
         # 음악 시작 하자 마자 실행 / 음악 관련 초기 설정
-        pygame.mixer.init()  # Initialize mixer
-        pygame.mixer.music.load("Song/배달의민족 - 배달은 자신있어.mp3")  # Load background music
-        pygame.mixer.music.set_volume(0)  # Set music volume (0.0 to 1.0)
-        pygame.mixer.music.play(-1)
+        pygame.mixer.init()
         self.button_click_sound = pygame.mixer.Sound("Song/Tiny Button Push Sound.mp3")
         self.class_start_sound = pygame.mixer.Sound("Song/41 시작종.mp3")
         self.class_end_sound = pygame.mixer.Sound("Song/42 종료종.mp3")
         self.couple_caught_sound = pygame.mixer.Sound("Song/Correct 9.mp3")
-        
+        self.intro_sound = pygame.mixer.Sound("Song/Rinne - Bubbly.mp3")
+        self.main_sound = pygame.mixer.Sound("Song/배달의민족 - 배달은 자신있어.mp3")
+
 
     def createTilemap(self, tilemap):
         self.all_sprites.empty()  # 기존 스프라이트 삭제
@@ -506,16 +505,19 @@ class Game: # 메인 게임 실행 클래스
             self.show_checklist_img = True
             
     # 뮤트 버튼 눌렸을 떄 실행
-    def mute_callback(self): # 요기 아래 코드 자세한 설명 필요!!
+    def mute_callback(self):
             current_time = pygame.time.get_ticks()
             if current_time - self.last_mute_toggle_time >= self.mute_toggle_delay:
                 self.button_click_sound.play()
                 self.show_vol = not self.show_vol
-                pygame.mixer.music.set_volume(0.0 if self.show_vol else 0.5)
+                if self.show_vol:
+                    self.main_sound.play()
+                else: 
+                    self.main_sound.stop()
                 self.last_mute_toggle_time = current_time
 
                 # 뮤트 버튼 업데이트 하기
-                mute_button_image = "Image/not mute.png" if self.show_vol else "Image/mute.png"
+                mute_button_image = "Image/mute.png" if self.show_vol else "Image/not mute.png"
                 self.mute_button = Button(mute_button_image, 100, 100, self.mute_callback, 2)
                 self.mute_group.empty()
                 self.mute_group.add(self.mute_button)
@@ -564,21 +566,26 @@ class Game: # 메인 게임 실행 클래스
 
     # 시작 인트로 이미지 표시 기능(추가 원하면, 그 리스트 늘리면 됨 그리고 관련 수정 좀 하고)
     def show_intro_images(self):
+
         intro_images = ["Image/배경화면.png", "Image/조작법.png", "Image/info.png"] # 첫번째 
         current_intro_index = 0
         total_intro_images = len(intro_images)
         show_intro = True
-
+        self.intro_sound.play()
         while show_intro:
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
+                        self.button_click_sound.play()
                         current_intro_index += 1
                         if current_intro_index >= total_intro_images:
                             show_intro = False
+                            self.intro_sound.fadeout(1000) # 페이드 아웃
+                            self.main_sound.play(fade_ms = 1000) # 페이드 인
 
             if current_intro_index < total_intro_images:
                 intro_image = pygame.image.load(intro_images[current_intro_index])
