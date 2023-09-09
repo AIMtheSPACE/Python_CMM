@@ -69,7 +69,10 @@ class Game: # 메인 게임 실행 클래스
         self.running = True
 
         # 이미지 활용을 위한 설정
-        self.desk_spritesheet = Spritesheet("Image/tile desk.png")
+        self.desk1_spritesheet = Spritesheet("Image/tile desk1.png")
+        self.desk2_spritesheet = Spritesheet("Image/tile desk2.png")
+        self.desk3_spritesheet = Spritesheet("Image/tile desk3.png")
+        self.desk4_spritesheet = Spritesheet("Image/tile desk4.png")
         self.hallway_spritesheet = Spritesheet("Image/tile hallway.jpeg")
         self.closet_spritesheet = Spritesheet("Image/tile shoes closet.jpeg")
         self.wooden_spritesheet = Spritesheet("Image/tile wooden.jpeg")

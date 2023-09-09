@@ -60,7 +60,8 @@ class Empty(pygame.sprite.Sprite):
         self.image.set_colorkey("White")
 
 class Desk(pygame.sprite.Sprite):
-    def __init__(self, game, x, y):
+    way = 0
+    def __init__(self, game, x, y, way):
         self.game = game
         self._layer = block_layer
         self.groups = self.game.all_sprites, self.game.desks
@@ -70,7 +71,15 @@ class Desk(pygame.sprite.Sprite):
         self.y = y * tilesize
         self.width, self.height = tilesize, tilesize
 
-        self.image = self.game.desk_spritesheet.get_sprite(0, 0, self.width, self.height)
+        if way == 1:
+            self.image = self.game.desk1_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif way == 2:
+            self.image = self.game.desk2_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif way == 3:
+            self.image = self.game.desk3_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif way == 4:
+            self.image = self.game.desk4_spritesheet.get_sprite(0, 0, self.width, self.height)
+
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
