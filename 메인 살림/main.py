@@ -154,8 +154,8 @@ class Game: # 메인 게임 실행 클래스
         self.class_start_sound = pygame.mixer.Sound("Song/41 시작종.mp3")
         self.class_end_sound = pygame.mixer.Sound("Song/42 종료종.mp3")
         self.couple_caught_sound = pygame.mixer.Sound("Song/Correct 9.mp3")
-        self.intro_sound = pygame.mixer.Sound("Song/Rinne - Bubbly.mp3")
-        self.main_sound = pygame.mixer.Sound("Song/배달의민족 - 배달은 자신있어.mp3")
+        self.intro_sound = pygame.mixer.Sound("Song/13-01 Back in my days.wav")
+        self.main_sound = pygame.mixer.Sound("Song/13-03 Dinosaurs Are Still Alive.wavw")
 
 
     def createTilemap(self, tilemap): # 타일맵 제작 코드
