@@ -154,6 +154,8 @@ class Game: # 메인 게임 실행 클래스
         self.button_click_sound = pygame.mixer.Sound("Song/Tiny Button Push Sound.mp3")
         self.class_start_sound = pygame.mixer.Sound("Song/41 시작종.mp3")
         self.class_end_sound = pygame.mixer.Sound("Song/42 종료종.mp3")
+        self.couple_caught_sound = pygame.mixer.Sound("Song/Correct 9.mp3")
+        
 
     def createTilemap(self, tilemap):
         self.all_sprites.empty()  # 기존 스프라이트 삭제
@@ -246,7 +248,9 @@ class Game: # 메인 게임 실행 클래스
        
     # 커플이 잡혔는지 확인
     def couplecaught(self, couple_num):
-        print(f"Couple {couple_num} was caught!")
+        if self.coupleOX[couple_num - 1] == 0: # 최초 1회만 소리가 나도록 설정
+            self.couple_caught_sound.play()
+            print(f"Couple {couple_num} was caught!")
 
         if couple_num == 1:
             self.coupleOX[0] = 1
