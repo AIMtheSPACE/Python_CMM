@@ -79,6 +79,19 @@ def build_map(self, tilemap):
                 Student(self, j+a, i+b, 5)
             if column == "f":
                 Student(self, j+a, i+b, 6)
+            
+            if column == "g":
+                Student(self, j+a, i+b, 7)
+            if column == "h":
+                Student(self, j+a, i+b, 8)
+            if column == "i":
+                Student(self, j+a, i+b, 9)
+            if column == "j":
+                Student(self, j+a, i+b, 10)
+            if column == "k":
+                Student(self, j+a, i+b, 11)
+            if column == "l":
+                Student(self, j+a, i+b, 12)
 
             # 우산 배치
             if column == "o":
