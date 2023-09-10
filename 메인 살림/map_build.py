@@ -100,39 +100,27 @@ def build_map_end(self, tilemap):
             Hallway(self, j, i)
             if column == "P":
                 self.Player = Player(self, j, i)
-            if column == "B":
-                Desk(self, j, i)
             if column == "T":
                 Wall(self, j, i)
-            if column == "U":
-                Warp_Up(self, j, i)
-            if column == "D":
-                Warp_Down(self, j, i)
-            if column == "0":
-                Empty(self, j, i)
-            if column == "H":
-                Wooden(self, j, i)
-            if column == "S":
-                Closet(self, j, i)
             
             # 커플 배치
             if column == "1":
-                Couple(self, j, i, 1)
+                Couple(self, j, i, 11)
             if column == "2":
-                Couple(self, j, i, 2)
+                Couple(self, j, i, 12)
             if column == "3":
-                Couple(self, j, i, 3)
+                Couple(self, j, i, 13)
             if column == "4":
-                Couple(self, j, i, 4)
+                Couple(self, j, i, 14)
             if column == "5":
-                Couple(self, j, i, 5)
+                Couple(self, j, i, 15)
             if column == "6":
-                Couple(self, j, i, 6)
+                Couple(self, j, i, 16)
             if column == "7":
-                Couple(self, j, i, 7)
+                Couple(self, j, i, 17)
             if column == "8":
-                Couple(self, j, i, 8)
+                Couple(self, j, i, 18)
             if column == "9":
-                Couple(self, j, i, 9)
+                Couple(self, j, i, 19)
             if column == "*":
-                Couple(self, j, i, 10)
+                Couple(self, j, i, 20)

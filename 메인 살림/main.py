@@ -89,6 +89,17 @@ class Game: # 메인 게임 실행 클래스
         self.stair_spritesheet = Spritesheet("Image/tile marble.png")
         self.white_spritesheet = Spritesheet("Image/tile white.png")
         
+        self.couple1_w_spritesheet = Spritesheet("Image/tile couple1 (w).png")
+        self.couple2_w_spritesheet = Spritesheet("Image/tile couple2 (w).png")
+        self.couple3_w_spritesheet = Spritesheet("Image/tile couple3 (w).png")
+        self.couple4_w_spritesheet = Spritesheet("Image/tile couple4 (w).png")
+        self.couple5_w_spritesheet = Spritesheet("Image/tile couple5 (w).png")
+        self.couple6_w_spritesheet = Spritesheet("Image/tile couple6 (w).png")
+        self.couple7_w_spritesheet = Spritesheet("Image/tile couple7 (w).png")
+        self.couple8_w_spritesheet = Spritesheet("Image/tile couple8 (w).png")
+        self.couple9_w_spritesheet = Spritesheet("Image/tile couple9 (w).png")
+        self.couple10_w_spritesheet = Spritesheet("Image/tile couple10 (w).png")
+
         self.couple1_spritesheet = Spritesheet("Image/tile couple1.png")
         self.couple2_spritesheet = Spritesheet("Image/tile couple2.png")
         self.couple3_spritesheet = Spritesheet("Image/tile couple3.png")
@@ -346,7 +357,6 @@ class Game: # 메인 게임 실행 클래스
 
         # 업데이트
         self.setting_group.update()
-        #self.classtime_group.update()
         self.ending_group.update()
         self.checklist_group.update()
         self.checklistimg_group.update()
@@ -372,7 +382,7 @@ class Game: # 메인 게임 실행 클래스
             ending_surface = self.timer_font.render(ending_text, True, (255, 235, 2), (0, 0, 0))
             self.screen.blit(ending_surface, (518, 500)) 
 
-        # 성공 / 실패 둘 중 하나의 엔딩을 보게 되면 Fasle로 바뀌며 이게 다 실행되지 않음.
+        # 성공 / 실패 둘 중 하나의 엔딩을 보게 되면 False로 바뀌며 이게 다 실행되지 않음.
         if self.show_ending_stage and self.show_fail_ending_stage:
             if self.show_setting:
                 rect_width = 175
@@ -607,7 +617,7 @@ class Game: # 메인 게임 실행 클래스
             self.update()
             
             # 엔딩 볼 때 넘어가는 스테이지
-            if self.coupleOX.count(1) == 10 and self.show_ending_stage:
+            if self.coupleOX.count(1) == 1 and self.show_ending_stage:
                 self.show_ending_stage = False
                 self.show_end_of_the_game()
                 

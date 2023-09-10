@@ -199,24 +199,45 @@ class Couple(pygame.sprite.Sprite):
         self.num = num
 
         if num == 1:
-            self.image = self.game.couple1_spritesheet.get_sprite(0, 0, self.width, self.height)
+            self.image = self.game.couple1_w_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 2:
-            self.image = self.game.couple2_spritesheet.get_sprite(0, 0, self.width, self.height)
+            self.image = self.game.couple2_w_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 3:
-            self.image = self.game.couple3_spritesheet.get_sprite(0, 0, self.width, self.height)
+            self.image = self.game.couple3_w_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 4:
-            self.image = self.game.couple4_spritesheet.get_sprite(0, 0, self.width, self.height)
+            self.image = self.game.couple4_w_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 5:
-            self.image = self.game.couple5_spritesheet.get_sprite(0, 0, self.width, self.height)
+            self.image = self.game.couple5_w_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 6:
-            self.image = self.game.couple6_spritesheet.get_sprite(0, 0, self.width, self.height)
+            self.image = self.game.couple6_w_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 7:
-            self.image = self.game.couple7_spritesheet.get_sprite(0, 0, self.width, self.height)
+            self.image = self.game.couple7_w_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 8:
-            self.image = self.game.couple8_spritesheet.get_sprite(0, 0, self.width, self.height)
+            self.image = self.game.couple8_w_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 9:
-            self.image = self.game.couple9_spritesheet.get_sprite(0, 0, self.width, self.height)
+            self.image = self.game.couple9_w_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 10:
+            self.image = self.game.couple10_w_spritesheet.get_sprite(0, 0, self.width, self.height)
+        
+        elif num == 11:
+            self.image = self.game.couple1_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 12:
+            self.image = self.game.couple2_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 13:
+            self.image = self.game.couple3_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 14:
+            self.image = self.game.couple4_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 15:
+            self.image = self.game.couple5_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 16:
+            self.image = self.game.couple6_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 17:
+            self.image = self.game.couple7_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 18:
+            self.image = self.game.couple8_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 19:
+            self.image = self.game.couple9_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 20:
             self.image = self.game.couple10_spritesheet.get_sprite(0, 0, self.width, self.height)
         
         self.rect = self.image.get_rect()
