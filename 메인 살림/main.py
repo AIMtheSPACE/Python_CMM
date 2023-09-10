@@ -156,7 +156,9 @@ class Game: # 메인 게임 실행 클래스
         self.show_fail_ending_stage = True
 
         # 그 외의 초기 설정
-        self.coupleOX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        #self.coupleOX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        self.coupleOX = [1, 1, 0, 1, 1, 1, 1, 1, 1, 1]
         self.tilemap = None
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
@@ -189,7 +191,7 @@ class Game: # 메인 게임 실행 클래스
         self.umbrellas.empty() # 여러 기존 스프라이트 삭제
 
         # 맵의 시작 위치를 다르게
-        if self.coupleOX.count(1) == 1 or self.period == 9:
+        if self.coupleOX.count(1) == 10 or self.period == 9:
             build_map_end(self,tilemap)
         else:
             build_map(self, tilemap) # 맵 그리기
@@ -265,30 +267,31 @@ class Game: # 메인 게임 실행 클래스
        
     # 커플이 잡혔는지 확인
     def couplecaught(self, couple_num):
-        if self.coupleOX[couple_num - 1] == 0: # 최초 1회만 소리가 나도록 설정
-            self.couple_caught_sound.play()
-            print(f"Couple {couple_num} was caught!")
+        if self.show_ending_stage and self.show_fail_ending_stage:
+            if self.coupleOX[couple_num - 1] == 0: # 최초 1회만 소리가 나도록 설정
+                self.couple_caught_sound.play()
+                print(f"Couple {couple_num} was caught!")
 
-        if couple_num == 1:
-            self.coupleOX[0] = 1
-        elif couple_num == 2:
-            self.coupleOX[1] = 1
-        elif couple_num == 3:
-            self.coupleOX[2] = 1
-        elif couple_num == 4:
-            self.coupleOX[3] = 1
-        elif couple_num == 5:
-            self.coupleOX[4] = 1
-        elif couple_num == 6:
-            self.coupleOX[5] = 1
-        elif couple_num == 7:
-            self.coupleOX[6] = 1
-        elif couple_num == 8:
-            self.coupleOX[7] = 1
-        elif couple_num == 9:
-            self.coupleOX[8] = 1
-        elif couple_num == 10:
-            self.coupleOX[9] = 1
+            if couple_num == 1:
+                self.coupleOX[0] = 1
+            elif couple_num == 2:
+                self.coupleOX[1] = 1
+            elif couple_num == 3:
+                self.coupleOX[2] = 1
+            elif couple_num == 4:
+                self.coupleOX[3] = 1
+            elif couple_num == 5:
+                self.coupleOX[4] = 1
+            elif couple_num == 6:
+                self.coupleOX[5] = 1
+            elif couple_num == 7:
+                self.coupleOX[6] = 1
+            elif couple_num == 8:
+                self.coupleOX[7] = 1
+            elif couple_num == 9:
+                self.coupleOX[8] = 1
+            elif couple_num == 10:
+                self.coupleOX[9] = 1
 
     # 좌측 하단 세팅 버튼 눌렀을 떄 커플 관련 정보 표출
     def text_couple(self): 
@@ -329,8 +332,8 @@ class Game: # 메인 게임 실행 클래스
                     else:
                         self.show_checklist = True
                         self.show_checklist_img = True
-                elif event.key == pygame.K_SPACE:
-                    if not self.count_down_start:
+                elif event.key == pygame.K_SPACE: # 여기 수정 함
+                    if not self.count_down_start and self.show_ending_stage and self.show_fail_ending_stage:
                         self.show_classtime_page = False
                         self.count_down_start = True
                         self.class_start_sound.play() 
@@ -617,7 +620,7 @@ class Game: # 메인 게임 실행 클래스
             self.update()
             
             # 엔딩 볼 때 넘어가는 스테이지
-            if self.coupleOX.count(1) == 1 and self.show_ending_stage:
+            if self.coupleOX.count(1) == 10 and self.show_ending_stage:
                 self.show_ending_stage = False
                 self.show_end_of_the_game()
                 
