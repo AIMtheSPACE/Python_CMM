@@ -196,7 +196,7 @@ class Game: # 메인 게임 실행 클래스
         self.umbrellas.empty() # 여러 기존 스프라이트 삭제
 
         # 맵의 시작 위치를 다르게
-        if self.coupleOX.count(1) == 10 or self.period == 9:
+        if self.coupleOX.count(1) == 1 or self.period == 9:
             build_map_end(self,tilemap)
         else:
             build_map(self, tilemap) # 맵 그리기
