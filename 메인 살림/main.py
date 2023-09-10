@@ -555,7 +555,7 @@ class Game: # 메인 게임 실행 클래스
             new_value = value + change
             return max(min(new_value, max_value), min_value)
 
-    # 스케일된 이미지 그리기 
+    # 스케일된 이미지 그리기 많이 사용하려 하였으나 1회 만 사용함
     def draw_scaled_image(self, image, scale, center_position):
         self.image = pygame.image.load(image)  # 이미지 확장자 추가
         scaled_image = pygame.transform.scale(self.image, (
@@ -637,7 +637,7 @@ class Game: # 메인 게임 실행 클래스
                                 self.drawcountdown = False # 카운트 다운 표시 하지 않게 하기 위함
 
                             else:
-                                self.count_down_start = False #요기도 바꿔야함
+                                self.count_down_start = False
                                 self.remaining_time = 60 * self.min
                                 self.period += 1
                                 self.show_classtime_page = True
