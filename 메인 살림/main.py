@@ -163,9 +163,9 @@ class Game: # 메인 게임 실행 클래스
         self.show_fail_ending_stage = True
 
         # 그 외의 초기 설정
-        #self.coupleOX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self.coupleOX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-        self.coupleOX = [1, 1, 0, 1, 1, 1, 1, 1, 1, 1]
+        # self.coupleOX = [1, 1, 0, 1, 1, 1, 1, 1, 1, 1]
         self.tilemap = None
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
@@ -344,6 +344,7 @@ class Game: # 메인 게임 실행 클래스
                         self.show_classtime_page = False
                         self.count_down_start = True
                         self.class_start_sound.play() 
+                        self.main_sound.play(fade_ms = 10000)
                         
                 elif event.key == pygame.K_q: # 단축키 '큐' 세팅 열기
                     if not self.show_setting: 
@@ -661,6 +662,7 @@ class Game: # 메인 게임 실행 클래스
                                 self.remaining_time = 60 * self.min
                                 self.period += 1
                                 self.show_classtime_page = True
+                                self.main_sound.fadeout(1000)
                                 self.class_end_sound.play()
                                 self.go_back_to_office()
                                 
