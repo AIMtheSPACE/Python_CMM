@@ -268,6 +268,19 @@ class Student(pygame.sprite.Sprite):
             self.image = self.game.student5_spritesheet.get_sprite(0, 0, self.width, self.height)
         elif num == 6:
             self.image = self.game.student6_spritesheet.get_sprite(0, 0, self.width, self.height)
+
+        elif num == 7:
+            self.image = self.game.student1_w_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 8:
+            self.image = self.game.student2_w_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 9:
+            self.image = self.game.student3_w_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 10:
+            self.image = self.game.student4_w_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 11:
+            self.image = self.game.student5_w_spritesheet.get_sprite(0, 0, self.width, self.height)
+        elif num == 12:
+            self.image = self.game.student6_w_spritesheet.get_sprite(0, 0, self.width, self.height)
         
         self.rect = self.image.get_rect()
         self.rect.x = self.x

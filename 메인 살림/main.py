@@ -117,6 +117,13 @@ class Game: # 메인 게임 실행 클래스
         self.student4_spritesheet = Spritesheet("Image/tile student4.png")
         self.student5_spritesheet = Spritesheet("Image/tile student5.png")
         self.student6_spritesheet = Spritesheet("Image/tile student6.png")
+
+        self.student1_w_spritesheet = Spritesheet("Image/tile student1 (w).png")
+        self.student2_w_spritesheet = Spritesheet("Image/tile student2 (w).png")
+        self.student3_w_spritesheet = Spritesheet("Image/tile student3 (w).png")
+        self.student4_w_spritesheet = Spritesheet("Image/tile student4 (w).png")
+        self.student5_w_spritesheet = Spritesheet("Image/tile student5 (w).png")
+        self.student6_w_spritesheet = Spritesheet("Image/tile student6 (w).png")
         
         self.umbrella1_spritesheet = Spritesheet("Image/tile umbrella1.png")
         self.umbrella2_spritesheet = Spritesheet("Image/tile umbrella2.png")
