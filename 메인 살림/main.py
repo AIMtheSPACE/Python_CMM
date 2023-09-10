@@ -165,7 +165,6 @@ class Game: # 메인 게임 실행 클래스
         # 그 외의 초기 설정
         self.coupleOX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-        # self.coupleOX = [1, 1, 0, 1, 1, 1, 1, 1, 1, 1]
         self.tilemap = None
         self.remaining_time = 60 * self.min  # 기간을 초로 변환한 값
         self.last_time = pygame.time.get_ticks()  # last_time 속성 초기화
@@ -229,6 +228,8 @@ class Game: # 메인 게임 실행 클래스
     # 워프 시스템을 이용한 층간 이동 
     def change_tilemap_up(self): # 층 올라가기
         self.stage += 1
+        a = 30
+        b = 80
         if self.stage == 1:
             self.tilemap = maps.world_1.stage_1
         elif self.stage == 2:
