@@ -3,7 +3,7 @@ win_height = 900
 tilesize = 32
 fps = 60
 
-player_speed = 10
+player_speed = 5
 
 ground_layer = 1
 block_layer = 3
